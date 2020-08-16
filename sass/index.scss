@@ -1,0 +1,127 @@
+@charset 'utf-8';
+// 变量：
+// $link-color和$link_color其实指向的是同一个变量。
+// 实际上，在sass的大 多数地方，中划线命名的内容 和 下划线命名的内容是互通的
+// 变量在代码块的内/外使用 以及 变量之间的相互使用
+$color: red;
+$borderColor: blue;
+.div1 {
+  width: 100px;
+  height: 100px;
+  $bg: yellow; // 局部变量转换为全局变量后面加 $bg:yellow !global
+  background: $bg;
+  color: $color;
+  $border: solid 1px $borderColor;
+  border: $border;
+}
+
+// 嵌套css规则：（后代元素  同级子元素  同级父元素 的嵌套写法）
+.div2 {
+  color: red;
+  span {
+    color: green;
+    &:hover {
+      // 这里注意  符号 & 是父选择器标识符
+      color: blue;
+    }
+  }
+}
+
+.div3 {
+  h1 {
+    color: red;
+  }
+  h2 {
+    color: green;
+  }
+  h3 {
+    color: yellow;
+  }
+}
+
+.div4,
+.div5 {
+  span {
+    color: yellowgreen;
+  }
+}
+
+.div6 {
+  border: {
+    top: solid 1px #ccc;
+    bottom: solid 2px red;
+  }
+}
+
+.div7 {
+  border: solid 1px red {
+    left: 0;
+    right: 0;
+  }
+}
+
+// 属性和选择器嵌套是非常伟大的特性， 但是 随着你的样式表变得越来越大，这种写法也很难保持结构清晰
+// 有时，处理这种大量样式的唯一方法就是把它们分拆到多个文件中  @import
+// 导入 sass 文件:
+// sass局部文件的 文件名 以下划线开头
+// 原生 css 的导入 可以通过修改 后缀名 .css 为 .scss 由sass的语法导入， 而不是原生的 css @import
+@import "./_b.scss";
+@import "./_c.scss";
+$fz: 40px;
+$fw: normal;
+.div8 {
+  font-size: $fz;
+  font-weight: $fw;
+}
+
+// b.scss 和 a.scss 里的变量，有默认的且未再次定义的话，就用默认的。再次定义则覆盖默认的
+// 静默注释：  就是在输出的 css 文件里不会有， 只显示在 scss文件里的注释  写法是 ‘ // ’
+
+// SassScript：
+// 支持数字的加减乘除、取整等运算 (+, -, *, /, %)，如果必要会在不同单位间转换值。
+.div9 {
+  width: 10px + 30px;
+  height: (500px/2);
+  font: 30px/1 微软雅黑;
+  margin: (10px + 20px);
+}
+
+.div9:before {
+  content: "I ate #{5 + 10} pies!";
+}
+
+// @media：
+.div10 {
+  width: 1000px;
+  border: solid 1px red;
+  @media screen and (max-width: 1200px) {
+    width: 500px;
+  }
+}
+
+// @extend：
+.div12 {
+  @extend .div11; // @extend  是 "继承" 样式， div11 放在之前，之后都可以
+  font-size: 40px;
+}
+
+.div11 {
+  width: 200px;
+  height: 200px;
+  background: red;
+}
+
+// @include  @mixin
+@mixin mix {
+  color: blue;
+  font: {
+    family: 微软雅黑;
+    size: 20px;
+  }
+}
+
+.div13 {
+  // 是 "调用" 样式   mix这能放在之前
+  @include mix;
+  border: solid 1px red;
+}

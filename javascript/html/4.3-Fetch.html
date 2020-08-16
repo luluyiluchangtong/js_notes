@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // fetch    其实它的作用是替代浏览器原生的XMLHttpRequest异步请求,有了fetch后我们就可以在不用 axios, jquery这些插件的情况下快速简单的实现异步请求
+      // fetch 方法返回一个 promise 对象
+      // fetch 和 jquery.ajax()的不同之处
+      // 1：当返回错误的状态码时， fetch返回的promise 的状态不是 reject，
+      // 而是 resolve， 只是resolve 的返回值 ok 的属性设置为false， 只有网络故障，请求被阻止状态才会是 reject
+      // 2.默认情况下，fetch 不会从服务端发送或接收任何 cookies，要发送 cookies，必须设置 credentials 选项
+
+      //   <meta http-equiv="Content-Security-Policy" content="style-src 'unsafe-inline'; script-src https://*.api.mesowest.org/ https://ipinfo.io/json/ https://*.github.com/ https://rawgit.com/fairlycasual/willChromeExtension.github.io/master/popupObsAsync.js 'unsafe-inline' 'unsafe-eval'; connect-src https://*.api.mesowest.net/ https://ipinfo.io/json/ https://rawgit.com/fairlycasual/willChromeExtension.github.io/master/popupObsAsync.js https://*.github.com/ 'unsafe-inline';
+
+      const api =
+        "https://www.easy-mock.com/mock/5ad4527b4a76b81c1846e71e/v2/user/login";
+      const data = { username: "example" };
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json;charset=UTF-8l"); // 设置请求头，这是 post 方法下的设置
+
+      fetch(api)
+        // 直接指定 url 或使用 request对象
+        // 使用内容安全策略，而非直接指定 url 地址。  在元标签里定义 Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'; object-src 'none' ...
+        .then(function (response) {
+          // fetch 方法返回一个包含响应结果的 promise对象
+          console.log(response.ok);
+          console.log(response.headers.get("Content-Type")); // 获取请求头
+          // response.headers.has('Content-Type')   查询请求头
+          console.log(response.type);
+          // 返回响应类型： basic 同源响应， cors 带有CORS响应头的跨域请求，opaque 不带有CORS响应头的跨域请求（no-cros），error 网络错误，
+          return response.json(); // json() 是 fetch API 中的 body.json()
+          // return promise.resolve(response)
+        })
+        .then((myjson) => {
+          console.log(myjson);
+        });
+
+      // var myRequest = new Request（input [，init]）
+      //   var myRequest = new Request（'flower.jpg' {method:"GET"; 及其他 request 属性}）
+      var newRequest = myRequest.clone(); //  request 方法， 及 body  方法，由 response 实现   .then(res => res.blob())
+
+      postData(
+        "https://www.easy-mock.com/mock/5ad4527b4a76b81c1846e71e/v2/user/login",
+        { answer: 42 }
+      )
+        .then((data) => console.log(data)) // JSON from `response.json()` call
+        .catch((error) => console.error(error));
+
+      function postData(api, data) {
+        // Default options are marked with *
+        return fetch(api, {
+          body: JSON.stringify(data), // must match 'Content-Type' header
+          cache: "no-cache",
+          // *default：默认值，即请求前检查 http缓存
+          //  no-store：请求前忽略 http缓存
+          //  no-cache: 经过服务器验证后的 http 缓存更新
+          //  reload：请求后主动更新 http 缓存
+          //  force-cache：即只要有缓存，就依赖缓存取内容，没有则发出正常 request请求
+          //  only-if-cached：即只要有缓存，就依赖缓存取内容，没有则抛出网络错误
+          credentials: "same-origin", // credentials  即认证信息 cookie
+          // include 跨域发送 cookie, same-origin 同域发送 cookie, *omit 默认值
+          headers: {
+            "user-agent": "Mozilla/4.0 MDN Example",
+            "content-type": "application/json",
+          },
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors",
+          //  fetch 的第二个参数 mode 设置不同的模式使得请求有效  {mode: 'same-origin/cros/no-cros/cors-with-forced-preflight'}
+          redirect: "follow", // manual（手动重定向）, follow（自动重定向）, error （如果产生重定向将自动终止并且抛出一个错误）
+          referrer: "no-referrer", // *client, no-referrer， url  即请求的来源是什么
+        }).then((response) => response.json()); // parses response to JSON
+      }
+      // 上传 json； 上传文件
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="button" value="按钮">
+    <script>
+        // 离线检测
+        console.log(navigator.onLine) // navigator.onLine属性  true 在线   false离线
+        window.addEventListener('online', function () {
+            alert('离线转在线触发 事件 online')
+        })
+        window.addEventListener('offline', function () {
+            alert('在线转离线触发 事件 offline')
+        })
+
+        // 应用缓存
+        // Appcache 是从浏览器的缓存中分出来的一块缓存区。 可以使用 "描述文件" 列出要下载和缓存的资源
+        // 对象 applicationCache 的 status属性的值表示 应用缓存的当前状态。 还有在状态改变时触发的事件
+
+
+
+
+    </script>
+</body>
+
+</html>

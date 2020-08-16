@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="pv2">测试18：css Grid</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        fsafsaf
+    </div>
+
+    <!-- css Grid 网格布局 -->
+    <style>
+        /* 单元格 位置 分布的方式：方式1. grid-column / grid-row   方式2. grid-template-areas  grid-aria*/
+
+        /* grid      是 grid-template-columns   grid-template-rows   grid-template-areas；。。。的简写。 熟悉之后再这样写吧  */
+
+        /* grid-area 是 grid-column grid-row 的简写     subgrid 浏览器没有实现 */
+
+        /* 网格容器   网格线   网格轨迹  网格单元  网格区域 */
+
+        /* 1ch 表示一个 0  字符的宽度。 等宽字体，即英文，数字的里面用到。 */
+
+        .grid-container {
+
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            /* minmax(10px, auto) / 1fr 100px 1fr / repeat(3, 1fr) */
+            /* grid-auto-columns: auto / 1fr / min-content / minmax(10px, auto); */
+            /* 列宽 */
+            grid-template-rows: 100px 200px 300px;
+            /* grid-auto-rows: 150px / auto / minmax(10px, auto);  自动计算行高*/
+            /* 行高 */
+            grid-template-areas: '. h .' 'l m r';
+            /* grid-template: 100px 100px 100px / 1fr 1fr 1fr; */
+            /* grid-auto-flow: row / column / dense; 自动布局位置*/
+            grid-gap: 4px;
+            /* grid-column-gap   grid-row-gap */
+            /* grid-gap: 4px 6px */
+            /* justify-items: center;  网格单元 纵轴对齐的方式 */
+            /* align-items: center;  网格单元 行轴对齐的方式 */
+            /* justify-content: center;  所有内容在容器有多余空间时 纵轴的对齐方式 */
+            /* align-content: center;   所有内容在容器有多余空间时 行轴的对齐方式 */
+        }
+
+        .bg-black {
+            grid-area: h;
+            /* justify-self: center   单独的 网格单元 纵轴对齐的方式  */
+            /* align-self: center   单独的网 格单元 行轴对齐的方式  */
+            /* grid-clumn: 2 / span 3    span [number] 网格单元 将跨越指定数字的网格轨迹；span [name] 网格单元 将跨越指定名字之前的网格轨迹；*/
+        }
+
+        .bg-red {
+            grid-area: m;
+            /* grid-row-start  grid-column-start grid-row-end grid-column-end */
+            /* grid-row */
+            /* grid-row-start / grid-row-end */
+            /* grid-column*/
+            /* grid-column-start / grid-column-end */
+            /* 所以值也可以是数值 2/1/2/4 */
+        }
+
+        .bg-green {
+            grid-area: l
+        }
+
+        .bg-yellow {
+            grid-area: r
+        }
+    </style>
+
+    <style>
+        .grid-container1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            /* repeat(3, 1fr)   定义列宽 fr为网格容器中的自由空间 */
+            /* grid-template-columns: 100px auto 100px 100px; */
+            /* grid-template-columns: [first] 40px [line2] 50px [line3] auto [col4-start] 50px [five] 40px [end]; 一根网格线可以有多个名字*/
+            grid-template-rows: 100px 200px 300px;
+            /* 定义行高 */
+            grid-gap: 4px;
+            /* 单元格间隙 */
+            /* grid-auto-flow: column/row/dence; 默认是 row，按 纵轴/行轴 顺序 放置这些网格单元 */
+            /* grid-auto-rows: 60px; 统一指定所有网格轨迹高度 */
+        }
+
+        .bg-gold {
+            grid-column: 2/-2
+            /* grid-column-start grid-column-end 单元格在 列 上从哪条线开始，到那条线结束 */
+            /* grid-row-start grid-row-end 单元格在 行 上从哪条线开始，到那条线结束 */
+        }
+
+        .bg-gray {
+            grid-column: 1/2
+        }
+
+        .bg-blue {
+            grid-column: 2/3;
+            grid-row: 5/10;
+            /* grid-row: 5/10  当定义的位置 超出实际的网格线时，会自动创建 0宽度的网格轨迹 */
+        }
+
+        .bg-orange {
+            grid-column: 3/4;
+        }
+    </style>
+    <div class="grid-container ba">
+        <div class='bg-black'>11</div>
+        <div class='bg-red'>11</div>
+        <div class='bg-green'>22</div>
+        <div class='bg-yellow'>33</div>
+    </div>
+
+    <div class="grid-container1 ba">
+        <div class=' bg-gold'>11</div>
+        <div class=' bg-gray'>11</div>
+        <div class=' bg-blue'>22</div>
+        <div class=' bg-orange'>33</div>
+    </div>
+
+
+    <style>
+        .grid-container2 {
+            display: grid;
+            grid-template-columns: 100px 100px 100px 100px;
+            grid-template-rows: 50px 50px;
+            grid-gap: 4px;
+            justify-items: end;
+        }
+    </style>
+    <div class=" grid-container2 ba">
+        <div class=" bg-black-05">sss</div>
+        <div class=" bg-black-05">sss</div>
+        <div class=" bg-black-05">sss</div>
+        <div class=" bg-black-05">sss</div>
+    </div>
+    <script>
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 快捷键：
+      // 打开控制台： F12 打开  /  ctrl+shift+j
+      // 清除缓存： ctrl+shift+delete
+      // 清除控制台历史： ctrl+l / ctrl+右键点击
+      // 控制台设置按钮查看打印 时间戳
+      // ctrl+[    ctrl+ ] 在控制台不同面板间切换
+      // 浏览器切换标签页： ctrl+tab
+      // console.time('aa')    console.timeEnd('aa')  测试代码运行时间，其中参数必须是一样的。
+      // 字符串占位符： %s    对象占位符：%o    整数占位符：%i/%d   浮点数占位符：%f    css样式占位符：%c
+      // console.log('this is an object %s', 'abc')  // this is an object abc
+      // console.log('abc%f', 2.3);   // abc2.3
+
+      const success = [
+        "background: green",
+        "color: white",
+        "display: block",
+        "text-align: center",
+      ].join(";");
+      console.log("%c你好啊！", "color:green; background:red"); // 方式一
+      console.log("%c你好啊！", success); // 方式二
+
+      // console.dir() --- 显示 js对象的属性,可以 更简便的 直接将对象作为参数传进去
+      console.table(["a", "b", "c"]); // 将数组 / 对象展示为一张表格
+      const superhero = {
+        firstName: "Peter",
+        lastName: "Parker",
+      };
+      console.table(superhero);
+      // console.count()  输出 count() 被调用的次数， 即相同表达式被调用的次数
+      // 按 Esc键 --- console标签分屏
+      // 复制打印的数据 --- 在打印出的 对象 上右键，存储 Stroe as global variable
+      // console.log() 的格式化输出：
+      // 代表了 字符串（%s），整数（%d），浮点数（%f），对象（%o / %O），css样式（%c）
+      console.log("%d+%d=%d", 1, 1, 2);
+      // 前者是 模板； 后者是 数据；对于复杂的输出时，实现模板和数据分离，使得结构更加清晰！
+      console.log("I am a String: %s ", "log"); //log
+      console.log("I am a int number: %d ", 1); //1
+      console.log("I am a float number: %f", 1.23); //1.23
+
+      console.log(
+        "%c 这是一段文字",
+        "color:red; font-weight:bold; font-size:50px"
+      );
+      console.log(
+        "%c这是一段%c神奇%c的文字",
+        "color:black",
+        "color:red;font-size:40px;text-shadow:1px 1px 1px #ccc",
+        "color:black"
+      );
+      console.log("%c", "background:");
+      //  %c 可以写在任何地方！！
+      console.count("写在函数里可查看该函数被调用次数");
+
+      console.log(p); // 打印出的是  p 标签
+      console.dir(p); // 打印出的是  p 对象
+
+      // ctrl+shift+p => coverage  查看网站代码使用率，并可查看未使用代码并删除。这里的未使用代码是针对本页的，并且包括本页为显示的，未交互的代码。
+
+      //  搜索相关
+      // "关键词"
+      //  a +b 加号之后内容是 必然包含；   a -b 减号之后的内容是 必然不包含；  他们前面都需要有空格！！
+      // javascript site:github.com  在网址 github里 搜索 javascript关键词
+      // largest * in the world   通配符 * 匹配任何字符。  前后要有空格。
+
+      // 调试 debugger
+
+      // chrome://apps     安装的扩展程序
+      // hostAdmin   管理 host文件
+      // postman   接口测试工具
+
+      // 浏览器内核主要分成两部分：渲染引擎(layout engineer 或 Rendering Engine)和JS引擎 （chrome 的 v8引擎）
+      // 渲染引擎 负责渲染 显示网络内容的 应用程序； js引擎 负责解析和执行js
+    </script>
+  </body>
+</html>

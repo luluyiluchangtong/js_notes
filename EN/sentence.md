@@ -1,0 +1,9 @@
+- Please give my best wishes to your parents
+- ```I am afraid I must go now / I think It`s time for us to go now```
+- Thank you for your  help / It`s very kind of you
+- ```never mind / That`s ok```
+- would you like me to help you
+- ```Are you free this morning, Yes ,I`ll be free then```
+- Is that liLei speaking?  /  May I speak to liLei? / This is Tom speaking / I am afraid you have the wrong number.
+- ```What would you like to have? help yourself to some chicken```
+- What is the weather like today; 

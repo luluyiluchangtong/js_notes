@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // document.readystate
+      // js 检测文档完全加载完的方法
+      document.onreadystatechange = () => {
+        if (document.readyState === "complete") {
+          // document ready
+        }
+      };
+      // interactive  文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载
+      // complete 文档和所有子资源已完成加载
+      // loading document 仍在加载
+      // scroll-behavior: smooth; 这个属性支持度还是很低
+
+      // Document 接口描述了任何类型的文档的通用属性与方法
+
+      // document  常用（实用）属性：
+      console.log(document.characterSet); // 返回当前文档的字符编码   UTF-8
+      console.log(document.domain); // 返回文档的原始域名   baidu.com
+      console.log(document.lastModified); //返回一个字符串,其中包含了当前文档的最后修改日期和时间.
+      console.log(document.documentURI); // 返回当前文档的路径； 区别于 document.URI 前者在 非 html 文档中也可使用
+      console.log(document.location); // 返回 location 对象，提供了修改 及 查看 URI 详细信息的功能   相当于 window.location
+      // document.iamges/scripts/forms/stylesheets/links/plugins
+      console.log(document.designMode); // on / off   是否可编辑文档  // document.body.contentEditable='true'
+      console.log(document.readyState); // loading(文档在加载) interactive（文档被解析 ，子资源任在加载） complete（文档所有资源完成加载）
+      console.log(document.referrer); // 返回来源页面的的 url  即 在iframe 中获取 来源页面
+      console.log(document.adoptNode); // 从其他document 文档获取节点，节点会从原文档删除，之后可在当前文档插入节点。同文档下也可使用该方法 应用：左列表栏添加项目到右边列表栏
+
+      // document  常用（实用）方法：
+      document.createElement();
+      document.createTextNode();
+      document.createAttribute();
+      document.createComment();
+      document.open(); // 打开 一个要写入的文档
+      document.write();
+      document.close(); // 用于结束对文档的 document.write() 操作； 写如操作一般由 document.open()打开
+      document.querySelector();
+      document.querySelectorAll;
+      document.getElementById();
+      document.getElementsByClassName();
+      document.getElementsByName();
+      document.getElementsByTagName();
+    </script>
+  </body>
+</html>

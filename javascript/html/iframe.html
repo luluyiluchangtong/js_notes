@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <script src="../js/jquery-3.1.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div contenteditable>fsdg</div>
+    <iframe src="./form.html" name="richedit" style=" width:400px; height: 400px;" frameborder="0"></iframe>
+    <script>
+        // iframe 的缺点：
+        // 1. 不利于 SEO  2.会增加服务器的 http请求 3. 会产生很多页面，不利于管理
+
+
+        // 实现编辑 富文本内容 的方式一
+        window.addEventListener("load", function () {
+            frames["richedit"].document.designMode = "on" //  on / off
+        })
+
+        // 实现编辑 富文本内容 的方式二
+        // 给任何元素加上 contenteditable 属性, 可以设置为 true / false
+        window.addEventListener("load", function () {
+            frames["richedit"].document.designMode = "on"
+        })
+
+        // 操作富文本  --- iframe
+        frames["richedit"].document.execCommand("backcolor", false)
+        frames["richedit"].document.execCommand("bold", false, null)
+        // 参数： 命令，浏览器是否为当前命令提供用户界面(始终设置为 false)，执行命令必须提供的一个值，不需要值则为null
+
+        // 操作富文本  --- 页面中有 contenteditable 属性 的元素
+        document.execCommand("backcolor", false)
+
+        // 操作富文本  --- 相关方法
+        frames["richedit"].document.queryCommandEnabled("bold")
+        // 检测 是否可以 对当前选择的文本执行某个命令，参数 是接收的命令。 返回 布尔值
+        frames["richedit"].document.queryCommandState("bold")
+        // 是否将命令应用到选择的文本上。
+        frames["richedit"].document.queryCommandValue("bold")
+        // 取得执行命令时传入的值
+        frames["richedit"].getSelection()
+        // 实际选择的文本，返回 selection 对象，
+        // selection对象有很多方法可以 更精细 的控制文本编辑器 。。。。
+
+        // iframe  元素旨在允许您将其他Web文档嵌入到当前文档中（frame  frameset 都是被标准移除了的元素）
+        /*
+        <iframe id = "Example2"
+        title = "Example2"
+        width = "400"
+        height = "300"
+        frameborder = "0"
+        scrolling = "yes"
+        marginheight = "0"
+        marginwidth = "0"
+        sandbox="allow-modals" 
+        沙盒，是一种安全机制， 为运行中的程序提供的隔离环境. 默认情况下, 您应该使用sandbox没有参数的属性来强制执行所有可用的限制
+        Chrome浏览器版本 46.0 开始屏蔽内部 iframe元素, 除非用户在沙箱内开启了 allow-modal  选项
+        src = "https://www.jquery123.com/jQuery.get/" >
+        </iframe>
+        */
+        // 操作 iframe
+        // window.frames[0];
+        // 最好使用 window.top.frames[0]
+        // window.top 返回窗口体系中的最顶层窗口的引用
+        // window.parent  返回当前窗口的父窗口对象
+        // window.frameElement 返回嵌入当前window对象的元素, 如果当前window是顶层，返回null
+
+        let f1 = document.getElementById('Example2')
+        let win = f1.contentWindow; // 通过contentWindow属性，访问 iframe 里的 window 对象
+        console.log(win.innerWidth) // 500
+        console.log(win.parent.innerWidth) // 1419   iframe 父级窗口的宽度 win.top.innerWidth
+        console.log(win.frameElement) // 通过 window 对象的 frameElement属性 获取 iframe元素
+
+        //  表单与富文本
+        // 创建一个隐藏的表单， 将 iframe 的 html 提取出来插入到 隐藏的字段中
+        forms[0].element[0].value = frames["richedit"].document.body.innerHTML
+    </script>
+</body>
+
+</html>

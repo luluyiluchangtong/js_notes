@@ -1,0 +1,55 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add -g @angular/cli
+
+PATH: 
+  C:\Program Files\nodejs\;C:\Users\Administrator\AppData\Roaming\npm\;C:\Program Files\Java\jdk1.8.0_171;C:\Program Files\Git\cmd;C:\Windows\System32;D:\mysql\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Roaming\npm;C:\Program Files\nodejs\;
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  10.1.0
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "my-note",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "tsc -w & live-server"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/luluyiluchangtong/my-notes.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/luluyiluchangtong/my-notes/issues"
+    },
+    "homepage": "https://github.com/luluyiluchangtong/my-notes#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Missing list of packages to add to your project.
+      at new MessageError (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:186:110)
+      at Object.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:40587:13)
+      at Generator.next (<anonymous>)
+      at step (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:98:30)
+      at C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:23451:28)
+      at Object.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:95:12)
+      at Object.run (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:40599:19)
+      at run (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:89113:20)

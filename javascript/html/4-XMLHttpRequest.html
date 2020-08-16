@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../css/tachyons.css" />
+    <script src="../js/jquery-3.1.js"></script>
+    <script src="../"></script>
+
+    <title>Document</title>
+  </head>
+
+  <body></body>
+  <script>
+    // 同步：一定要等任务执行完了，得到结果，才执行下一个任务
+    // 异步：不等任务执行完，直接执行下一个任务
+
+    // 异步编程概念:
+    // 实现异步的最核心原理，就是将 callback 作为参数传递给 异步执行函数 ，当有结果返回之后再触发 callback执行，就是如此简单！
+    // callBack（事件）也称为 任务队列，从 任务队列 里 取消息，执行任务的过程称为 事件循环
+    // 只要 主线程 空了，就会去读取"任务队列"，这就是JavaScript的运行机制。这个过程会不断重复。。（同步任务）总是在读取"任务队列"（异步任务）之前执行
+    // 异步执行函数 通常具有以下的形式：A(args..., callbackFn) 异步任务注册函数. 其中 "注册函数" 用来发起异步过程，"回调函数" 用来处理结果
+
+    //  具体来说，异步执行的运行机制如下:
+    // （1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+    // （2）主线程之外，还存在一个"任务队列"（taskqueue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+    // （3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+    // （4）主线程不断重复上面的第三步
+
+    // 大多数情况下，我们的 Ajax 请求都是通过前端的开发库、框架发出的，如 jQuery、axios 或者 Fly
+    //  "http://61.164.47.179:1515/youcb_test/sys/proc/normalProxy.jsp?procName=PROC_WEB_SD_SCHEME_LOAD_TEST&in_app=969D35C5&in_secrets=145D58F0&in_token=0D023D54&in_webyonghID=1&in_code=ab",
+
+    // javascript 实现异步编程的几种方式：
+    //     1. 回调函数模式:
+    // 回调函数模式 要比 事件模型 灵活得多，因为使用回调函数串联多个调用会相对容易,
+    // 但是有两个弊端：
+    // 1. 嵌套多个回调方法 调用会创建错综复杂的代码。
+    // 2. 当需要同时启动两个异步操作，或只采用其中一个结束的结果时，回调函数都无法实现。 而Promise可以
+    // 回调函数
+    function f1(callBack) {
+      console.log("好个屁！"); // f1的代码
+      setTimeout(function () {
+        callBack();
+      }, 1000);
+    }
+    f1(f2);
+    console.log("大家都好");
+    // 即将同步的操作变成 异步的操作， f1不会阻塞程序运行！// 即将同步的操作变成 异步的操作， f1不会阻塞程序运行！
+    function f2() {
+      console.log("你好呀！");
+    }
+
+    // 2. 事件模型:
+    // 当用户点击一个按钮或按下键盘上的一个键时，一个事件（ event ）——例如 onclick ——就被触发了。
+    // 事件触发时，表示异步任务完成，会将事件监听器函数封装成一条消息放到消息队列中，等待主线程执行。这就是 JS 关于异步编程的最基本形式。
+
+    // ajax 请求过程：创建 XMLHttpRequest 对象、连接服务器、发送请求、接收响应数据；
+    // js 原生的写法：（逻辑和事件程序写在一起）
+    // 运用的无非是  xml对象的所有属性和方法。
+    // http 状态码： 1** 临时响应； 2** 成功；  3** 重定向； 4** 请求错误； 5** 服务器错误
+    // 404 找不到页面   503服务器超时   200 成功返回网页
+    function Ajax(obj) {
+      //根据obj对method,data,url等进行初始化
+    }
+    Ajax.prototype.send = function () {
+      var xhr = new XMLHttpRequest(); //新建ajax请求，不兼容IE7以下
+      xhr.onreadystatechange = function () {
+        //注册回调函数
+        if (xhr.readyState === 4) callback(xhr.responseText);
+      };
+      if (method === "get") {
+        //如果是get方法，需要把data中的数据转化作为url传递给服务器
+        xhr.open(method, url, true);
+        xhr.send(null);
+      } else if (method === "post") {
+        //如果是post，需要在头中添加content-type说明
+        xhr.open(method, url, true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.send(JSON.stringify(data)); //发送的数据需要转化成JSON格式
+      } else {
+        console.log("不识别的方法:" + method);
+        return fasle;
+      }
+    };
+
+    // 常见http传递参数类型param、data、json
+    // get 和 post 的区别：
+    //  1. 语义上的区别： get 向服务器请求数据， post 向服务器请求数据的同时发送数据
+    //  2. 数据传递位置的区别 get 在 url 上（url?name=test&id=123）; post 数据则放在http 包的 body 中。
+    //  3. GET 方式需要使用 Request.QueryString 来取得变量的值，而 POST 方式通过 Request.Form 来获取变量的值。
+    //  4. GET 产生一个 TCP 数据包；POST 产生两个 TCP 数据包；
+    //     GET 把http header和data一并发送出去，返回数据。POST 先发送header，服务器响应100 continue，浏览器再发送data， 返回数据
+    // 注意：
+    // 它们传递参数大小的限制：get是由浏览器及服务器对它 传递数据大小 的限制， post 是由服务器 处理程序的能力 对它的限制。 http 本身并没有限制它们传参的大小。
+    // 安全性：都是不安全的，只是 get是 url中 可以看到参数，而 post 通过 抓包 同样可以查看到传递的参数。
+
+    var ajax = new Ajax({
+      method: "get", //设置ajax方法
+      url: "http://localhost:3000", //设置通讯地址
+      data: data, //需要传递的数据
+      callback: function (res) {
+        //设置回调函数
+        alert(res);
+      },
+    });
+    ajax.send();
+
+    // https://api.github.com/repositories/50835948/contents
+
+    function loadXMLDoc() {
+      var xmlhttp = new XMLHttpRequest(); // 1. 创建 XMLHttpRquest 请求对象
+      xmlhttp.responseType = "text";
+      xmlhttp.timeout = 2000;
+      xmlhttp.onreadystatechange = function () {
+        // xmlhttp.onload=function(){}   onload  onreadystatechange 都行， 此外可使用 addEventListener() 监听事件   xmlhttp.addEventListener('load',handleEvent)
+        // readystatechange 在 readyState 改变时时候被调用，， 相当于 onchange 事件
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          console.log(xmlhttp.readyState); // 4
+          // readyState 只读属性表示 请求/响应过程的当前活动阶段： 0未初始化  1启动（请求）   2发送（请求）  3处理（请求）  4完成（请求）;
+          console.log(xmlhttp.status); // 200
+          // status 只读属性表示  HTTP状态码:
+          console.log(xmlhttp.statusText);
+          // statusText 只读属性表示服务器的响应状态信息
+          console.log(xmlhttp.responseType); // text  可手动设置返回的数据类型
+          // console.log(xmlhttp.response)
+          // 返回的数据类型有：
+          // ArrayBuffer（通用的、固定长度的原始二进制数据缓冲区）
+          // Blob （binary large object 二进制数据）
+          // Document（即文档中的 DOM 树）
+          // DOMSting （常规字符串）
+          // console.log(xmlhttp.responseText) // responseText 获得字符串形式的响应数据  DOMSring
+          console.log(xmlhttp.responseURL); // https://api.apiopen.top/videoCategory
+          // responseURL 返回相应数据的 url
+          console.log(xmlhttp.getAllResponseHeaders()); // 反回包含所有响应头信息 的字符串
+          console.log(xmlhttp.getResponseHeader("cache-control")); // private
+
+          // var data = JSON.parse(request.responseText);
+        } else {
+          console.log("There was a problem with the request");
+        }
+      };
+
+      xmlhttp.ontimeout = function () {
+        // 设置 timeout 当请求超时时， timeout 事件被触发。   也可通过 addEventListener() 监听器调用 timeout 事件
+        alert("s");
+      };
+      xmlhttp.onerror = function () {
+        //  也可通过 addEventListener() 监听器调用 error 事件
+      };
+      // **如果是post请求还需要先写这么一段：xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xmlhttp.open(
+        //  open() 启动一个请求
+        "GET",
+        "https://api.apiopen.top/videoCategory"
+        // true/false  异步/同步
+        // user   用户名
+        // password  密码
+      );
+      xmlhttp.onloadstart = function () {
+        console.log("loadstarted");
+      }; // 响应数据时触发
+
+      // GET/POST  url --- 请求主体  ./ajax_info.txt(相对于执行代码的当前页面)  true(异步)/false(同步)  用户名 密码
+      //   xmlhttp.setRequestHeader(header, value); // 此方法 需在 open 和 send 之间设置， 即设置请求头
+      xmlhttp.send(null);
+      // 3. send() 发送请求， 传入 null 表示不需要通过 请求主体 发送数据,
+      //  **如果是 post 请求则 参数为 data： ArrayBuffer  Blob  Document  DOMSting
+      //    若是 DOMString 则 xmlhttp.send(JSON.stringify(data));
+
+      xmlhttp.upload.onprogress = function () {
+        console.log("数据上传进度");
+      };
+      console.log(xmlhttp.upload); // 返回一个 XMLHttpRequestUpload对象, 表示数据上传进度
+
+      xmlhttp.onprogress = function (event) {
+        console.log(event.loaded); // 数据传输中    9296 bytes
+      };
+
+      xmlhttp.onloadend = function () {
+        console.log("laodended");
+      }; // 请求结束时触发
+
+      //   xmlhttp.abort(); // 改方法终止请求， 无参数   xmlhttp.onabort
+    }
+    var btn = document.getElementById("ajaxButton");
+    btn.addEventListener("click", loadXMLDoc);
+
+    // FormData 获取并序列化表单数据，
+
+    // 生成键值对参数
+    var form = document.getElementById("user-info");
+    var data = new FormData(form);
+    xmlhttp.send(data); // 序列化 form 数据，并发送数据
+
+    // FormData 有如下方法：has() get() set()  delete() append()  keys()  values()  entries()  getAll()
+
+    const form = document.querySelector("form");
+    var formData = new FormData(form);
+    formData.append("name", "Nicholas");
+    console.log(formData.get("name")); // bb
+    formData.set("age", 25);
+    console.log(formData.has("age")); // true
+    for (var p of formData) {
+      console.log(p);
+    } // ["aa", "bb"]  ["cc", "dd"]
+    console.log(formData.get("aa"));
+
+    // URLSearchParams API --- 用来处理 URL 的查询字符串，
+    // 生成搜索字符串(键值对)：
+    const params = new URLSearchParams(); // 返回一个新的URLSearchParams 对象
+    params.set("k", "关键字"); // 设置参数
+    params.set("p", 1); // 支持 Boolean、Number 等丰富类型
+    console.log(params.toString()); // k=%E5%85%B3%E9%94%AE%E5%AD%97&p=1
+
+    // 解析搜索字符串
+    // const url=new URL(url [, base])
+
+    // 若 参数 url 是相对路径，则 base 作为 路径基准值 必须要有; 若是绝对能路径，则 base可忽略
+    // 例如： new URL('/abc', 'http://www.baidu.com')
+
+    const m = "http://www.baidu.com";
+    const urlA = new URL("/abc?name=lu&age=23", m);
+    console.log(urlA); // 'http://www.baidu.com/abc'
+    console.log(urlA.search); // ?name=lu&age=23
+    console.log(urlA.searchParams); //  { 'name' => 'lu', 'age' => '23' }
+
+    const params = new URLSearchParams(urlA.search); // 或 urlA.searchParams
+    for (let p of params) {
+      console.log(p);
+    }
+    // [ 'name', 'lu' ]  [ 'age', '23' ]
+
+    // const k = "http://www.baidu.com/bcd/gfk";
+    // const urlB = new URL("/bcd", m);
+    // console.log(urlB); // 'http://www.baidu.com/bcd'
+
+    // const l = "http://www.baidu.com";
+    // const urlC = new URL("//souhu.com", l);
+    // console.log(urlC); // 'http://souhu.com/'
+
+    var paramsString = "q=URLUtils.searchParams&topic=api";
+    var searchParams = new URLSearchParams(paramsString);
+    console.log(searchParams);
+    for (let p of searchParams) {
+      console.log(p);
+    } // ["q", "URLUtils.searchParams"]  ["topic", "api"] 可代替 entries()
+
+    // URLSearchParams 有如下方法：has() get() set() delete() append() toString()  keys()  values()  entries()  getAll()
+    console.log(searchParams.has("topic") === true); // true
+    console.log(searchParams.get("topic")); // api
+    searchParams.set("topic", "mmp");
+    console.log(searchParams.get("topic")); // mmp
+    searchParams.append("topic", "nnmp");
+    console.log(searchParams.get("topic")); // mmp
+    console.log(searchParams.toString()); // q=URLUtils.searchParams&topic=mmp&topic=nnmp
+    console.log(searchParams.getAll("topic")); //  ["mmp", "nnmp"]
+    searchParams.delete("topic");
+
+    // 序列化参数:  URLSearchParams API  或使用  FormData() 或  qs库
+    // URLSearchParams 接口定义了一些实用的方法来处理 URL 的查询字符串
+
+    // form-data 和 x-www-form-urlencoded 的区别：
+    // form-data 可以上传键值对，文件。每条 file 的信息都被写入到 Content-Disposition 中了
+    // Content-Disposition: form-data; name="myFile"; filename="foo.txt"
+
+    // x-www-form-urlencoded 只能上传键值对。   name1=value1&name2=value2
+
+    // url 参数的获取，拼接
+
+    // ajax 和  form 表单提交的区别
+    // 1. ajax 是新建一个请求，在页面局部刷新；form 表单是新建一个页面，再请求
+    // 2. ajax 需要js 实现， form 则是浏览器自带的功能，无需js 即可提交表单
+  </script>
+</html>

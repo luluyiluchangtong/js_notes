@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div class="div1"></div>
+    <script>
+        // css的本意是让视觉设计师来使用的！！！ so~
+        // 添加事件操作 DOM 的时候 classList 不要和 style一起用。因为 style 的样式会覆盖 class 类的。。
+
+        // 脚本化内联样式
+        let div1 = document.querySelector('div')  // querySelector('div' / '.Odiv '/ 'div.div input[name='login']')
+        div1.style.height = '100px';
+        div1.style.background = 'red'
+        div1.style.fontSize = '40px' // js中必须是驼峰式写法
+        let div1Height = parseInt(div1.style.height) //这里注意去掉单位px
+        div1.style.width = (div1Height + 100) + 'px'
+        div.style.cssText = "width: 200px; height:100px;" // 设置多个样式
+        div.style.setProperty("margin", "1px, 2px")
+
+
+        // 计算样式: 返回的是一个CSS样式声明对象，只读. 所有的样式，包括浏览器内置的默认样式。
+        let style = window.getComputedStyle(div1)
+        // 第二个参数是伪类 ':after'，如果是为了获取该元素的伪类下的样式，则加上。不是则为null 或者 省略
+        let styleValue = window.getComputedStyle(div1, null).getPropertyValue('color')
+        let styleValue = window.getComputedStyle(div1)['color']
+        let styleValue = div1.ownerDocument.defaultView.getComputedStyle(div1, null);
+
+        // 脚本话 css 类
+        div1.classList.remove('diva')
+        div1.classList.add('diva', 'divb') // 添加一个或多个
+        div1.classList.toggle('diva') //没有就添加一个，否则就删除它
+        div1.classList.contains('diva')
+        div1.className = 'a b c' // 覆盖 classList
+
+
+        //  以上为 获取 或 设置 --- 元素的   class  style  css
+
+        // 脚本化样式表:
+        // 开启或关闭样式表
+        //查询 插入 删除 样式表规则
+        let cssRule = document.styleSheets[0].cssRules[0]
+        let cssRule1 = document.styleSheets[0].cssRules[1]
+        console.log(cssRule)
+        console.log(cssRule1)
+        document.styleSheets[0].insertRule('span{font-size:30px}', 0) // 第二个参数是 索引值
+        document.styleSheets[0].removeRule(1)
+        //创建新的样式表
+    </script>
+</body>
+
+</html>

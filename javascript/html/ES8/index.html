@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // padEnd()  padStart() 自动填充当前字符串， 参数：1.目标长度，2.用来填充的字符串
+        // 填充的起使位置分别是 字符串的 前 后
+        let str = "abc"
+        let result = str.padEnd(15)   // |abc            |
+        let result1 = str.padStart(15, '123')   // |abccccccccccccc|
+        console.log("|" + result + "|")
+        console.log("|" + result1 + "|")
+
+
+        //  Object.values() / keys() / entries() 遍历对象/数组的键名，键值，键值对,,数组它也有自己原型上的这三个方法，也是同样的功能。 
+        let arr = ["a", "b"];
+        let obj = {
+            name: "小明",
+            age: 19
+        }
+        console.log(Object.values(obj))
+        console.log(Object.values(arr))
+        console.log(Object.keys(obj))
+        console.log(Object.keys(arr))
+        console.log(Object.entries(obj))//返回两个数组[["name":"小明"]["age":19]]
+        console.log(Object.entries(arr))//返回两个数组  下标带值
+
+        // 通过调用 Object.getOwnPropertyDescriptor(obj,prop) 可获得 某个对象 自有属性的属性描述符。
+        // async 函数
+    </script>
+</body>
+
+</html>

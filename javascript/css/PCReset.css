@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  box-sizing: border-box;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  display: block;
+  /* vertical-align: bottom; */
+}
+
+p,
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 0;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 
+clearFix::after{
+    content:"";
+    display:block;
+    clear:both
+}
+height:0; overflow:hidden;  是多余的。。。
+*/

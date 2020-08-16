@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <script>
+      // 当一门编程语言的函数可以被当作变量一样用时，则称这门语言拥有 '头等函数'
+      // 大多数调用浏览器后台的函数的代码，是使用像 C++ 这样更低级的系统语言编写的，而不是像 JavaScript 这样的 web编程语言
+
+      // 函数的定义：
+      // 在JavaScript中，每个函数其实都是 Function 类型的实例,有自己的属性和方法,可以封装语句,传递参数。它们与其他对象的 区别 在于函数可以被调用
+      // 返回值：一个函数执行完毕后 返回的值。任何函数在任何时候都可以通过 return 语句后跟要返回的值来实现返回值，一个函数总是会返回一个值，如果没有指定返回值，则返回 undefined
+      // 所有函数都有的属性： length  [[prototype]];   方法: call()  apply()  bind()
+      // this指的是，调用函数的那个环境对象（或者说是被调用的位置）
+      // js 函数有 定义时的上下文  运行时的上下文
+      // js 中一切函数 都是对象的属性     ! 函数调用时，函数并不是 属于某个对象的方法，是函数引用了这个对象 ！
+      // arguments 对象在事先不知道有多少参数传递给函数时有用
+      // Function.length  传递给函数的 形参，  arguments.length  传递给函数的 实参
+      // Function 构造器的length属性为 1   console.log(Function.length)  // 1
+      function fn(a) {
+        console.log(arguments.length);
+      }
+
+      console.log(fn.length); // 1   形式上传递的参数
+      fn(1, 2, 3); // 3   实际上传递的参数
+
+      // 形参 不包括剩余参数，仅包括第一个具有默认参数之前的参数。
+      function FN(a, c = 90, v, ...p) {
+        console.log(arguments.length);
+      }
+      console.log(FN.length); // 1
+      FN(1, 2, 3); // 3
+
+      // 纯函数 ---  即不 '依赖/影响' 外部的状态，也不 '改变' 自身的输入值。运算结果通过 return 返回给外部
+      // 纯函数就是：只要传入参数相同，返回 计算 得到的下一个 state 就一定相同。
+      // 没有特殊情况、没有副作用，没有 API 请求、没有变量修改，单纯执行计算
+      // 函数副作用 指当调用函数时，除了返回函数值之外，还对主调用函数产生附加的影响，只要是跟函数外部环境发生的交互就都是副作用
+      // 副作用可能包含，但不限于以下行为：
+      // 更改文件系统  往数据库中插入记录  发送一个 http 请求  改变数据  打印 log  获取用户输入  DOM 查询  访问系统状态....
+      // 概括来讲，只要是跟函数外部环境发生的交互就都是副作用
+
+      // 同名函数： 同名函数时，以后一个函数结果为准
+
+      // 面向对象语言的问题是，它们永远都要随身携带那些隐式的环境。你只需要一个香蕉，但却得到一个拿着香蕉的大猩猩...以及整个丛林
+      // 所以纯函数可以合适时 代替 面向对象编程
+      let name = "ninghao";
+      const greet = () => {
+        console.log(`hello, ${name}`);
+      };
+      // 依赖了外部变量
+
+      const greet = (name) => {
+        console.log(`hello, ${name}`);
+      };
+      // 改变了外部状态，（因为控制台输出了东西）
+
+      const greet = (name) => {
+        return `hello, ${name}`;
+      };
+      // greet 是一个纯函数，因为它只依赖交给它的 name ，也没有改变函数以外的东西
+
+      function fn(a, b, c) {
+        return a + b + c;
+      } // fn（）是纯函数
+      console.log(fn(1, 2, 3)); //控制台输出6
+      console.log(fn(1, 2, 3)); //控制台输出6
+      console.log(fn(1, 2, 3)); //控制台输出6
+
+      var arr = [1, 2, 3, 4, 5, 6];
+      var arr2 = arr.filter(function (item, index, self) {
+        return item > 3;
+      }); // filter（） 是纯函数
+      console.log(arr2); //控制台输出[4,5,6]
+      console.log(arr); //控制台输出[1,2,3,4,5,6]
+
+      function getDate() {
+        console.log(new Date());
+      } // 非纯函数
+      setInterval(getDate, 1000);
+
+      // 定义函数的几种方式：
+      // 函数声明:
+      function f(v1, v2) {
+        console.log(v1, v2);
+      }
+      // 关键字(function)、函数名（f）、参数列表(类数组对象)（(v1, v2)）、函数体（{//do something}）
+
+      // 函数表达式:
+      var f = (function (v1, v2) {
+        console.log(v1, v2);
+      })();
+      // 变量 f 保存了对函数的引用
+      // 命名函数表达式的 命名 只在函数内部有效，外部是访问不到的
+
+      // 函数声明和函数表达式的定义及区别：
+      // 一般使用 函数表达式 会好些，有两点：不会有声明提升；可以在 if 语句块中使用..     养成使用    函数表达式的习惯
+      // 函数声明：声明了一个变量，并把一个 Function对象 赋值给他；存在 函数声明提升（区别于变量提升），解析器会率先读取函数声明, 所以可以 '提前调用函数' 。
+      //          所以一般将它写在js代码的顶部，嵌套则出现在嵌套函数的顶部。即  函数声明 应该在定义域的顶层，所以不可放在 if 语句块内，表达式可以。
+
+      A();
+      function A() {
+        console.log("a");
+      } // 返回 a
+
+      console.log(a); // 返回 undefined
+      var a = 90;
+
+      // 避免在块儿中声明函数！！ ES5中 严格模式下，会抛出错误，因为当 if语句 执行完毕，函数便被销毁。 ES6中则不会，因为它把函数当做了块级作用域
+
+      // 立即调用函数表达式：
+      //                   1. 不必为函数命名，避免污染全局变量；
+      //                   2. 创建了一个作用域，并隔离在程序其他部分外。
+      // 总结就是： 它让 函数变成表达式，同时又具有函数内的变量外部无法访问这一功能。
+      // 所以( function(){…} )()内部定义的变量不会和外部的变量发生冲突，俗称“匿名包裹器”或“命名空间  (所以这里就即有了 函数声明 的作用域功能，又能立即执行)
+      // 定义一个函数，并在单个表达式中调用它。。解决了 代码块 嵌入未知程序中 变量冲突的问题（即函数内的变量影响外部的变量）。但是使用了 let  const 变量后，块级作用域下是不需要的。
+
+      // 立即调用函数表达式示列
+      (function fn(a, b) {
+        // console.log(a, b);
+      })(1, 2);
+
+      // 函数声明和函数表达式的区别：
+      // 一般使用 函数表达式 会好些，有两点：不会有声明提升；可以在 if 语句块中使用
+      // 函数声明：声明了一个变量，并把一个 Function对象 赋值给他；存在 函数声明提升（区别于变量提升），解析器会率先读取函数声明, 所以可以提前调用。
+      //          所以一般将它写在js代码的顶部，嵌套则出现在嵌套函数的顶部。即  函数声明 应该在定义域的顶层，所以不可放在 if 语句块内，表达式可以。
+
+      // 使用命名函数表达式，而非使用函数声明。
+      const obj = function box() {};
+
+      // 使用单个 var 声明变量 var a=2, b=4, c=78
+      // 函数声明优于变量声明,在代码逐行执行前，函数声明和变量声明会提前进行，而函数声明又会优于变量声明，
+      // 这里的优于可以理解为晚于变量声明后，如果函数名和变量名相同，函数声明就能覆盖变量声明
+
+      // if语句里 使用有块作用域的函数，而不是函数声明
+      let text;
+      if (condition) {
+        text = () => {
+          console.log("sss");
+        };
+      }
+
+      // Function构造器，
+      var f = new Function("x", "y", "return x*y;");
+
+      // 箭头函数：
+      // 箭头函数表达式：  => "胖箭头" 操作符, 一般用在 内联的回调函数中
+      // 箭头函数 没有 arguments对象（但是可以访问包含它的函数 arguments对象）。
+      // 箭头函数不会创建自己的this, 它只会从自己的作用域链的上一层 '继承' this（即包含它的非箭头函数或全局）; 也不能改变 this 值；
+      // 不能通过 new 调用，不允许重复的具名参数(ES5严格模式下禁止重复具名参数)
+      // 箭头函数可以代替任何位置的匿名函数
+      // 当要求动态上下文的时候，你就不能使用箭头函数，比如：定义方法，用构造器创建对象，处理时间时用 this 获取目标
+      // () => a + b;
+      (a) => a + b; // 只有一个参数，且不需要花括号的情况下
+      (a) => {
+        a + b;
+      }; //  只有一个参数，需要花括号的情况下
+
+      (a, b) => {
+        return a + b;
+      };
+      (a, b) => a + b;
+
+      // 返回一个对象时，函数体外要加圆括号
+      (a) => ({
+        b: 22,
+      });
+
+      var box = (a, b) => ({
+        a: 23,
+        b: 34,
+      });
+
+      function box(a, b) {
+        return {
+          a: 23,
+          b: 34,
+        };
+      }
+      // 内置全局函数：
+      parseFloat();
+      parseInt();
+      Number();
+      String();
+      escape();
+      unescape();
+      eval();
+      isNaN();
+      isFinite();
+
+      // 函数作用域：全局函数：函数内部变量，函数外部访问不到，全局变量在函数内部可以访问到。
+      //             嵌套函数：可以访问父函数内的变量及父函数可以访问到的其他变量。
+      // 函数内访问变量时,查找变量是从 函数声明的位置 向 '外层作用域' 中查找,而 不是从 '调用函数' 的位置开始向上查找
+      var x = 10;
+      function fn() {
+        console.log(x);
+      }
+      function show(f) {
+        var x = 20;
+        f();
+      }
+      show(fn); // 10
+
+      // 函数调用的方式： 四种绑定的优先级 new > 显示 > 隐式 > 默认  我们 需要做的 一切 就是找到 调用点 然后考察 哪一种规则 适用于它
+      // 调用函数时，如果有遇到空的参数，请用 null 或 undefined 代替，否则会报错。 或者也可用扩展运算符
+      // 默认调用；
+      function box() {}
+      box();
+
+      function foo() {
+        console.log(this.a);
+      }
+
+      var obj = {
+        a: 2,
+        foo: foo,
+      };
+
+      var bar = obj.foo; // 函数引用！ 这里只是 引用了 foo()， 所以 bar() 任然是指向全局
+
+      var a = "oops, global"; // `a`也是一个全局对象的属性
+
+      bar(); // "oops, global"
+      //
+      function foo() {
+        console.log(this.a);
+      }
+
+      function doFoo(fn) {
+        // `fn` 只不过`foo`的另一个引用
+
+        fn(); // <-- 调用点!
+      }
+
+      var obj = {
+        a: 2,
+        foo: foo,
+      };
+      //  这里传递参数只是一个隐含的 引用赋值
+
+      var a = "oops, global"; // `a`也是一个全局对象的属性
+
+      doFoo(obj.foo); // "oops, global"
+
+      //
+      function foo() {
+        console.log(this.a);
+      }
+
+      var a = 2;
+      var o = {
+        a: 3,
+        foo: foo,
+      };
+      var p = {
+        a: 4,
+      };
+
+      o.foo(); // 3
+      (p.foo = o.foo)(); // 2    这里编译器读取  o.foo 是对 foo 的引用赋值给 p.foo；  p.foo 是个变量， 对象 p的属性foo，
+
+      // 隐式调用(某个上下文对象中)；
+      //  一个 隐含绑定 有时丢失了它的绑定，这通常意味着它会退回到 默认绑定。
+      // 比如 var bar=obj.foo 是对 foo的引用而已，此时 this的绑定就退回到默认绑定。
+      // 所以需要显示调用  var bar=obj.call(foo)
+
+      var a = 22;
+
+      function foo() {
+        console.log(this.a);
+      }
+      var obj = {
+        a: 1,
+        foo: foo,
+      };
+      obj.foo(); // 1   调用函数的对象是  obj
+      // 或者
+      var baz = obj.foo;
+      baz(); // 22   调用函数的对象是  window
+
+      // 显示调用(call,apply,bind)；
+      // 明确 this的绑定对象, 但是任然不能解决 函数“丢失”自己原本的this绑定
+
+      // 使用 方法  call()  Apply() 可以将 '任何函数' 作为 '任何对象' 的方法来调用。哪怕这个函数不是这个对象的方法。
+      // !! 都是在特定的作用域中调用函数 !!，等于设置函数体内this对象的值，以扩充函数赖以运行的作用域
+      // 作用是扩充作用域，使得对象和方法不需要有任何耦合关系，不需要像 2.2 中那样将函数放到对象里 隐式调用。
+      //当使用 call 或者 apply 的时候，如果我们传入的第一个参数为 null，函数体内的 this 会指向默认的宿主对象，在浏览器中则是 window
+
+      // call()  Apply() 的第一个参数是 this的绑定对象， 第二个参数 call 有明确的数量，是个 '参数列表' ; apply则是个 '参数数组' ，可能需要动态传参
+      //JavaScript 的一大特点是，函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念
+      function foo() {
+        console.log(this.a);
+      }
+      var obj = {
+        a: 2,
+      };
+      foo.call(obj); // a   foo 通过 call 将自己的this 指向 obj
+
+      function foo() {
+        console.log(this[0].a);
+      }
+      var obj = [
+        {
+          a: 3,
+        },
+      ];
+      foo.call(obj); // 3
+
+      function Parent(x, y) {
+        this.x = x;
+        this.y = y;
+        console.log(x, y, z);
+      }
+
+      function Child(z) {
+        this.z = z; // 这里的 this 是 window
+        Parent.call(this, 2, 3); // Parent 通过 call 将自己的this 指向 Child
+      }
+
+      Child(1); // 2 3 1
+
+      // 使用 call 修正函数内部的 this 指向
+      document.getElementById("div1").onclick = function () {
+        var func = function () {
+          alert(this.id); // 输出：div1
+        };
+        func.call(this); // 若没有使用call 则 func 内的 this 指向 window
+      };
+
+      // 硬绑定 --- 固定 this的绑定对象
+
+      function foo(something) {
+        console.log(this.a, something);
+        return this.a + something;
+      }
+
+      var obj = {
+        a: 2,
+      };
+
+      var bar = function () {
+        return foo.apply(obj, arguments); //  在 bar 函数的内部手动调用 foo.apply(obj)
+      };
+
+      var b = bar(3); // 2 3
+      console.log(b); // 5
+      // bind  返回对应函数;  call apply 是立即调用函数
+
+      // bind()  将 函数 绑定至某个对象
+      var o = {
+        x: 1,
+      };
+
+      function f(y) {
+        return this.x + y;
+      }
+
+      var g = f.bind(o);
+      g(2); // 3
+
+      function f(y, z) {
+        return this.x + y + z;
+      }
+      var g = f.bind(
+        {
+          x: 1,
+        },
+        2
+      ); // 给  bind 传入时参
+      g(3); // 6
+      // 不同点：bind 是返回对应函数，便于稍后调用；apply 、call 则是立即调用函数 ,(在一个函数内手动调用 被绑定的函数则达到硬绑定的效果！)。
+      // 共同点： 都是改变函数 this 指向的对象的。
+
+      // import { curry, partial } from 'lodash'
+      //  函数柯里化的概念：只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。
+      var add = function (x) {
+        return function (y) {
+          return x + y;
+        };
+      };
+      var increment = add(1);
+      var addTen = add(10);
+
+      increment(2); // 3
+      addTen(2); // 12
+
+      // 偏函数？？？
+
+      // 构造函数调用(关键字new)
+
+      // 构造函数里没有显式调用return时，新创建的实例对象 继承构造函数的this对象，prototype原型。
+      function Person(name) {
+        // 使用 new 调用函数时，函数内部的 this 其实是一个新的对象，并作为函数的返回值
+        this.name = name;
+      }
+      let p = new Person("Tom");
+
+      // 当构造函数里调用 'return' 时，分两种情况：即 return 基本类型，忽视return值； return Object 则返回 Object
+
+      // 1. 'return' 的是五种简单数据类型：String，Number，Boolean，Null，Undefined。
+
+      // 这种情况下，忽视return值，依然返回this对象。
+      function Person(name) {
+        // 使用 new调用函数时，函数内部的 this 其实是一个新的对象，并作为函数的返回值
+        this.name = name;
+        return 12306;
+      }
+      let p = new Person("Tom");
+      console.log(p); //Person {name: "Tom"}
+      console.log(Person.prototype.constructor); // [Function: Person]
+      console.log(p.constructor); // [Function: Person]
+      console.log(Person.prototype); // { constructor: f  Person{} ,  __proto__:{各种内置方法} }
+      // 如果在一个对象上使用点或者方括号来访问属性或方法，这个对象就成了 this。
+      // prototype   属性：每个构造函数 创建的时候都有一个 prototype属性，并指向该函数的 '原型对象' ,   Person.prototype      Person.prototype == Object
+      // constructor 属性：每个 '原型对象' 都具有 constructor 属性，它指向创建该实例的 '构造器函数',  Person.prototype.constructor           function Person(name) {...}
+      // 每个实例对象也有  constructor 属性，也是指向  创建该实例的 '构造器函数'
+      // __proto__ 属性： 每个实例对象（object ）都有一个私有属性（称之为__proto__）指向它的 '原型对象'（prototype）    person1.__proto__ == Person.prototype;
+      // 实例内部指针仅指向 Person.prototype, 不指向构造函数, 从而继承了属性和方法。
+      // 实例中的同名属性会屏蔽 原型上的同名属性，儿不是重写。访问对象的属性和方法，首先是实例，没有则再到原型上查找。
+      // 构造函数， 原型， 实例 之间的关系
+      // 除了自定义对象上，原生对象上的所有属性和方法也是原型上定义的。同样可以在原型上添加方法，但一般不建议这样做。
+      // 只有构造函数才可以在 原型 prototype上 添加属性
+      // 通过 new 操作符调用函数时会创建并返回一个对象，该对象会有一个内部指针，指向其原型对象。可以调用原型对象的相关属性和方法。
+
+      // 2. 'return' 的是 Object 这种情况下，不再返回this对象，而是返回return语句的返回值
+
+      let obj = { age: 26 };
+      function Person(name) {
+        this.name = name;
+        return obj;
+      }
+      let p = new Person("Tom");
+      console.log(p); //Object {age: 26}
+
+      // 闭包:指有权访问 函数作用域 外部变量 的函数，如果返回的这个函数在外部被执行，就产生了闭包
+      // 闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包。 内存泄漏：程序未能释放已经不再使用的内存
+      // 闭包:   解决了在函数的外部也能访问到其内部的变量
+      // 为何使用闭包：
+      // 1.闭包使用其他函数定义的变量，使其不被销毁
+      // 2.简单说，我们使用闭包的主要作用就是 间接访问并操作 函数的内部数据.
+      //   !!! 因为函数外部不可以读取函数内部的局部变量，所以使用闭包 !!!
+      // 3.在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁，
+      // 将变量和函数“隐藏”在一个作用域内部有两个好处：1. 私有的变量和函数不可以被外界访问到，这是软件设计规则中的 “最少曝光”原则！
+      // 2. 避免两个同名但用处不同的标识符之间发生无意的冲突。冲突经常导致值被意外地覆盖。
+
+      // 注意：如果一个闭包的函数定义了一个和外部函数的某个变量名称相同的变量，那么这个闭包将无法引用外部函数的这个变量
+
+      // 闭包实例
+      function box() {
+        let a = 23;
+        return ++a;
+      }
+      console.log(box()); // 24     此时 变量 a 被系统回收掉了所以下面的  box()的值始终是 23
+      console.log(box()); // 24
+      console.log(box()); // 24
+
+      function box1() {
+        let a = 23;
+        return function () {
+          // 有权访问 函数作用域 外部变量 的函数
+          // 此时 变量 a 没有被回收销毁，内部函数可以多次的调用变量 a
+          return ++a;
+        };
+      }
+      const result = box1(); //返回的这个函数在外部被执行
+      console.log(result()); // 24   调用 内部函数， 因为使用了闭包，函数执行后， 其变量 a 并被没有销毁，而一直保存在函数内部被使用！
+      console.log(result()); // 25
+      console.log(result()); // 26
+      //  闭包其实就是创造出了一些函数私有的 ”持久化变量“。
+
+      function outside(x) {
+        function inside(y) {
+          return x + y;
+        }
+        return inside;
+      }
+
+      // 当一个对象下有函数嵌套，被嵌套的函数 需要使用 外部函数的 this 时，使用var that=this
+      var name = "The Window";
+      var object = {
+        name: "My Object",
+        getNameFunc: function () {
+          // 执行这个函数时是对象 object 调用
+          var that = this;
+          console.log(this); // Object
+          return function () {
+            // 执行这个函数时是对象 window 调用，因此如果需要使用上一层函数的this时 用 var that=this  此时函数中的this指向了 object,而不是 window
+            console.log(that.name);
+            console.log(that); // Object
+          };
+        },
+      };
+      object.getNameFunc()(); // my object   这里调用函数的对象是  Object
+
+      // 我们通过循环来给每个 div 绑定 onclick 事件，按照索引顺序，点击第 1 个 div 时弹出0，点击第 2 个 div 时弹出 1，以此类推
+      // 可通过闭包实现， 常规操作则都是弹出 5
+      for (var i = 0, len = nodes.length; i < len; i++) {
+        (function (i) {
+          nodes[i].onclick = function () {
+            console.log(i);
+          };
+        })(i);
+      }
+
+      // 块的模式利用了闭包
+      function CoolModule() {
+        var something = "cool";
+        var another = [1, 2, 3];
+
+        function doSomething() {
+          console.log(something);
+        }
+
+        function doAnother() {
+          console.log(another.join(" ! "));
+        }
+
+        return {
+          doSomething: doSomething,
+          doAnother: doAnother,
+        }; // 这里 return 了一个对象，所以函数 CoolModule() 就成了对象
+      } // typeof CoolModule --- function  typeof foo ---Object
+
+      var foo = CoolModule();
+
+      foo.doSomething(); // cool
+      foo.doAnother(); // 1 ! 2 ! 3
+      // 模块的书写： 一个外围函数CoolModule()，外围函数至少被调用一次； 外围函数至少返回一个内部函数doSomething()  doAnother()
+      // ！！！模块的运用很重要！！！
+
+      // 函数内的变量
+      function box() {
+        // 1
+        var myVar = (myVarCopy = 42); // 2
+      }
+      box();
+      console.log(myVar); // 3        undefined  函数内的变量访问不到
+      console.log(myVarCopy); // 42   myVArCopy 此时是全局变量
+      // js 读取代码，编译代码
+
+      for (var i = 0; i < 5; ++i) {
+        setTimeout(function () {
+          console.log(i);
+        }, 100);
+      } //  5 5 5
+
+      for (var i = 0; i < 5; ++i) {
+        (function (i) {
+          setTimeout(function () {
+            console.log(i);
+          }, 100);
+        })(i); // 立即调用函数表达式
+      } //  0 1 2 3 4
+
+      // 命名空间
+      // 当一个库被加载到一个程序中时，它需要一个足够独特的名称，通常是一个对象，将库的所有需要明确暴露出来的功能都作为对象的属性，
+      var MyReallyCoolLibrary = {
+        awesome: "stuff",
+        doSomething: function () {
+          // ...
+        },
+        doAnotherThing: function () {
+          // ...
+        },
+      };
+
+      // 函数的重载： 就是一组名字相同，参数列表不同的函数（方法），由于 js函数的参数是由类数组对象 arguments表示的，并不存在什么参数个数、参数类型的差别，
+      // 函数接收传进来的 类数组对象，而不关心数组中包含哪些命名参数。所以真正的重载是不可能做到的，可以通过检查传入参数的 类型和数量，模仿方法的重载。
+      function add() {
+        if (arguments.length === 1) {
+          return "aa";
+        } else if (arguments.length === 2) {
+          return "bb";
+        }
+      }
+      console.log(add(1, 2)); // bb
+      console.log(add(1)); //aa
+
+      // 递归函数   递归的意思即 函数调用自身
+      var f = function (x) {
+        if (x === 1) {
+          return 1;
+        } else {
+          return x * f(x - 1);
+        }
+      };
+      // 4 * f(3)  f(3) => 3 * f(2)   f(2) => 2 * f(1)=2    -----  返回值  24
+      console.log(f(4));
+
+      function foo(i) {
+        if (i < 0) return;
+        console.log("begin:" + i);
+        foo(i - 1);
+        console.log("end:" + i);
+      }
+      foo(3);
+
+      // 剩余参数：即将不确定数量的参数表示为 '数组' , 剩余参数是为了替代 arguments
+      // 一个函数只能有一个剩余参数，并且必须被放到最后； 不能出现在对象的setter属性中。
+      function box(...arg) {
+        return arg.map((x) => x * 2);
+      }
+
+      console.log(box(1, 23, 4)); // 2 46 8
+
+      // 扩展运算符：
+      const arr = [1, 2, [4, 5, 6]];
+      console.log(...arr); // 1,2,[4,5,6]
+      console.log([].concat(...arr)); // [ 1, 2, 4, 5, 6 ]
+
+      // 参数默认值（默认参数）： 在JavaScript中，函数参数的默认值是undefined
+      // 使用参数默认值时，函数不能有同名函数, 且默认值是在参数位置的最后，才可以调用的时候 '省略书写' 这个参数。若是其他的位置，调用时必须用 'undefined' 代替默认值才可以。
+      // 参数的默认值也可以是 引用类型
+      // JS 的函数并不强求 传递参数的数量 要等于已定义具名参数的数量
+      function box(x, y = "world") {
+        console.log(x, y);
+      }
+      box("hello"); // hello  world                arguments.length=1
+      box("hello", "nihao"); // hello  nihao      arguments.length=1
+
+      // 参数默认值 解构赋值 的形式:
+      function box({ x, y = "world" }) {
+        console.log(x, y);
+      }
+      box({
+        x: "hello",
+      }); //  length=1
+
+      //  函数作用域
+      function OutBox() {
+        let myValue = 90;
+        subFunction(myValue); // 虽然在同一作用域中，将变量当作参数传递给 subFunction() 函数才可以
+      }
+
+      function subFunction(myValue) {
+        console.log(myValue);
+      }
+
+      OutBox();
+
+      // 调用函数
+      function Fn() {}
+      Fn(); // 调用方式
+      btn.onclick = Fn; //  另一种调用方式
+      btn.onclick = function () {}; // 另一种调用方式
+      const Fn = function (a, b, c) {
+        console.log(a + b + c);
+      };
+
+      Fn(1, null, 2); // 忽略其中一个参数，只调用部分参数，使用 null / undefined
+
+      let a = 4;
+      let box = function () {
+        console.log("s");
+      };
+      // if (a > 3) {
+      //   box();
+      // }
+      a > 3 && box(); // 使用短路条件语句代替以上写法
+
+      // 阶乘 ？？？
+      function factorial(num) {
+        var x = num;
+        while (x > 1) {
+          num *= x - 1;
+          x--;
+        }
+        return num;
+      }
+      factorial(4);
+      console.log(factorial(4));
+
+      // 这个是不对的 。。。。
+      function factorial(num) {
+        while (num > 1) {
+          console.log(num);
+          num--;
+        }
+        return num;
+      }
+      factorial(4);
+      console.log(factorial(4));
+
+      // 函数防抖 是指在事件被触发 'n 秒后'再执行回调，如果在这 n 秒内事件又被触发，则 '重新计时' 。
+      // 这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
+
+      // 函数节流 是指规定一个 '单位时间' ，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同'一个单位时间内'某事件被触发多次，'只有一次能生效' 。
+      // 节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
+
+      // 函数防抖的实现  debounce（防抖动）
+      function debounce(fn, wait) {
+        var timer = null;
+
+        return function () {
+          var context = this,
+            args = arguments;
+
+          // 如果此时存在定时器的话，则取消之前的定时器重新记时
+          if (timer) {
+            clearTimeout(timer);
+            timer = null;
+          }
+
+          // 设置定时器，使事件间隔指定事件后执行
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+          }, wait);
+        };
+      }
+
+      btn.onclick = debounce(fn, 5000);
+
+      // 函数节流的实现;    throttle（节流阀）
+      function throttle(fn, delay) {
+        var preTime = Date.now();
+
+        return function () {
+          var context = this,
+            args = arguments,
+            nowTime = Date.now();
+
+          // 如果两次时间间隔超过了指定时间，则执行函数。
+          if (nowTime - preTime >= delay) {
+            preTime = Date.now();
+            return fn.apply(context, args);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // generator 函数
+      function* box() { // 这是一个生成器函数    const box=function*(){}
+          yield 'hello';
+          yield 'woed';
+          yield 'ending'; // yield 语句定义不同的状态，是暂停标识，直到迭代器的 next() 方法被调用时，才会继续执行 下一个 yield。yield 关键字只能用在生成器内部
+      }
+
+      var gener = box()
+      // var a = gener()
+      console.log(typeof gener)
+      var result = gener.next();
+      console.log(typeof result)
+
+      // async()函数   async 关键字放在任何函数前， 将函数转为异步函数, 函数返回 promise， 而不是返回值。。
+      // 一句话，async 函数就是 Generator 函数的语法糖; Async 函数呈现更清晰的 Promise 语法
+      const gener1 = async function () { // async 表示函数里有异步操作
+          await 'hello'; // await 表示紧跟在后面的表达式需要等待结果。
+          await 'world';
+          await 'ending'
+      }
+      console.log(gener1()) // 返回 Promise对象
+      gener1()
+
+      //一比较就会发现，async 函数就是将 Generator 函数的星号（*）替换成 async，将 yield 替换成 await，仅此而已
+      // 相比较 generator而言：
+      // 有内置执行器，像像普通函数一言直接执行；
+      // 更好的语义： async await；
+      // 更广的适用性：await 之后除了 Promise 对象，还可以是基本类型。  async 函数 返回的是 Promise 对象
+
+      function foo(url) {
+          return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                  resolve('async')
+              }, 1000)
+          })
+      }
+      async function as(url) {
+          // !!!!! async 用于声明一个异步函数, 该函数需返回一个 Promise 对象。 即从这一步开始 代替了之前的 then()  写法！！
+          const data;
+          try {
+              data = await foo(url)   // await 通常后接一个 Promise对象, 需等待该 Promise 对象的 resolve() 方法执行并且返回值后才能继续执行.
+          } catch (e) {
+              console.log(e)
+          }
+      }
+      as() // async
+      //  fetch-json 库支持 jsonp请求
+
+
+      async function as() {
+          return await 123
+          //  如果是其他数据类型，也是如此。
+      }
+      as().then(data => {      // 有 return 语句， 才可以调用 then 方法获取数据
+          console.log(data)
+      }) // 123
+
+      // 只有 async 函数内部的异步操作执行完，才会执行 then 方法指定的回调函数
+      // async 函数中 ， 只要一个await语句后面的 Promise 变为reject，那么整个 async 函数都会中断执行；
+      // 异步操作及时失败了，还希望继续操作。就将第一个 await 放在 try...catch结构里。 或是使用catch
+      // https://api.github.com/users/octocat/followers  githup的api
+
+      async function f() {
+          try {
+              await new Promise(function (resolve, reject) {
+                  throw new Error('出错了');
+              });
+          } catch (e) { }
+          return await ('hello world');
+      }
+
+      f().then(res => console.log(res)) // 'hello world'
+
+      async function Fn() {
+        let data = await new Promise((resolve) => {
+        resolve("ss");
+        });
+       console.log(data);
+        }
+
+       Fn();   // ss
+
+
+      // 只有 async 函数内部的异步操作执行完，才会执行 then 方法指定的回调函数
+      // async 函数中 ， 只要一个await语句后面的 Promise 变为reject，那么整个 async 函数都会中断执行；
+      // 异步操作及时失败了，还希望继续操作。就将第一个 await 放在 try...catch结构里。 或是使用catch
+
+
+      //  简易的 promise 和 async  await 的结合使用
+      function resolveResult() {
+          return new Promise(resolve => {
+              setTimeout(() => {
+                  resolve('result');
+              }, 2000);
+          })
+      }
+      async function asyncFun() {
+          console.log('calling')
+          await 'hello'
+          var result = await resolveResult()  // 将 resolveResult 里 resolve() 的数据 存到 data 里
+          console.log(result)
+      }
+      asyncFun()   // result
+
+
+      //    XHM 结合 promise 以及 async await
+      function search(term) {
+          var url = 'https://www.easy-mock.com/mock/5ad4527b4a76b81c1846e71e/v2/user/login';
+          var xhr = new XMLHttpRequest();
+          var result;
+
+          var p = new Promise(function (resolve, reject) {
+              // Promise 构造器里接收 执行器 函数，该 执行器 会被传递两个名为 resolve()与 reject() 的函数作为参数
+              xhr.open('GET', url, true);
+              xhr.onload = function (e) { // 回调
+                  if (this.status === 200) {
+                      result = JSON.parse(this.responseText);
+                      // result = JSON.parse(xhr.response); // 序列化 JSON 数据
+                      resolve(result); // 状态 ‘未完成’ 变为 ‘成功’
+                  }
+              };
+              xhr.onerror = function (e) { // 回调
+                  reject(e); // 状态 ‘未完成’ 变为 ‘失败’
+              };
+              xhr.send();
+          });
+
+          return p;
+      }
+
+      async function as() {
+          try {
+              const data = await search()  // 将 search 里 resolve() 的数据 存到 data 里
+              console.log(data)
+          } catch (e) {
+              console.log(e)
+          }
+      }
+      as()
+    </script>
+  </body>
+</html>

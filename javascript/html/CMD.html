@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 为什么使用命令行： 1.占用资源少、运行速度快  2.Windows 系统有时会出现故障，或是中了病毒、木马，系统根本无法引导
+        // CMD 命令
+        // 计算机内各种信息，如程序、数据等都是以文件形式存在的，使用计算机，可以说是对各种文件的操作管理
+        // 在 DOS 时代，人们只能依靠输入命令同计算机互交。
+        // 而现在，微软的 Windows 操作系统已得到了广泛使用，我们处理日常事务也大多使用基于图形用户界面（GUI，Graphics User Interface）的应用程序，命令行正在逐渐被人们淡忘
+        // 硬盘空间的划分称作分区。每个分区上需要有一个文件系统，文件系统负责决定文件在硬盘上的实际空间排布方式
+        // 驱动器 即 存储的区域  C盘  D盘。。。
+        // Windows 中有两种命令：内部命令和外部命令。 
+        // 外部命令（git的操作，必须安装相应的程序）内部命令（dir， help，， 例如学习 CD 命令：可使用命令  help CD）
+
+
+    // 1. 目录操作命令：
+    // 退回根级目录： cd \  逐级退出 cd..  进入其驱动，直接输入 D: 然后回车 
+    // 进入目录 cd \desktop
+    // “同级子目录” 之间的跳转： 由 C:\Users\luzhe\Desktop\webpack-note 进入 AntVue   则：cd ..\AntVue
+    // 打开当前文件夹： start .  打开路径下的文件夹：start D： 打开 D 盘  
+    // 在当前目录下建子目录： md ABC   在根目录下建子目录： md \ABC  
+    // 删除子目录：命令同上  rd /s/q ABC（s 彻底删除了， q 不要再问yes或no了）  
+    // dir 显示当前目录下文件目录清单， dir p* 查找以 p 开头的的目录清单，
+
+    // windows 中有两个通配符： 问号( ? )匹配文件名中的任何一个字符，星号（*）匹配文件名中的零个或多个字符
+    // cls 清除屏幕
+
+    // 2. 右键 把 cdmer 添加到鼠标右键管理中：
+    // 1、把 Cmder 加到环境变量 
+    // 把Cmder.exe存放的目录添加到系统环境变量； 
+    // 加完之后,Win+r一下输入cmder,即可。
+
+    // 2、添加 cmder 到右键菜单：环境变量添加后，在任意文件夹中即可打开Cmder，上一步的把 Cmder 加到环境变量就是为此服务的, 在管理员权限的终端输入以下语句即可: 
+    // Cmder.exe /REGISTER ALL
+
+    // 3、为Cmder.exe创建快捷方式，右击Cmder.exe选择“创建快捷方式”点击即可，以后打开Cmder.exe只要点击桌面对应的快捷方式即可
+    </script>
+</body>
+
+</html>

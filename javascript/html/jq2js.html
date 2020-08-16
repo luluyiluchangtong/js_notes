@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit" />
+    <title>o2o --- 个人中心</title>
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/animate.min.css">
+    <script src="../js/jquery-3.1.js"></script>
+    <script src="//at.alicdn.com/t/font_401376_7fs9gez4cg4on7b9.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <select name="" id="" class=" o-0">
+        <option value="">sa</option>
+        <option value="">sa</option>
+        <option value="">sa</option>
+    </select>
+    <button onclick="fadeIn(select)"> 按钮</button>
+    <style>
+    </style>
+    <script>
+        const select = document.querySelector("select")
+
+        function fadeIn(el) {
+            el.style.opacity = 0;
+
+            var last = +new Date();
+            var tick = function () {
+                el.style.opacity = +el.style.opacity + (new Date() - last) / 400;
+                last = +new Date();
+
+                if (+el.style.opacity < 1) {
+                    (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+                }
+            };
+
+            tick();
+        }
+        // jquery   fadeIn()  的 js写法
+
+        $.contains(el, child); // 第二个元素是第一个元素的后代元素的检测
+        el !== child && el.contains(child);
+
+        $(el).siblings();
+        Array.prototype.filter.call(el.parentNode.children, function (child) {
+            return child !== el;
+        });
+    </script>
+
+</body>
+
+</html>

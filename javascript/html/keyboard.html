@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 5. 
+        // keyboardEvent对象（其实就是键盘事件的  event 对象？？）描述用户与键盘的交互
+        // 键盘 event 对象的 方法 和 属性
+        // 方法：event.getModifierState()
+        // 属性：event.altKey/shiftKey/ctrlKey/metaKey
+        // event.code/key(例如按下 s键 返回 KeyS 和 s ) 返回字符串。 
+        // event 对象的属性 ：keyCode charCode  which弃用。 都用event.key 代替
+        // event 对象的属性：location 貌似都是返回数值 0 ； repeat 一直按住按键返回 true，否则返回false
+        var btn = document.querySelector("input");
+        btn.addEventListener("keydown", box1)
+
+        function box1(event) {
+            // var a = event.getModifierState("Shift")  // 返回 布尔值
+            // console.log(event.code) // 返回 布尔值
+            console.log(event.repeat) // 返回 布尔值
+        }
+        //  它们都 返回一个 Boolean，表示在事件创建时，修改键如Alt ，Shift，Ctrl，Meta等是否按下。
+
+        // 键盘事件：
+        // 一个能 “输入字符” 的按键按下时触发的事件顺序：keydown   keypress    keyup （中文输入时没有 keypress 事件）
+        // 其他不能 “输入字符” 的按键按下时触发的事件顺序： keydown  keyup (例如删除键 backspace 等。。)
+
+        // 当需要 实时 检测文本输入框输入了几个字的时候 使用 keypress不行，因为backspace 没有 keypress 事件。
+        // 用 keydown不行，因为按下时字体还没输入，(这里???) 
+        // 用 keyup 不行；因为虽然放开按键时输入了文字，但是如果前面一直按住 keydown 不放再放开，keyup则只触发一次，不能 实时 检测。
+        // 一直按住不放 重复触发的是  keydown keypress ....  最后放开 触发keyup
+        // 用 html5 的 input 事件 则可以实时检测 字符数量
+
+        //  键盘的 keyCode 和 元素关联起来！
+        function box(e) {
+            const div1 = document.querySelector(`div[data-key="${e.keyCode}"]`)
+            div1.style.color = "red"
+        }
+
+        window.addEventListener("keydown", box)
+    </script>
+</body>
+
+</html>

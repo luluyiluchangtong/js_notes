@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="关于网站的具体描述" />
+    <meta name="keywords" content="网站的关键词" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // web性能： css js 图片 网络等几个方面
+      console.time("Array initialize");
+      let Odiv = document.querySelectorAll("div");
+      console.timeEnd("Array initialize"); // Outputs: Array initialize: 0.711ms
+      console.time("Array initialize");
+      let Odiv = document.getElementsByTagName("div");
+      console.timeEnd("Array initialize"); // Outputs: Array initialize: 0.711ms
+      // 使用console.time()    console.timeEnd() 测试性能
+
+      // WAVE 网站可访性测试（ 网址 在 前端工具 文件夹里）
+      // 在可能的情况下，用静态组件替代依赖于外部JS的第三方iframe或组件（如共享按钮），从而限制对外部API的调用，并将用户活动保持为私有
+      // 每个页面和所有外部内容(插件、图像...)都使用HTTPS。
+      // js 资源链接放在文档末尾。。减少加载js导致的页面阻塞。 合并 script标签，减少http请求
+
+      // 前端优化的途径有很多，按粒度大致可以分为两类，
+      // 第一类是页面级别的优化，例如 HTTP请求数、脚本的无阻塞加载、内联脚本的位置优化等
+      // 设置 http缓存，css js资源的合并压缩，图片懒加载，
+
+      // 第二类则是代码级别的优化，例如 Javascript中的DOM 操作优化、CSS选择符优化、图片优化以及
+      // HTML Collection 转换为数组，或 将它们保存在一个变量里。频繁操作 htmlcollection很慢。
+      // DOM操作还需要考虑浏览器的 Reflow（重排，布局方面的）和Repaint（重绘，样式方面的）
+      // WebP图片格式能给前端带来的优化。WebP支持无损、有损压缩，动态、静态图片
+      //   WebP 是谷歌即将推出的适合于 Web 使用的图像格式，在保持同样质量的情况下，可比 JPG 减小 40% 的体积
+      //   https://www.sojson.com/image/format.html  图片转换地址
+
+      // js 性能优化：
+      // 没有 defer 或 async，浏览器会立即加载并执行指定的脚本，“立即”指的是在渲染该 script 标签之下的文档元素之前，也就是说不等待后续载入的文档元素，读到就加载并执行。
+      //  async  异步加载与执行。 加载完毕就执行
+      //  defer  异步加载，延迟执行。 加载完毕并等待 html 解析完毕，再执行
+      //  区别在于 async 时， 各脚本间彼此独立无任何依赖。  defer 则在各脚本是有相互依赖的，需要按顺序置于 html中
+      //  若同时使用sync和defer，defer不起作用，sync生效
+
+      // 全局变量处在 作用域链的末端，因此读写全局变量是最慢的。将全局对象保存在局部变量中，避免全局查找！！
+      // var doc=document;  var adiv1= doc.getElementById('div')
+      // 一个标识符所在的位置越深， 它的读写速度越慢，将跨作用域的变量存储在局部变量中。
+      // 访问对象成员的 速度 比访问字面量或变量要慢。。
+      // 对象成员嵌套的越深，读取速度就会越慢。 执行 location.href 比 window.location.href 要快。
+      // 所以函数中没有必要多次读取同一个对象成员。可以将对象成员保存在局部变量中，但是只适用于对象成员的属性，对象成员的方法不适用。
+      // 尽量减少 DOM 的访问次数，把运算尽量留在 js 这一端
+      // 当对象和数组的成员访问超过一次时，将数据放入局部变量！ 尽量减少对对象和数组的深度查找~~
+      var globalVar = 1; // 全局变量
+      function myCallback(info) {
+        //局部变量缓存全局变量 !!!
+        var localVar = globalVar;
+        for (var i = 100000; i--; ) {
+          //访问局部变量是最快的
+          localVar += i;
+        }
+      }
+
+      function innerHTML() {
+        for (var i = 0; i < 1000; i++) {
+          document.getElementById("div1").innerHTML += "a"; // 999次 的访问 DOM
+        }
+      }
+
+      function innerHTML() {
+        var content = "";
+        for (var i = 0; i < 1000; i++) {
+          content += "a";
+        }
+        document.getElementById("div1").innerHTML += content; // 只访问一次 DOM
+      }
+
+      // 使用 element.cloneNode() 代替 document.createElement()
+      // 遍历一个集合会比遍历一个数组慢很多
+      var leng = document.getElementsByTagName("div");
+      for (var i = 0; i < leng.length; i++) {}
+      var len = leng.length;
+      for (var i = 0; i < len; i++) {}
+      //  重绘（改变背景色等）和重排（改变元素的布局）都是代价昂贵的操作
+      // el.style.cssText='border:; width:;'  使用cssText属性一次性修改
+      // 函数和复杂的算法需要有注释
+      // 给 函数名和变量名 取合乎逻辑的命名，不用担心长度，
+      // 避免使用出现无法表示所包含的数据类型的无用变量名，有了合适的变量名，代码按月度起来就像讲述故事一样，更易于理解。
+      // 除了取合适的变量名，还需要初始化一个变量，表示将来如何运用  var name="";  var person=null
+      // 在 html 中书写 js 都是属于紧密耦合的关系，特别是需要动态插入数据时，可将相关标记隐藏在html文件中，由js 显示，或由 ajax获取标记内的内容
+      // 所以尽量不要用 js来生成 DOM 和 内容。还有动态的插入内容，在源码中又找不到，很难排查错误！
+      // css与js的紧密耦合在于使用 js 直接操作具体的样式：ele.style.color='red'; 优化的代替方案是 操作 css 类：ele.className='edit';
+      // 将 应用逻辑 从 事件处理程序 中分离出来
+      // 不是自己创建和维护的 对象 不要去修改，不要去添加相关属性和方法。 而是创建新的对象，新的自定义类型去继承需要进行修改的对象。
+      // 命名空间 --- 避免过多的全局变量和函数， 可使用命名空间：即创建一个全局对象，在全局对象上定义其他对象， var OOP={}  OOP.Projs={}
+      // 避免与 null 进行比较 (values!=null)，因为太笼统了，需要更具体的比较条件 (values instancefo Array)
+      // 避免不必要的属性查找，尽可能的使用 局部变量 将 属性查找 替换为 值查找；可使用数组位置访问的，就不使用命名数字型访问
+      // 当循环的次数是确定的，多次调用函数代替循环往往更快！
+      // 此外，还有 原生方法比自己写的快； switch 比 if else快； 最小化语句；使用数组，对象字面量；使用事件代理
+      // 函数内，请将所有的变量定义在 函数的 顶部，清晰明了。防止变量提升带来的错误。。
+      // 避免使用包含大量的功能的大函数（难以理解和测试），应将功能分割成若干较小的函数。
+      // 在比较简单的情况下使用  三元操作符 代替 if else
+
+      // CSS 加载性能，选择器性能，渲染性能，可维护性和健壮性
+      // 多媒体回溯： img 需要有 alt 属性，纯装饰的不需要； 音频，视频需要有说明文字。
+      // 非常重要的一点： html 只关注内容， 所有装饰性的目的都不要通过  html 标签来作用。
+      // 例如,每个条目前端 svg图标，请不要单独插入img元素，而是使用 div:after{contnet:''}这种方式，iconmoon 中生成的字体文件就是这样的
+      // 微格式 --- 对搜索引擎有巨大好处， 谷歌支持，百度貌似不支持的。。
+      // 常用使用 直接子元素选择器  代替  后代选择器
+      // css 属性书写顺序： 先结构，后表现
+
+      // SEO 注意的地方
+      // 1. meta标签的 discription  keywords  2.html 标签语义化  3. 非装饰性图片加 alt属性  4. iframe 和 动态生成的 html结构是不被搜索到的   5. 提高网站速度
+      // 语义化：有利于SEO； 有利于阅读维护
+      // 渐进增强 在 js 没有启用的情况下，情确保网站基础的访问功能，比如首页导航依然可以使用
+      // 1.png --- 如何在浏览器禁止 js
+      // WCAG --- web content  accessibility  guide
+      // <header role="banner"></header>
+      // <nav role=" navigation"></nav>
+      // <main role="main"></main>
+      // 使用 role 增强语义
+
+      // content 方面
+
+      // 减少 HTTP 请求：合并文件、CSS 精灵、inline Image
+      // 减少 DNS 查询：DNS 查询完成之前浏览器不能从这个主机下载任何任何文件。方法：DNS 缓存、将资源分布到恰当数量的主机名，平衡并行下载和 DNS 查询
+      // 避免重定向：多余的中间访问
+      // 使 Ajax 可缓存
+      // 非必须组件延迟加载
+      // 未来所需组件预加载
+      // 减少 DOM 元素数量
+      // 将资源放到不同的域下：浏览器同时从一个域下载资源的数目有限，增加域可以提高并行下载量
+      // 减少 iframe 数量
+      // 不要 404
+
+      // Server 方面
+
+      // 使用 CDN
+      // 添加 Expires 或者 Cache-Control 响应头
+      // 对组件使用 Gzip 压缩
+      // 配置 ETag
+      // Flush Buffer Early
+      // Ajax 使用 GET 进行请求
+      // 避免空 src 的 img 标签
+
+      // Cookie 方面
+
+      // 减小 cookie 大小
+      // 引入资源的域名不要包含 cookie
+
+      // css 方面
+
+      // 将样式表放到页面顶部
+      // 不使用 CSS 表达式
+      // 使用不使用@import
+      // 不使用 IE 的 Filter
+      // Javascript 方面
+
+      // 将脚本放到页面底部
+      // 将 javascript 和 css 从外部引入
+      // 压缩 javascript 和 css
+      // 删除不需要的脚本
+      // 减少 DOM 访问
+      // 合理设计事件监听器
+
+      // 图片方面
+
+      // 优化图片：根据实际颜色需要选择色深、压缩
+      // 优化 css 精灵
+      // 不要在 HTML 中拉伸图片
+      // 保证 favicon.ico 小并且可缓存
+
+      // 移动方面
+
+      // 保证组件小于 25k
+      // Pack Components into a Multipart Document
+    </script>
+  </body>
+</html>

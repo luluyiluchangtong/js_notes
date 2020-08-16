@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="pv2">测试10：渐变的所有属性 linear-gradient() radial-gradient() 函数</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <div class=" divBasic white" style=" background:linear-gradient(red,blue)">默认</div>
+        <div class=" divBasic white" style=" background:linear-gradient(to left, red,blue)"> to left/right/top/bottom</div>
+        <div class=" divBasic white" style=" background:linear-gradient(30deg, red 20%,blue 40%)">带有角度的渐变</div>
+        <!-- 线性渐变默认的是从上到下，带有角度的线性渐变是从下到上 然后更具角度改变方向-->
+        <!-- 第一个百分比 20% 指的是 到哪儿为止，第二个百分比 40% 指的是 从哪儿开始。。两者中间是渐变区域 -->
+        <!-- 以上是线性渐变 -->
+        <div class=" divBasic white" style=" background:radial-gradient(red,blue)">默认</div>
+        <div class=" divBasic white" style=" background:radial-gradient(circle closest-corner at 35px 55px,  red,blue)">圆形</div>
+        <div class=" divBasic white" style=" background:radial-gradient(ellipse, red,blue)">椭圆</div>
+        <div class=" divBasic white" style=" background:radial-gradient(circle farthest-corner at 35px 10px,  red,blue)">圆形</div>
+        <!--  closest-corner/side  指定 径向渐变的半径长度 为从圆心到离圆心最近的角/边 -->
+        <!--  farthest-corner/side 指定 径向渐变的半径长度 为从圆心到离圆心最远的角/边 -->
+        <!-- 上面的意思是：at 35px(x轴) 55px(y轴) 是定义了 渐变的圆心的位置，closest-corner 是指渐变的范围由：渐变的圆心到div最近的那个角的距离为半径 -->
+        <!-- 以上是径向渐变 -->
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        //  web 标准是一系列标准的集合，由结构（html），表现（css），行为（DOM，ES6） 三部分组成;  这些标准由 w3c (万维网联盟)起草和发布
+        // 文档模式： 严格模式， 宽松模式。 即 文档的 DOCTYPE 声明，定义的文档类型 是 strict 模式， 还是 loose 模式。 html5 直接忽略这个，因为不是基于SGML，所以不需要引用 DTD
+        //  canvas 是基于 像素 的位图；  SVG是基于 XML 的矢量图形
+        // 网页验证码的作用：区分用户是计算机还是人的公共全自动程序。可以防止恶意破解密码、刷票 等行为
+        // link 和 @import 的差别： 加载顺序的差别， link 引用的css 会随页面同时加载， @import 引用的css 会等页面页面全部下载完后再加载！！
+        // 无样式显示页面内容的瞬间闪烁：原因：使用了 @import导致页面渲染滞后； 样式表放在了页面底部导致重新渲染页面
+        // html css js 合适的加载顺序: css 放置在头部，即可在加载 html 内容时可以渲染样式， js放置在 body结束标签之前是为了提高页面渲染效率，放置在前面会由于js代码的求值过程阻塞其他资源下载。
+        // 清除浮动的方式： :after{content:''}   overflow:hidden    clear:both
+
+        // 内存泄露： 指任何对象在不再需要它之后任然存在。 造成内存泄露的原因有 闭包使用不当。。
+        // Vue 双向绑定数据的原理
+        // SEO：重要内容不要用js输出，爬虫不会执行 js 生成的内容； 非装饰性的图片必须加 alt；
+    </script>
+</body>
+
+</html>

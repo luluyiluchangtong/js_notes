@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div>fasfsa</div>
+  <input type="file" />
+  <script>
+    // meta 标签设置设备宽度 ：meta name="viewport" content="width=device-width, initial-scale=1.0"
+    // 图片设置最大宽度  max-width:""
+    // 宽度使用百分比
+    // 媒体查询 @media (max-width:640px){}  或 <link rel="stylesheet" media="(max-width: 640px)" href="max-640px.css">
+    // viewport  rem 解决的问题：让页面元素的尺寸能够依据 浏览器视窗尺寸 变化而 平滑 变化。
+    const div1 = document.querySelector("div");
+
+    function box() {
+      div1.style.color = "red";
+    }
+
+    setTimeout(() => {}, 3000);
+
+    // 移动端兼容，性能，适配
+    // 1. viewport 禁止缩放 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable0"
+    // 2. body {-webkit-overflow-scrolling: touch; overflow-scrolling: touch; over-flow: auto;}  上下拉动滚动条时卡顿、慢 ;
+    // 3. -webkit-tap-highlight-color: rgba(0,0,0,0);   /* a 标签点击高亮 */
+    //    -webkit-appearance: none;     消除输入框和按钮在 ios 中的原生外观
+    // 4. Tab 事件取代 click 事件，解决 300 ms 延迟的问题，以及 touch 和 click 混用时的点击穿透事件
+    // 5. 识别电话, 邮箱 <a href="tel:13800138000">13800138000</a> <a href="email:1145627223@qq.com">Call Me</a>
+    //    忽略识别电话，邮箱 <meta content="telephone=no，email=no" name="format-detection">
+    // 6. 输入框按钮 被软键盘挡住：
+    function fixedWatch(el) {
+      //activeElement 获取焦点元素
+      if (document.activeElement.nodeName == "INPUT") {
+        el.css("position", "static");
+      } else {
+        el.css("position", "fixed");
+      }
+    }
+
+    setInterval(function () {
+      fixedWatch($(".mian"));
+    }, 500); // focus 时则改为静态定位。。
+
+    //  7. 禁止 ios 和 android 用户选中文字 html,body {-webkit-user-select:none; user-select: none; }
+    //  8. 改变输入框placeholder的颜色值 ::-webkit-input-placeholder { /* WebKit browsers */color: #999; }
+    //  9. -webkit-touch-callout：none  禁用长按页面时的弹出菜单
+    //  10. 定宽 640 / 750
+    //  11. 图片懒加载；压缩；icon; svg; srcset属性
+    //  12. 使用 viewport 单位 vh vw
+    //  13. 移动端输入框弹出会将 页面 的整个外层盒子 顶上去，动态改变外层盒子的高度(clientHeight)，若底部元素需要固定住，则可采用弹出输入框隐藏， 收起输入框显示。
+    //  14. 切记软键盘的问题
+
+    // 15. 移动端事件？？？ touchstart touchmove  touchend
+    // 16. 移动端 点击穿透，点击延迟问题 ？？？
+    // 17. 若点击输入框 是将 弹出框选项的内容 填入 输入框时，会出项 光标穿透， 此时设置 input readonly 只读即可
+    // 18. ios 上 input 的 placeholder 文字不能垂直居中问题？？？
+  </script>
+</body>
+
+</html>

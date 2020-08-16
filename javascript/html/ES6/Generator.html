@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // function* --- 生成器函数， 返回一个 Generator对象, 可以依次遍历函数内部每一个状态
+        // yield --- 状态机，封装多个状态。
+        // 整个Generator函数就是一个封装的异步任务，或者说是异步任务的容器,异步操作需要暂停的地方，都用yield语句注明
+        // Generator函数可以暂停执行和恢复执行，这是它能封装异步任务的根本原因
+
+        function* box() { // 这是一个生成器函数    const box=function*(){}
+            yield 'hello';
+            yield 'woed';
+            yield 'ending'; // yield 语句定义不同的状态，是暂停标识，直到迭代器的 next() 方法被调用时，才会继续执行 下一个 yield。yield 关键字只能用在生成器内部
+        }
+
+        var gener = box()
+        console.log(gener)
+        // 返回一个迭代器对象(Generator对象 --- box() / gener, 可通过 for of 遍历对象里的值, gener是指针对象
+
+        // next()  方法：
+        console.log(gener.next())  //  {value:hello, done:false}  value（当前状态的值） 和 done（遍历是否已经结束）
+        // 只有调用 next（）方法才会返回 yield语句后的表达式的值，然后遍历下一个内部状态。
+        // next() 可传参，作为上个阶段异步任务的返回结果。
+
+        // return() 方法：
+        console.log(gener.return('foo'))   // { value: "foo", done: true }  为返回的对象指定值，并终止对象的遍历 
+        console.log(gener.next())   // { value: undefined, done: true }
+
+        // throw() 方法：
+        // try{} catch(e){}  写在生成器函数里，捕获错误
+
+        // next() 方法的参数上一条 yield 语句的返回值
+        // 还有生成器表达式，  生成器对象方法（生成器还可以被添加到对象中）
+
+        // 异步任务的封装：   Generator 结合 Promise实现异步
+        var fetch = require('node-fetch');
+
+        function* gen() {
+            var url = 'https://api.github.com/users/github';
+            var result = yield fetch(url);
+            console.log(result.bio);
+        }
+
+        var g = gen();
+        var result = g.next();
+
+        result.value.then(function (data) {
+            return data.json();
+        }).then(function (data) {
+            g.next(data);
+        });
+
+        // co模块可以让你不用编写Generator函数的执行器
+        var co = require('co');
+        co(gen);
+        co(gen).then(function () {
+            console.log('Generator 函数执行完成');
+        });
+
+
+        // 创建自定义迭代器：
+        // 可迭代对象 都有一个 Symbol.iterator属性
+        let values = [1, 2, 3];
+        let iterator = values[Symbol.iterator](); // 返回数组的默认 迭代器
+        console.log(iterator.next()); // "{ value: 1, done: false }"
+        console.log(iterator.next()); // "{ value: 2, done: false }"
+        console.log(iterator.next()); // "{ value: 3, done: false }"
+        console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+        // 内置可迭代的对象: 数组、 Map 与 Set    都拥有如下的迭代器: entries()  values()  keys()
+        // 内置可迭代的对象 包含了自己的迭代器，只有当 “内置的迭代器” 无法满足需要时，才需要创建自定义迭代器。
+
+        // yield 语句
+        // 在 Generator函数内部调用另一个 Gnerator函数需要使用  yield* 语句，表示返回的是一个遍历器对象。。
+        function* bar() {
+            yield 'a';
+            yield* foo();
+            yield 'b'
+        }
+
+        // 作为对象属性的 Generator 函数
+        let obj = {
+            myGenerator: function* () {
+                // 
+            }
+        }
+    </script>
+</body>
+
+
+</html>

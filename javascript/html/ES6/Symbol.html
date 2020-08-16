@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Symbol 是 js 新引入的基本类型值，它用于创建不可枚举的属性，并且这些属性在不引用符号的情况下是无法访问的。
+        // 避免属性名的冲突，保持 “属性名” 的独一无二，新增了一种原始数据类型 Symbol。 Symbol值 通过Symbol函数生成
+        // Symbol值不是对象，不能添加属性。
+        // Symbol() 创建值     Symbol.for() 创建值并放入全局   Symbol.keyFor() 获取 Symbol值
+
+        // Symbol函数的参数只是表示对当前 Symbol值 的"描述", 参数如果是对象，会隐式的转换为字符串，再生成Symbol值，
+        // 此时这个值只是创建了，但并未放入全局。
+
+        // 所以需要使用Symbol.for()在全局注册，使用Symbol.keyFor() 取得Symbol值
+        let s1 = Symbol('foo')
+        console.log(s1) // s1自动调用了 String() 方法
+        let s2 = Symbol('bar')
+        let s3 = Symbol('foo')
+        s1 === s3 // false
+        Boolean(s1) // 转布尔值
+        String(s1) // 转字符串
+        s1 + 1 // Symbol 值不能与其他类型的值进行 数学运算，会报错，但逻辑运算不会。
+
+        // Symbol值作为对象的属性：
+        let a = {}
+        a[s1] = 'hello' // Symbol 值作为对象属性名时，不能用点运算符, 必须使用中括号。
+        const objectSymbols = Object.getOwnPropertySymbols(obj);
+        // 返回 当前对象所有用作 属性名 的 Symbol值。是一个数组
+        Reflect.ownKeys(obj) // 新的API 返回所有的类型的 键名，包括 Symbol。
+
+        // Symbol值的复用：
+        // Symbol值是独一无二的，但是为了复用Symbol值，可以使用 Symbol.for(), 
+        // 首先会检查绑定同样参数的 Symbol值是否存在：1.存在则 “返回” 这个值。 2.不存在则 “新建” 一个Symbol值并放入Symbol注册表。
+        Symbol.for('foo') // 调用30次，每次返回的都是同一个值, 这里是复用 Symbol值。
+        Symbol('foo') // 调用30次，每次返回的都不是同一个值, 常规使用时是 独一无二的
+        Symbol.for("bar") === Symbol.for("bar") // true
+        Symbol("bar") === Symbol("bar") // false
+
+        // Symbol.keyFor('foo')  获取 symbol 某个 symbol 关联的键
+        let s1 = Symbol.for("foo"); // 在全局注册 Symbol值
+        Symbol.keyFor(s1) // "foo"
+        let s2 = Symbol("foo");
+        Symbol.keyFor(s2) // undefined
+
+
+        let uid = Symbol.for("uid"); // 全局创建符号值
+        let object = {
+            [uid]: "12345"
+        };
+        console.log(object[uid]); // "12345"
+        console.log(uid); // "Symbol(uid)"
+        let uid2 = Symbol.for("uid"); // 从全局检索出 符号值uid
+        console.log(uid === uid2); // true
+        console.log(object[uid2]); // "12345"
+        console.log(uid2); // "Symbol(uid)"
+
+
+        // ES6 定义了 “知名符号” 来代表 JS 中一些公共行为, 每一个知名符号都对应全局 Symbol 对象的一个属性
+        // Symbol.hasInstance 属性:  每个函数都具有一个 Symbol.hasInstance 属性，用于判断指定对象是否为本函数的一个实例
+        function MyObject() {
+            // ...
+        }
+        Object.defineProperty(MyObject, Symbol.hasInstance, {
+            value: function (v) {
+                return false;
+            }
+        });
+        let obj = new MyObject();
+        console.log(obj instanceof MyObject); // false
+
+        obj instanceof Array; // 等价于
+        Array[Symbol.hasInstance](obj)
+
+        // Symbol.isConcatSpreadable 属性: 是一个布尔类型的属性,
+        // 它可以用它来定义任意类型的对象，让该对象在参与 concat() 调用时能够表现得像数组一样
+        let collection = {
+            0: "Hello",
+            1: "world",
+            length: 2,
+            [Symbol.isConcatSpreadable]: true // true 将对象分离为个体， false不分离对象
+        };
+        let messages = ["Hi"].concat(collection);
+        console.log(messages.length); // 3
+        console.log(messages); // ["hi","Hello","world]      false则结果为： ["Hi",{0:"Hello",,,,}]
+
+
+        // Symbol.match  Symbol.replace  Symbol.search  Symbol.split
+        // 这些与正则表达式交互的方法，在 ES6 之前其实现细节是对开发者隐藏的，使得开发者无法将自定义对象模拟成正则表达式
+        // 这在自定义模式匹配方面开启了更多可能性。
+
+        // Symbol.toPrimitive
+        // 对象和字符串之间转换时的隐式操作，ES6 则通过Symbol.toPrimitive 方法将其暴露出来，以便让对应方法可以被修改
+
+        // 使用 Symbol.toPrimitive 属性并将一个函数赋值给它，便可以 重写 默认的转换行为
+        function Temperature(degrees) {
+            this.degrees = degrees;
+        }
+        Temperature.prototype[Symbol.toPrimitive] = function (hint) {
+            switch (hint) {
+                case "string": // 字符串模式
+                    return this.degrees + "\u00b0"; // 温度符号
+                case "number": // 数值模式
+                    return this.degrees;
+                case "default": // 默认模式
+                    return this.degrees + " degrees";
+            }
+        };
+        let freezing = new Temperature(32);
+        console.log(freezing + "!"); // "32 degrees!"
+        console.log(freezing / 2); // 16
+        console.log(String(freezing)); // "32"
+
+
+
+        // 数组 在不同的全局执行环境中(iframe)传递时， 使用 instanceof Array 进行检测会得到 false的结果。于是又了如下方法：
+        function isArray(value) {
+            return Object.prototype.toString.call(value) === "[object Array]"
+        }
+        console.log(isArray([])) // true
+        // 同时，可以用来区别原生对象 与 开发者自建对象
+
+        // Symbol toStringTag  该符号代表了所有对象的一个属性 
+        // Symbol toStringTag 定义了 Object.prototype.toString.call() 被调用时应当返回什么值。
+        // 同样，你可以在自设对象上定义 Symbol.toStringTag 的值, 语言本身没有禁止这一行为！！
+        function Person(name) {
+            this.name = name;
+        }
+        Person.prototype[Symbol.toStringTag] = "Person";
+        let me = new Person("Nicholas");
+        console.log(me.toString()); // "[object Person]"
+        console.log(Object.prototype.toString.call(me)); // "[object Person]"
+
+
+        // Symbol.unscopables
+        // 尽管将来的代码无疑会停用 with 语句，但 ES6 仍然在非严格模式中提供了对于 with 语句的支持，以便向下兼容, 所以这是 Symbol.unscopable属性 出现的理由
+        // 一般来说，你不需要在你自定义的对象上设置 Symbol.unscopables 属性，除非使用了 with语句、并修改了代码库中已有的对象
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE HTML>
+<!-- 声明 html版本；html4.01基于 SGML，会指向一个 DTD。 html5不用，所以简写咯！！ -->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" chrome=1>
+    <!-- X-UA-Compatible IE8的专用标记 -->
+    <!-- 以上代码 IE=edge 告诉IE使用最新的引擎渲染网页，chrome=1 则可以激活Chrome Frame. 即浏览网页时，实际上使用的是Google Chrome浏览器内核-->
+    <meta name="renderer" content="webkit" />
+    <!-- 国产浏览器的双内核操作， 默认使用基于 webkit的内核 -->
+    <Meta name="Kyewords" Lang="EN" Content="vacation,greece,sunshine">
+    <meta name="description" content="Description of the page less than 150 characters">
+    <link rel="icon" type="image/png" href="https://example.com/favicon.png">
+    <!-- 推荐 32*32 -->
+    <!--<meta http-equiv="Refresh" content="4;URL=http://www.net.cn/">   定时自动刷新页面，并指向新的页面-->
+    <!--<meta http-equiv="Refresh" content="4">   定时自动刷新页面-->
+    <title>HTML5&CSS3示例全集</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet prefetch" href="../css/tachyons.css"> /* 预加载*/
+    <script src="../js/jquery-3.1.1.js"></script>
+    <script src="../js/wow.js"></script>
+    <link rel="stylesheet" href="../css/animate.min.css">
+</head>
+<style>
+    .divBasic {
+        width: 100px;
+        height: 100px;
+        background: blue;
+    }
+
+    .divFilter {
+        width: 400px;
+        height: 400px;
+        filter: blur(5px);
+        border: solid 1px;
+        background: url(" ../images/1.png") no-repeat;
+    }
+
+    .box-shadow:after {
+        content: "";
+        width: 150px;
+        height: 1px;
+        margin-top: 88px;
+        margin-left: -75px;
+        display: block;
+        position: absolute;
+        left: 50%;
+        z-index: -1;
+    }
+
+    .divData::after {
+        content: attr( data-tooltip);
+        display: none;
+    }
+
+    .divData:hover:after {
+        display: block;
+    }
+
+    body {
+        --bg: #7F583F;
+    }
+
+    .div1 {
+        background: var(--bg)
+    }
+
+    :root {
+        --color: red;
+    }
+
+    .div2 {
+        color: var(--color)
+    }
+
+    /*    
+    使用 函数 var() 访问变量（自定义属性） 
+    声明局部变量 / 全局变量
+    变量只能当属性值使用
+    变量的值是数值，则不可拼接。字符串可以拼接。
+    目前当然还是 Saas更灵活
+    */
+</style>
+<!-- 块格式化上下文（Block Formatting Context，BFC） -->
+<!-- BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此 -->
+<!-- 是布局过程中生成块级盒子的 '区域'，也是浮动元素与其他元素的交互限定 '区域' -->
+<!-- 
+下列方式会 创建 块格式化上下文：
+float 的值不为none。 
+overflow: 值不为 visible 的块元素。 
+position: absolute  / fixed。
+display: table-cell / table-caption / inline-block / flex / grid 
+其目的就是 页面上的一个 隔离的 渲染区域。 可以整体的浮动，其内部的子元素在 一个相对隔离的环境里运行
+ -->
+<!-- display:inline-block;  设置行内元素，同时又有 '宽高属性'， 则外层元素可以通过 text-align: center； 使其水平居中，设置自身 vertical-align:middle 垂直居中 -->
+
+
+<!--  可获取焦点的元素： 链接元素，表单元素，window元素，设置 tabindex 属性的元素。  -->
+<!-- jpeg图片是有损压缩，不支持透明。 png图片是无损压缩，支持透明。 gif像素小，做简单动画 -->
+<!-- display：(block/none) 属性是不继承的，即设置父元素消失，则子元素无法通过 display显示
+ vaisibility: (hidden/visible) 属性是可以继承的，即设置父元素消失，子元素可以通过设置 visibility 显示
+  display：none； 消失于文档，造成元素重排   visibility：hidden； 任然在文档，造成元素重绘； 读屏器
+ -->
+<!-- 伪元素：::first-letter  ::first-line  ::before  ::after -->
+<!-- 伪类：  :active  :focus  :hover  :link  :visited  :first-child  :nth-child(n)-->
+<!-- 伪元素和伪类的本质区别就是是否抽象创造了新元素 -->
+<!-- html 全局属性有 class id title style  data-* -->
+<!-- 语义化有 html语义化，css语义化：有利于搜索引擎，盲人阅读，维护 -->
+<div class="divData" data-tooltip='11'>标题文字提示</div>
+<!-- 居中的几种方式：
+    1. position + transform;  
+    2. flex布局  margin:auto; 
+    3. display:table-cell; vertical-align:center; 
+    -->
+<div class="box-shadow"></div>
+<!-- 单边阴影 -->
+<div class="divFilter"></div>
+<!-- css  Filter滤镜 -->
+<h1 role="logo" style=" background:url(); text-indent:-9999px">东箭完整家居</h1>
+<!-- logo 语义化 -->
+<hr size=1 />
+<meter min="10" low="40" high="80" max="100" optimum="81" value="39"></meter>
+<!-- // 三个阶段：
+// min - low  low - high  high - max
+// 优（绿色） 次（红色） 平均（黄色）
+// optimum 值处于低段: 则低段最优，高段最次，中段平均
+// optimum 值处于高段: 则高段最优，低段最次，中段平均
+// optimum 值处于中段: 则高段和低段都是平均 -->
+<img src="../images/0.png" alt="有关图片描述的关键字" title="可加可不加">
+<h2 class="pv2">测试1：怎么在网页放置锚点？</h2>
+<div class=" bb pa2 flex justify-between flex-wrap">
+    <a href="#aa">11</a>
+    <div id="aa">222</div>
+</div>
+<h2 class="pv2">测试2：div的圆角在1/2/3/4个值的情况下分别是怎么书写的</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div class="divBasic" style="border-radius: 10px"> 四个角圆角 </div>
+    <div class="divBasic" style="border-radius: 10px 20px">
+        上左+下右 上右+下左
+    </div>
+    <div class="divBasic" style="border-radius: 10px 20px 5px">
+        上左 上右+下左 下右
+    </div>
+    <div class="divBasic" style="border-radius: 10px 2px 6px 20px">
+        上左 上右 下右 下左
+    </div>
+</div>
+
+
+<h2 class="pv2">测试4：渐变颜色</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+
+</div>
+<h2 class="pv2">
+    测试5：表单相应的类型及属性 input type="number range file email" datalist progress
+</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <input type="number" step="2" min="10" max="20" autofocus>
+    <!-- autofocus打开网页自动聚焦到某个表单元素 -->
+    <input type="range" step="2" min="10" max="20">
+    <input type="email" multiple>
+    <input type="file" multiple>
+    <progress value="10" max="40"></progress>
+    <input list="cars" value="BMW">
+    <input type="image" form="register"> 网址
+    <input type="url" name="url" value="" form="register" placeholder="默认选择"> 年，月
+    <input type="month" name="" value="" form="register" placeholder="默认选择" /> 年 ， 月 ， 日， 周
+    <input type="week" form="register" /> 年 ， 月 ， 日
+    <input type="date" form="register" /> 几点，几分
+    <input type="time" form="register" /> 手动添加时间
+    <input type="datetime" form="register" placeholder="默认选择" /> 年 ， 月 ， 日，几点，几分
+    <label for="car">数字 自动填充表单</label>
+    <input type="datetime-local" list="cars" id="car" form="register" />
+    <datalist id="cars">
+        <option>cds</option>
+        <option>dsad</option>
+        <option>dsad</option>
+    </datalist>
+    打包表单
+    <fieldset>
+        <!-- 将表单内容分组 -->
+        <legend>健康信息</legend>
+        <!-- 定意fieldset的标题 -->
+        <label for="ab">身高：</label>
+        <input type="text" value="" id="ab" placeholder="默认选择" />
+        <label for="cd">体重：</label>
+        <input type="text" id="cd" placeholder="默认选择" />
+    </fieldset>
+</div>
+<h2 class="pv2"> 测试6：带箭头的提示框，移上去 边框颜色改变</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div id="div1" class="divBasic ba white b--blue relative">
+        currentColor 继承 color的颜色
+    </div>
+</div>
+<style>
+    ::placeholder {
+        color: red;
+    }
+
+    #div1:after {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background: inherit;
+        border: inherit;
+        border-right: none;
+        border-bottom: none;
+        transform: rotate(45deg);
+        position: absolute;
+        top: -11px;
+        left: 10px;
+    }
+
+    #div1:hover {
+        border-color: orange;
+    }
+</style>
+<h2 class="pv2">测试7：修改文本标签并; 加粗加底色;</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div>
+        <span>111
+            <del>222</del>
+            <ins>333</ins>
+        </span>
+        <i>
+            <span>
+                <mark>
+                    <b>加粗，加底色</b>
+                </mark>
+            </span>
+        </i>
+    </div>
+</div>
+
+
+
+<h2 class="pv2">测试11：文字折行；文字不折行，超出省略</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div class=" divBasic white" style="white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">
+        white-space:pre-line / pre / pre-wrap; 121212112121212121212112212121212121212121212121212121212121
+    </div>
+    <div class=" divBasic white" style=" word-wrap:break-word; word-break:break-all">
+        121212112121212121212112212121212121212121212121212121212121
+    </div>
+</div>
+<h2 class="pv2">测试12：文章分栏column的所有属性</h2>
+<div style=" width:50%; columns:100px 4; column-gap:10px; column-rule:solid 1px red">
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    121212112121212121212112212121212121212121212121212121212121
+    <h2 style=" column-span:all;">33333</h2>
+</div>
+<!-- columns:column-width  column-count  -->
+<h2 class="pv2">测试12： title提示框</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div id="div4" class="br ba w-20 relative" data-title="tishikaung">title提示框</div>
+    <!-- 数据集属性: 任意以 data-为前缀的小写的属性的名字都是合法的 -->
+</div>
+<style>
+    #div4:hover::after {
+        content: attr(data-title);
+        background: red;
+        color: #fff;
+        padding: 10px;
+        border: solid 1px red;
+        position: absolute;
+        top: -40px;
+        left: -10px;
+    }
+</style>
+
+<h2 class="pv2">测试13：图片热区的用法</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <div class=" divBasic">
+        <img src="../images/0.png" usemap="#mymap" alt="">
+        <map name="mymap">
+            <area shape="rect" coords="40,40,10,10" href="" alt="">
+            <!-- 矩形区域的 左 上 右 下与图像相应边缘的距离 -->
+            <area shape="circle" coords="10,10,10" href="" alt="">
+            <!-- 圆形区域的圆心与图像左 上的距离，和圆的半径 -->
+        </map>
+    </div>
+</div>
+<h2 class="pv2">测试18：</h2>
+<div class="bb pa2 flex justify-between flex-wrap">
+    <script>
+        // 1.列表有几种类型： 有序列表 ol 无序列表 ul 定义列表 dl 
+        // 2.经典清除浮动的方法（当外层盒子不定高度时，高度塌陷的问题，清除浮动对外层盒子的影响,比 overflow-hidden 好用）: clearFix:after{ content:""; display:block; clear:both; } 
+        // 3.媒体查询的书写格式:
+        // @media screen and (max-width:1200px) and (min-width:1000px){ }
+        // <link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen-styles.css" />
+    </script>
+
+</div>
+<h2 class="pv2">测试19：字体不变形</h2>
+<div id="div7" class="bb pa2 flex justify-between flex-wrap">
+</div>
+<style>
+    #div7 {
+        width: 200px;
+        height: 100px;
+        margin: 100px;
+        position: relative;
+    }
+
+    #div7:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: red;
+        transform: skew(45deg);
+        z-index: -1;
+    }
+</style>
+<h2 class="pv2">测试20：css画网格</h2>
+<div id="div7" class="bb pa2 flex justify-between flex-wrap">
+    <div id="div8"></div>
+    <div id="div9"></div>
+</div>
+<style>
+    #div8 {
+        width: 500px;
+        height: 500px;
+        background: linear-gradient(90deg, #fb3 10%, transparent 0),
+            linear-gradient(#fb3 10%, transparent 0);
+        background-size: 10px;
+    }
+
+    #div9 {
+        width: 500px;
+        height: 500px;
+        background: linear-gradient(to right, #fb3 30%, #58a 30%);
+        background-size: 4px 100%;
+    }
+</style>
+<h2 class="pv2">测试21：css画三角形</h2>
+<div id="div7" class="bb pa2 flex justify-between flex-wrap">
+    <div class="angle">三角形</div>
+    <div class="ellipse">椭圆</div>
+</div>
+<style>
+    .angle {
+        width: 0;
+        height: 0;
+        border-left: solid 10px transparent;
+        border-right: solid 10px transparent;
+        border-bottom: solid 10px red;
+    }
+
+    .angle1 {
+        width: 0;
+        height: 0;
+        border: solid 20px;
+        border-color: transparent transparent red red;
+    }
+
+    /* demo  这是另一种简洁写法 */
+
+    .ellipse {
+        width: 100px;
+        height: 50px;
+        background: red;
+        border-radius: 50%;
+    }
+</style>
+<h2 class="pv2">测试22：font的简写</h2>
+<div id="div7" class="bb pa2 flex justify-between flex-wrap">
+    <p style=" font:30px/2 微软雅黑">
+        后面必须要有 font-family 属性才有作用
+    </p>
+</div>
+
+<h2 class="pv2">测试23：响应式图片</h2>
+<div id="div7" class="bb pa2 flex justify-between flex-wrap">
+    首付是多少
+</div>
+
+
+
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+    }
+
+    #nav {
+        margin: 20px;
+    }
+
+    #nav li {
+        float: left;
+        position: relative
+    }
+
+    #nav ul {
+        width: 130px;
+        position: absolute;
+        left: -999px;
+        padding: 10px;
+    }
+
+    #nav li:hover ul {
+        left: -30px;
+    }
+
+    #nav a {
+        display: block;
+        background: #04b72e;
+        width: 60px;
+        color: white;
+        border-left: solid 1px white;
+        border-bottom: solid 1px white;
+        text-align: center
+    }
+
+    #nav li ul a {
+        border-bottom: solid 1px #00791c;
+        display: block;
+        background: #04b72e;
+        width: 60px;
+        color: white;
+        border-left: solid 1px white;
+        text-align: center;
+    }
+
+    #nav a:hover {
+        background: #005b15;
+    }
+</style>
+<ul id="nav">
+    <li>
+        <a href="">1</a>
+        <ul>
+            <li>
+                <a href="">1-1</a>
+            </li>
+            <li>
+                <a href="">1-2</a>
+            </li>
+            <li>
+                <a href="">1-3</a>
+            </li>
+            <li>
+                <a href="">1-4</a>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="">2</a>
+        <ul>
+            <li>
+                <a href="">2-1</a>
+            </li>
+            <li>
+                <a href="">2-2</a>
+            </li>
+            <li>
+                <a href="">2-3</a>
+            </li>
+            <li>
+                <a href="">2-4</a>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="">3</a>
+        <ul>
+            <li>
+                <a href="">3-1</a>
+            </li>
+            <li>
+                <a href="">3-2</a>
+            </li>
+            <li>
+                <a href="">3-3</a>
+            </li>
+            <li>
+                <a href="">3-4</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+
+<style type="text/css">
+    #nav1 {
+        width: 303px;
+        height: 200px;
+        border: 1px solid #CCCCCC;
+    }
+
+    #column a {
+        float: left;
+        width: 100px;
+        border-right: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
+        font: bold 14px/30px Arial, Helvetica, sans-serif;
+        color: #000;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    #contant {
+        width: 303px;
+        height: 162px;
+        overflow: hidden;
+    }
+
+    #contant ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        padding: 4px 0 0 5px;
+    }
+
+    #contant li {
+        font-size: 12px;
+        overflow: hidden;
+        padding-left: 2px;
+        line-height: 27px;
+    }
+</style>
+<div id="nav1">
+    <div id="column">
+        <a href="#localnew">本地新闻</a>
+        <a href="#innernew">国内新闻</a>
+        <a href="#enterment">娱乐新闻</a>
+    </div>
+    <div id="contant">
+        <ul id="localnew">
+            <li>
+                <a href="#">我喜欢CSS </a>
+            </li>
+            <li>
+                <a href="#">我喜欢CSS </a>
+            </li>
+            <li>
+                <a href="#">我喜欢CSS </a>
+            </li>
+            <li>
+                <a href="#">我喜欢CSS </a>
+            </li>
+            <li>
+                <a href="#">我喜欢CSS</a>
+            </li>
+            <li>
+                <a href="#">我喜欢CSS</a>
+            </li>
+        </ul>
+        <ul id="innernew">
+            <li>
+                <a href="#">我喜欢编程</a>
+            </li>
+            <li>
+                <a href="#">我喜欢编程</a>
+            </li>
+            <li>
+                <a href="#">我喜欢编程</a>
+            </li>
+            <li>
+                <a href="#">我喜欢编程 </a>
+            </li>
+            <li>
+                <a href="#">我喜欢编程</a>
+            </li>
+            <li>
+                <a href="#">我喜欢编程</a>
+            </li>
+        </ul>
+        <ul id="enterment">
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工 </a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+            <li>
+                <a href="#">我喜欢美工</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<style>
+    .bd-ltr:after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        /* transform: translateX(50%); */
+        transition: left 1s;
+    }
+
+    .bd-ltr:hover:after {
+        left: 0;
+        background: blue;
+    }
+</style>
+<div class="bd-ltr bb pa2 flex justify-between flex-wrap">
+    百度
+</div>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // https://www.easy-mock.com/mock/5ad4527b4a76b81c1846e71e/vuex/store
+        //  并发请求？？？
+        // axios.all()  axios.spread()
+
+        //  axios API:::::
+        // axios(config)
+        axios({
+            method: 'post',//方法
+            url: '/user/12345',//地址
+            data: {//参数
+                firstName: 'Fred',
+                lastName: 'Flintstone'
+            }
+        });
+
+        // axios(url, config)
+        aixos('/user/123345', {
+            method: "post",
+            data: {
+                firstname: "Fred",
+                lastname: "Flintstone"
+            }
+        })
+
+        //  axios.get(url,config)
+        aixos.get("/user/123345", {
+            method: "post",
+            data: {
+                firstname: "Fred",
+                lastname: "Flintstone"
+            }
+        })
+
+
+        //  创建 aixos 实例
+        const axiosInstance = axios.create({
+            baseURL: 'http://some-domain.com/api/',
+            timeout: 1000,
+            headers: { 'X-Custom-Header': 'foobar' }
+            // 还有其他实例中的默认配置。。。
+        })
+
+        axiosInstance.get('/foo').then(
+            function (response) {
+                console.log(response.data);
+                console.log(response.status);
+                console.log(response.statusText);
+                console.log(response.headers);
+                console.log(response.config);
+            }  // 或 function (err){console.log(err)}
+        ).catch((err) => {
+            console.log(err)
+        })
+
+        // 全局默认配置
+        axios.defaults.baseURL = 'https://api.example.com';
+
+        // 配置的优先级：全局 < 实例 < 请求中的配置
+
+        // 请求拦截器  返回拦截器  在 axios 对象上配置, 或 实例上配置.稍后可移除拦截器.
+
+        // 取消一个请求 ???
+        // 序列化参数:  URLSearchParams API  或使用  qs库  
+        // URLSearchParams 接口定义了一些实用的方法来处理 URL 的查询字符串
+
+    </script>
+</body>
+
+</html>

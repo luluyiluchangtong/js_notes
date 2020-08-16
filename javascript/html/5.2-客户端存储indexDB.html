@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>indexDB</title>
+</head>
+
+<body>
+
+    <script>
+
+        // 3. IndexedDB 存储在本地
+        // IndexedDB 就是一个数据库，只是它用对象保存数据，而不是表格保存数据。
+        // indexDB.open(), 相当于创建一个数据库
+        // 如果数据库已经存在，有则发送一个打开它的请求； 没有则发送一个创建并打开它的请求。 返回一个 request 对象
+        var request, database;
+        request = indexedDB.open('admin'); // 返回一个请求对象，admin 是实际传入的数据库；
+        if (database.version != '1.0') {
+            request = database.setVersion('1.0');
+            request.onerror = function (event) { // 请求失败
+                console.log(event.target.errorCode)
+            }
+            request.onsuccess = function (event) { // 请求成功
+                database = event.target.result // 返回一个数据库实例对象
+                console.log(database)
+                console.log(database.name + database.version) // 返回数据库的 名字，版本号
+            }
+        } else {
+            console.log(database.name + database.version) // 返回数据库的 名字，版本号
+        }
+
+        // 链接数据库后，创建 对象存储空间(相当于创建数据库中的 表)：
+        var store = database.create('users', {
+            keyPath: 'username' // 即创建了一个 users 对象，并保存了对象的一个属性 keyPath，通过这个键来访问数据！
+        });
+        // 使用 add()  push() 向 对象 users 中添加数据。 对于已经存在的键值：add()返回错误， push()更新重写
+
+        // 使用 transcation() 对 对象 users 读取或修改数据，
+        // 读取数据：
+        var store = database.transcation('users');
+        var store = database.transcation(['users', 'anotherStroe']); // 访问多个对象存储空间
+        // 读写数据:
+        var IDBtransction = window.IDBtransction;
+        var store = database.transcation('users', IDBtransction.READ_WRITE); // 第二个参数 IDBtransction 定义数据访问模式
+
+        // objectStore() 访问特定的存储空间
+        var transcation = database.transcation('users').objectStore('users').get('007');
+
+        // 创建 游标 检索多个对象，游标就是一个指向结果集的指针，
+        // 游标不提前收集结果，而是先指向结果集第一项，在接到查找下一项的指令时，才会指向下一项。
+
+        var transcation = database.transcation('users').objectStore('users').get('007');
+        var request;
+        request = store.openCursor(); // 在对象存储空间上调用 openCursor()方法可以创建游标
+        request.onsuccess = function (event) {
+            var cursor = event.target.result; // 返回一个数据库实例对象
+            if (cursor) {
+                console.log(cursor.key, JSON.stringify(cursor.value))
+                cursor.continue() // 移动到下一项，触发另一次请求
+            }
+        }
+
+        // 使用 键范围 增强查询灵活度。
+        var IDBkeyRange = window.IDBkeyRange;
+        // 四种定义 键范围 的方式：
+        // 1. 具体要查找的对象
+        var onlyRange = IDBKeyRange.only('007');
+
+        // 2. 从某个对象 007 开始查找, 一直到最后一个对象，如果不想包含 键值为 007的对象，则传入第二个参数  true
+        var lowerRange = IDBKeyRange.lowerBound('007');
+
+        // 3. 从头开始查找，一直到某个对象为止, 如果不想包含 010， 则传入第二个参数 true
+        var upperRange = IDBKeyRange.upperBound('010')
+
+        // 4. 从某个对象开始，到某个对象为止
+        var boundRange = IDBKeyRange.bound('007', '010', true, true) // 后面两个值与前面的键值对应。
+
+        var store = database.transcation('users');
+        range = IDBKeyRange.bound('007', '010');
+        request = store.openCursor(range)
+        // 设定游标方向
+        var IDBCursor = window.IDBCursor;
+        request.store.openCursor(null, IDBCursor.NEXT_NO_DUPLICATE); // null 表示默认范围，包括所有对象。
+        // NEXT_NO_DUPLICATE 跳过重复对象； IDBCursor.PREV / IDBCursor.PREV_NO_DUPLICATE ？？
+
+        // 索引？？？
+    </script>
+</body>
+
+</html>

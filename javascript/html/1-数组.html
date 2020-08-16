@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <script>
+      // 1.数组的定义：
+      // 数组是 值 的有序集合，是 '对象的特殊形式' ; 数组的索引只能是整数数值, 数组的元素则是可以动态添加的。
+      // 数组直接量允许逗号结尾，然而并不会多出一个元素  [,,] 这里只有两个元素, length 为 2
+      // 稀疏数组 与 非稀疏数组的  区别，即当数组有缺失的元素时，
+
+      //   Array.prototype 上的方法可以操作任何对象
+
+      // 2. 创建数组的方式：
+      // 2.1 数组直接量
+      var arr = [1, 2, 3];
+      console.log(a[1]);
+      // 因为数组是 '特殊对象' ：这里的中括号里的 索引 其实背后已经被转换成 字符串 了。就像访问对象的属性一样
+
+      var arr = [1, 2, 3]; // 数组末尾的 逗号，不会对数组的length 产生影响， 是现代浏览器支持的写法，即添加数组时避免漏写。
+
+      // 2.2 构造函数：
+      var arr = new Array();
+      var arr = new Array(10); // [ <10 empty items> ]  传递一个数值，表示的是 length=10  切记！！   Array.of(10) 则返回数组 [10]
+      var arr = new Array(1, 2, 3); // var arr = Array(1,2,3)
+
+      // Array.of()   Array.form()
+
+      // 2.3 稀疏数组  从 0 开始不连续索引的数组。即有个位置的值是 '空' 的数组（被删除 或 未被初始化的数组）, 永远都不要创建和使用 稀疏数组
+      var a1 = [, , ,];
+      var a2 = new Array(3);
+      var arr3 = new Array();
+      arr3.length = 3;
+      var arr4 = [1, 2, 3];
+      delete arr4[0];
+
+      // 2.4 非稀疏数组  显式地将缺失的元素声明为undefined，将大大提高你的代码的清晰度和可维护性
+      var arr5 = [undefined, undefined, undefined];
+      var arr6 = new Array(3);
+      arr6[0] = undefined;
+      arr6[1] = undefined;
+      arr6[2] = undefined;
+
+      // 判断稀疏数组 和 非稀疏数组
+      for (let i = 0; i < arr.length; i++) {
+        if (!(i in arr)) {
+          console.log("稀疏数组");
+        }
+      }
+
+      const arr = [];
+      arr[1.1] = "fsa";
+      arr["length"]; // 0
+      console.log(arr.hasOwnProperty(1.1)); // true
+      // 若传递的下标为非整形数值，那么将作为一个代表数组的对象的属性(property)创建, 而非数组元素
+
+      // 数组的方法:
+      // 1. 增 删 改 查 取：
+      // unshift()  push()  返回数组新的长度， shift()  pop()  返回删除的元素
+
+      //  push()   将一个或多个元素添加到数组的末尾，并返回该数组的新长度
+      const arr = [1, 2, 3];
+      arr.push(4);
+      console.log(arr); // [1,2,3,4]
+      console.log(arr.push(4)); // 4   返回该数组的新长度
+      // 向 数组结尾 添加元素 更高效的方法：
+      // arr[arr.length]=4
+      arr.length = 1;
+      console.log(arr); // [1]  通过 length 属性来截断数组
+
+      // 合并数组
+      const arr = [1, 2, 3, 4, 5];
+      const arr1 = [].push.apply(arr, [45, 56, 79, 7]);
+      console.log(arr);
+
+      arr.length = 90;
+      console.log(arr); // [1,2,3, undefined, .....]  通过 length 属性来扩展数组
+
+      // pop()  从数组中删除最后一个元素，并返回该元素的值
+      arr.pop();
+      console.log(arr); // [1,2,3]
+      console.log(arr.pop()); // 4  返回该元素的值
+
+      // unshift()  将一个或多个元素添加到数组的开头，并返回该数组的新长度  同 push
+      arr.unshift(0);
+      // 向 数组开头 添加元素 更高效的方法
+      // [0].concat(arr) 效率更高
+      console.log(arr); // [0,1,2,3]
+
+      //  shift()  从数组中删除第一个元素，并返回该元素的值  同 pop
+      arr.shift();
+      console.log(arr); //  [1,2,3]
+
+      //  splice()  删除元素 / 替换元素 / 添加新元素 返回 '一个新的数组' ，里面是原数组 '被删除' 的元素, 如果未删除任何元素，则返回空数组
+      arr.splice(1, 2, [7, 8]); // 参数： 起始位置，删除几个，插入几个。
+      console.log(arr); // [1,[7,8]]   如果参数是一个数组， 则是 将数组作为 单个元素 加进数组，不同于 concat (可用于合并数组), push也是直接数组进去,不能合并数组
+
+      // 调换元素位置
+      function swapArr(arr, index1, index2) {
+        arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+        return arr;
+      }
+      console.log(swapArr(arr, 0, 1));
+
+      // 删除元素
+      console.log(arr.splice(1, 2, 7, 8)); // [1,7,8]
+
+      delete arr[0];
+      console.log(arr); // [undefined,7,8]
+      // 删除数组中的元素，delete 也可以，但是被删除的元素位置是 undefined，  !! '而不是被后面的素代替位置' (所以可以使用该方法调换数组元素位置)
+
+      // 替换元素
+      console.log(arr.splice(0, 1, 4)); // [4,7,8]
+
+      // 添加元素
+      console.log(arr.splice(1, 0, 4)); // [0,4,1,4]
+
+      //  indexOf(searchElement[, fromIndex = 0])     查找元素 '第一次' 出现在数组中的 index， 没有找到则返回 -1;
+      //  lastIndexOf(searchElement [，fromIndex]) 查找元素 '最后一次' 出现在数组中的 index， 没有找到则返回 -1;
+      var a = [1, "b", "c", "d", 5];
+      a.indexOf("b"); // 返回索引值 1
+      a.indexOf("c", 1); // 返回索引值 2  搜索 数值3  从1开始搜索
+      a.lastIndexOf("d"); // 返回索引值 3
+
+      const str = "fsa";
+      console.log(str.indexOf("a")); // 2  可用在类数组对象上
+
+      //  查询元素
+      // findIndex(callback[, thisArg])   查找满足 回调函数 的 '第一个元素的索引'
+      let arr = [1, 2, 3, 12, 22, 44, 541];
+      let arr1 = arr.findIndex(function (ele, index, arr) {
+        return ele >= 10;
+      }); // 3   返回的是 '满足条件的' 第一个元素 的索引
+
+      // find(callback[, thisArg])  查找满足 回调函数 的 '第一个元素'，，
+      let arr = [1, 2, 3, 12, 22, 44, 541];
+      let arr1 = arr.find(function (ele, index, arr) {
+        return ele >= 10;
+      }); // 12   返回的是 '满足条件的' 第一个元素
+      console.log(arr1);
+
+      // 用对象的属性查找数组里的元素
+      const Obj = [
+        {
+          a: 23,
+          b: 56,
+          c: 67,
+        },
+        {
+          a: 223,
+          b: 546,
+          c: 677,
+        },
+      ];
+
+      function Fn(fruit) {
+        // fruit 即 ele
+        return (fruit.a = 23);
+      }
+
+      console
+        .log(Obj.find(Fn))
+
+        [
+          // findIndex()  满足回调函数 第一个元素的索引； find()  满足回调函数 第一个元素的值；
+          // 此外  findIndex()   find()  针对稀疏数组也会每一个索引下都会调用回调函数。相对于只遍历有值的索引的方法低效些。
+
+          // includes(valueToFind[, fromIndex]))  从 fromIndex 索引处开始查找 valueToFind，
+          // fromIndex 为负数,则为计算的出的索引位置, 若计算结果小于 0, 则整个数组都会被搜索!!
+          // 数组是否包含某个值,, 可以代替 indexOf 去查找某个元素是否存在数组中。。
+          (1, 2, 3)
+        ].includes(3) // true
+        [(1, 2, 3)].includes(
+          3,
+          3
+        )(
+        // false  参数二：从哪个位置开始
+        function () {
+          console.log([].includes.call(arguments, "a")); // true  可用在类数组对象上
+        }
+      )("a", "b", "c");
+
+      // slice()   从原数组中 '浅拷贝' 出一个新的数组， 不传参数，则为创建数组的  副本
+      // 简单点来说，就是假设B复制了A，当修改A时，看B是否会发生变化，如果B也跟着变了，说明这是浅拷贝，拿人手短，
+      // 如果B没变，那就是深拷贝，自食其力
+      const arr = [1, 2, 3, 4, 5, 6];
+      // 参数：从起始位置到终点位置之前（不包括终点位置），负数则是从倒数开始
+      // 返回：拷贝出的数组
+      let newArr = arr.slice(1, 4);
+      console.log(newArr); // [2,3,4]
+
+      // 如果数组元素是对象，则对 新数组 对象的修改 会在 旧数组 相同的对象中反应出来，因为他们引用的是 同一个对象... 所以是 浅拷贝。。
+      const arr = [1, 2, [7, 8, 9], 4, 5, 6];
+      let newArr = arr.slice(2, 3);
+      newArr[0][0] = 34;
+      console.log(newArr); // [34, 8, 9]
+      console.log(arr); // 1, 2, [34, 8, 9], 4, 5, 6
+
+      // slice 方法可以用来将一个类数组（Array-like）对象 / 集合转换成一个新数组
+      function fn() {
+        // return Array.prototype.slice.call(arguments)  或者
+        return [].slice.call(arguments); // return [].slice.apply(arguments)
+      }
+      console.log(fn(1, 23, 3)); // [1, 23, 3]
+
+      // const str='fsafsafa'    str.slice()     slice 可用于字符串
+
+      // concat() 方法 '基于' 当前数组的 所有项 创建一个新的数组，不添加元素则是创建数组的一个 副本，
+      // slice 和 concat 如果没有传递参数进去，则是创建数组的一个 '副本' 。
+      let newArr = arr.concat(7, 8); // [1,2,3,4,5,6,7,8]
+      let newArr = arr.concat([7, 8]); // [1,2,3,4,5,6,7,8]
+      // 这里区别于 splice, 如果元素是数组对象，则合并数组
+
+      // flat(depth)  对于嵌套的数组。 将所有的元素与 子数组中的元素合并为一个新的数组返回。
+      // depth 即可以展开(扁平化)嵌套几层的元素，使用 Infinity 可以展开嵌套任意深度的数组。
+      let arr = [
+        [1, 2],
+        [2, 6],
+        [5, 6],
+      ];
+      let arr1 = [].concat(arr);
+      console.log(arr1); // [ [ 1, 2 ], [ 2, 6 ], [ 5, 6 ] ]
+      console.log(...arr); // [ 1, 2 ] [ 2, 6 ] [ 5, 6 ]
+      let arr1 = [].concat(...arr); // [ 1, 2, 2, 6, 5, 6 ]
+      let arr1 = arr
+        .reduce((pre, cur) => {
+          return pre.concat(cur);
+        })
+        [
+          // 对于无限嵌套的数组请使用 Lodash ！！！
+
+          // flatMap()  即相当于将 flat()  map() 函数功能合并起来使用，更简洁，效率更高。
+          // flat 深度为 1
+
+          // copyWithin()  对数组自身一部分的 复制 和 黏贴到数组的另一个位置。。
+          // 浅复制 原数组 的一部分 到 原数组 中的另一个位置，并返回它，而不修改其大小。简单点就是对自身元素的 复制 和 粘贴
+          // 参数：target（粘贴起使位置）  start（拷贝开始）  end（拷贝结束，不包括 end）   默认都是从 0 开始
+          // 返回：最后在原数组的基础上 新生成一个数组。
+          (1, 2, 3, 4, 5, 6)
+        ].copyWithin(0, 2); // 3， 4，5，6， 5，6
+
+      // 浅拷贝 只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存（内存区域没有隔离）。
+      // 但 深拷贝 会另外创造一个一模一样的对象，新对象跟原对象不共享内存（内存区域隔离），修改新对象不会改到原对象。在多层对象上，浅拷贝只拷贝一层
+
+      // 复制数组
+      // 浅复制: 即如果 原数组 里有 '引用类型' ,则 拷贝出的数组 复制的是只是对象的引用
+      // copyWithin()  slice()  concat()
+
+      // 深复制
+      // JSON.parse()
+      const arr1 = JSON.parse(JSON.stringify(arr));
+
+      // Object.assign()
+      var obj1 = { a: 10, b: 20, c: 30 };
+      var obj2 = Object.assign({}, obj1);
+      obj2.b = 100;
+      console.log(obj1);
+      // { a: 10, b: 20, c: 30 } <-- 沒被改到
+      console.log(obj2);
+      // { a: 10, b: 100, c: 30 }
+
+      // 5. 数组的排序
+      // sort()  采用的是冒泡排序算法,,  返回排序后的数组，即对原数组排序后返回原数组。
+      // 1. 默认排序顺序: 是将数组里的每项用 toString()转成字符串再比较，比较的是字符串,根据字符串 Unicode 码点排序。即以元素第一个字符 按Aa~Zz  0-1 排序
+      // 2. 指明比较函数排序: 则调用函数 '返回值排序'  [compareFunction] 包含两个参数，第一个比较的元素 和 第二个比较的元素
+      // 该方法对 原数组对象 进行重排，'并不会' 在内存中创建新的数组
+
+      // 若比较函数返回值<0，那么a将排到b的前面;
+      // 若比较函数返回值=0，那么a 和 b 相对位置不变；
+      // 若比较函数返回值>0，那么b 排在a 将的前面；
+      var a = [3, 2, 1];
+      a.sort(); // 不带参数，默认以字母表顺序排序
+
+      arr1.sort((a, b) => {
+        // 包含字符串情况下
+        return a < b ? -1 : 1;
+      });
+      arr1.sort((a, b) => {
+        // 纯数字情况下
+        return a - b; // a-b 升序  b-a 降序
+      });
+      console.log(arr1); // 给参数传递函数比较
+      arr.reverse(); // 倒序
+
+      // [1,2,3,4,5,6]
+      array.sort((a, b) => {
+        if (a % 2 === 0 && b % 2 === 1) {
+          // 即同时找到一个质数 一个偶数 进行比较排序。然后进行下一对质数 偶数的比较排序。总体以升序
+          return 1;
+        }
+        return 0; // 奇数在前 偶数在后
+      }); // [1,3,5,2,4,6]
+
+      // reverse()  将 原始数组 进行排序，改变原数组, 并返回该数组的引用
+      const arr = [1, 2, 3];
+      const arr1 = arr.reverse();
+      console.log(arr); // [3, 2, 1]
+      console.log(arr1); // [3, 2, 1]
+      arr1[0] = 89;
+      console.log(arr); // [89, 2, 1]
+      console.log(arr1); // [89, 2, 1]
+
+      // toLocaleString()  返回 数组的字符串形式
+      const array1 = [1, "a", new Date("21 Dec 1997 14:12:00 UTC")];
+      const localeString = array1.toLocaleString("en", { timeZone: "UTC" }); // "1,a,12/21/1997, 2:12:00 PM",
+
+      console.log(localeString); // 数组中的元素将会使用各自的 toLocaleString 方法: 即 参数二的配置将使用 Object  Number  Date 中定义的配置项。
+
+      // Javascript 支持将函数作为参数传递，'回调函数' 内的变量 '未指定' 任何上下文绑定时，函数内所有变量的上下文是 window，除非指定 thisArg 参数
+      // 回调函数：回调函数就是一个参数，将这个函数作为参数传到另一个函数里面，当那个函数执行完之后，再执行传进去的这个函数。这个过程就叫做回调。
+      // 一般回调函数都用在耗时操作上面。比如ajax请求，比如处理文件等
+
+      // 定义主函数，回调函数作为参数
+      function A(callback) {
+        callback();
+        console.log("我是主函数");
+      }
+
+      //定义回调函数
+      function B() {
+        setTimeout("console.log('我是回调函数')", 3000); //模仿耗时操作
+      }
+      // 1 秒=== 1000 毫秒
+
+      //调用主函数，将函数B传进去
+      A(B);
+
+      // 输出结果
+      // 我是主函数
+      // 我是回调函数
+
+      //  在遍历的时候 请不要修改后面要遍历的值，，以及所遍历的数组的长度。
+      // forEach(callback[, thisArg])    对数组中的 每一项 执行给定的函数 ，未初始化(undefined) 或者 执行 callback 前已经删除 的项将被跳过 没有返回值
+      // 没有返回值， 不能中止 或 跳出循环。。 需要有中止跳出时 使用 some() every()  find() findIndex()
+      // 也可以先 使用 filter() 将符合条件的元素选出来，再使用 forEach()x
+      const arr = [1, 2, 3]; // [1, a, 2, ,4]    a 是未初始化的项   2, ,4 被删除的项
+      const arr1 = [];
+      var num = 0;
+      arr.forEach(function (e, i, arr) {
+        // 还有一个参数，即函数里 执行回调函数的this的值
+        num = ++e;
+        arr1.push(num); // 如果参数是一个数组， 则是将数组作为单个元素加进数组，不同于 concat
+      });
+      console.log(arr1); // [2,3,4]
+
+      var words = ["one", "two", "three", "four"];
+      words.forEach(function (word) {
+        console.log(word);
+        if (word === "two") {
+          words.shift();
+        }
+      });
+      // 如果数组 '在迭代时' 被修改了，则其他元素会被跳过  ？？？？
+
+      //  map(callback[, thisArg])   对数组中的 每一项 执行给定的函数, 未初始化(undefined) 或者 执行 callback 前已经删除 的项将被跳过 返回新数组
+      const arr2 = arr.map(function (e, i, arr) {
+        return e * e;
+      });
+      console.log(arr2); // [1,4,9]
+
+      // 当传递的函数 只有一个参数的 时候，不用显示传参，如下：
+      var numbers = [1, 4, 9];
+      var roots = numbers.map(Math.sqrt);
+      console.log(roots); // [1,2,3]
+
+      const arr1 = ["1", "2", "3"].map(Number);
+      console
+        .log(arr1) // [1, 2, 3]
+
+        [
+          // 若有多个参数 的时候， 需要显示传参
+          ("1", "2", "3")
+        ].map((str) => parseInt(str)); // [1 2 3]
+      // 否则
+      ["1", "2", "3"].map(parseInt); // [1, NaN, NaN]  这里 parseInt 将 currentItem 的索引当作 进制数，所以返回 NaN
+
+      // 即 map 回调函数内的
+
+      // filter(callback[, thisArg]) 对数组中的 每一项 执行给定的函数，未初始化(undefined) 或者 已删除 的项将被跳过  返回新数组
+      const arr3 = arr.filter(function (e, i, arr) {
+        return e > 2;
+      });
+      console.log(arr3); // [3]
+
+      const characters = [
+        { id: 1, name: "ironman" },
+        { id: 2, name: "black_widow" },
+        { id: 3, name: "captain_america" },
+        { id: 4, name: "captain_america" },
+      ];
+
+      function getCharacter(name) {
+        return (character) => character.name === name;
+      } //  提取 name 变量 放到函数中
+
+      console.log(characters.filter(getCharacter("captain_america")));
+      // [
+      //   { id: 3, name: 'captain_america' },
+      //   { id: 4, name: 'captain_america' },
+      // ]
+
+      console.log(characters.find(getCharacter("captain_america")));
+      // { id: 3, name: 'captain_america' }   使用find 代替 filter  查找某个元素
+
+      //  some()  对数组中的 每一项 执行给定的函数，未初始化(undefined) 或者 已删除 的项将被跳过  返回布尔值   第一次有符合条件的返回 true  就返回  true
+      const arr4 = arr.some(function (e, i, arr) {
+        return e > 2;
+      });
+      console.log(arr4); // true
+
+      // 判断数组中是否存在某个值
+      const arr = ["a", "b", "c"];
+
+      function Fn(arrObj, val) {
+        return arrObj.some((el) => el === val);
+      }
+
+      console.log(Fn(arr, "f"));
+
+      // every()   对数组中的 每一项 执行给定的函数，未初始化(undefined) 或者 已删除 的项将被跳过  返回布尔值  第一次有符合条件的返回 false 就返回  false
+      const arr5 = arr.every(function (e, i, arr) {
+        return e > 2;
+      });
+      console.log(arr5); // false
+
+      // reduce(callback[, initialValue])  对数组中的 每一项 执行给定的函数，未初始化(undefined) 或者 已删除 的项将被跳过   将其结果汇总为单个返回值
+      // accumulator 累计器  是初始值, 或者上一次调用回调返回的值;  即把上一次 输出 的值作为下一次 输入 的值
+      // currentValue  当前元素;
+      // currentIndex  当前元素索引;
+      // array 调用reduce()的数组;
+
+      // 提供     initialValue: 则 accumulator 为 initialValue, currentValue 为第一个元素的 值; 从索引 0 开始执行 callback, 通常提供初始值会更安全!!  这样在空数组时不至于返回  typeError
+      // 没有提供 initialValue: 则 accumulator 使用数组的第一个元素, currentValue 为第二个元素的值; 从索引 1 开始执行 callback
+      // reduceRight()
+      // reducer 函数的返回值分配给累加器
+
+      var numbers = [1, 4, 9];
+      const sum = numbers.reduce((acc, cur, index, arr) => {
+        return acc + cur;
+      }, 10); // initialValue
+      console.log(sum);
+
+      // 必须提供  initialValue 的情况
+      var initialValue = 0;
+      var sum = [{ x: 1 }, { x: 2 }, { x: 3 }].reduce(function (
+        accumulator,
+        currentValue
+      ) {
+        return accumulator + currentValue.x;
+      },
+      initialValue);
+
+      console.log(sum); // logs 6
+
+      // ............
+      var names = ["Alice", "Bob", "Tiff", "Bruce", "Alice"];
+
+      names.reduce((allName, name) => {
+        if (name in allName) {
+          allName[name]++; // 执行完第一步，则 {} 里就有了相应元素，则执行 ++ 任务
+        } else {
+          allName[name] = 1; // 最先执行的是这一步，
+        }
+        return allName;
+      }, {});
+      console.log(countedNames); // {Alice: 2, Bob: 1, Tiff: 1, Bruce: 1}
+
+      //！！使用for循环，可以从后向前遍历数组，而使用方法则做不到！！
+
+      // map()  filter() 的区别:   数组元素的 个数 性质 的改变..
+      // 1. map() 后 数组元素个数不会变，但性质会变；  filter() 后，元素个数会变，性质不变
+      const arr = [1, 2, 3, 4];
+      var newArr = arr.filter((item) => {
+        return item > 1;
+      });
+      console.log(newArr, arr); // map()     [false, true, true, true]   [1, 2, 3, 4]
+      console.log(newArr, arr); // filter()  [2, 3, 4]                   [1, 2, 3, 4]
+
+      // 这 三个是数组原型上的方法：Array.prototype.keys() / values() / entries() 遍历数组的键名，键值，键值对, 三个方法都返回一个 Array Iterator 迭代器。。
+      for (let index of ["a", "b"].keys()) {
+        console.log(index);
+      } // 0, 1
+      console.log(...["a", "b"].keys()); // 0,1
+
+      for (let value of ["a", "b"].values()) {
+        console.log(values);
+      } // a, b
+      console.log(...["a", "b"].values()); // a,b
+
+      for (let [index, value] of ["a", "b"].entries()) {
+        console.log(index, value);
+      } // 0 'a'  1 'b'
+      console.log(...["a", "b"].entries()); // [ [0, 'a'], [1, 'b'] ]
+
+      for (let value of arry) {
+        console.log(value);
+      } // 相对于 对象的  for  in  遍历的是数组元素
+
+      for (let i in arr) {
+        console.log(i);
+      } // 遍历数组的下标
+
+      arr.entries(); // 返回一个 Array iterator 迭代器对象, 他有 next() 方法，返回 done 和 value 值
+      let arr = ["a", "b", "c"];
+      let iterator = arr.entries();
+
+      let a = [];
+      for (let i = 0; i < arr.length + 1; i++) {
+        let tem = iterator.next();
+        console.log(tem.done); // false
+        if (tem.done !== true) {
+          console.log(tem.value); // [ 0, 'a' ]  [ 1, 'b' ]  [ 2, 'c' ]
+          a[i] = tem.value;
+        }
+      }
+      console.log(a);
+
+      // for in 与 for of 的区别：前者遍历数组元素的下标/对象的属性，后者遍历数组元素。
+      // 对象只能用 for in
+      // in 关键字： （变量 in 对象）  用在数组中， '变量' 为数组索引。 用在对象中， '变量' 为属性
+      console.log("a" in { a: 1 }); // true  有属性 a
+      console.log(1 in [2, 3]); // true    有索引 1
+
+      // join([separator])  如果省略参数，则参数默认为逗号 ,
+      // 一个数组的（一个类数组对象的）所有元素被 转换成 字符串，再用一个 分隔符 将这些字符串连接起来。 并返回这个字符串
+      var elements = ["Fire", "Wind", "Rain"];
+      console.log(elements.join()); // Fire,Wind,Rain  如果省略，则默认使用逗号分隔
+      console.log(elements.join("")); // FireWindRain    如果为空，则所有元素之间都没有任何字符
+
+      (function () {
+        console.log([].join.call(arguments));
+      })("s", 2, "tt");
+
+      // 字符串转为数组  split()
+
+      // isArray()
+      // Array.isArray()  数组类型 的 判断 数组一般用 isArray() 判断 !! 不用 instanceof
+      // 因为 在多个全局作用域下检测数组，会出错
+      // 判断 类型化数组 类数组对象  返回 false
+      var arr = new Array();
+      Array.isArray(arr);
+      console.log(Array.isArray(arr));
+
+      // Object.prototype.toString.call([])==="[Object Array]"
+
+      // Array.from(arrayLike[, mapFn [, thisArg]])  可以接受第二个参数，相当于 数组的  map 函数。
+      Array.from("hello");
+      Array.from(arrLike, (x) => x * x);
+      Array.from({ length: 5 }, (v, i) => i); // 将类数组对象转为数组，并返回类数组对象的下标
+
+      // Array.of() 的引入为数组新增了一个 创建数组的方法， 避开了 new Array(3),只传递一个参数时的怪异行为。
+      //Array.of方法用于将一组值，转换为数组。 即返回参数组成的数组
+      Array.of(3); // [3]
+      new Array(3); // 然而 Array方法只有一个参数的时候指定的是数组的长度
+      Array.of(1, 2, 3) // [1,2,3]
+
+        [
+          // fill(value[, start[, end]]) 若传参数进行部分填充， 则分别为: 填充的元素，何处开始，何处结束。若为负数，则和 length 相加得出位置
+          // 使用给定值填充一个数组, 可使用在类数组对象上
+          (1, 2, 3, 4)
+        ].fill(7); // [7,7,7,7]
+      new Array(3)
+        .fill(7) // [7,7,7]
+        [(1, 2, 3)].fill(7, 1, 2); // [1,7,3]   填充数 7;   从索引 1 开始 在索引 2 结束
+      [].fill.call({ length: 3 }, 4); // {0: 4, 1: 4, 2: 4, length: 3}  将类数组对象 { length: 3 } 用 4 来填充
+
+      // '类数组对象' 拥有 length属性 和对应的 非负整数属性 的对象( 即可以索引的对象 ), 不能使用数组其他方法
+      // '类数组对象' 转化为数组： [].slice.call()   [].slice.apply()   Array.from()  [...arr](最方便的方法)  再调用数组的方法
+      // '类数组对象' 若想直接调用 数组 的方法，就需要使用 Array.prototype.method.call 来实现
+      var foo = {
+        0: "Java",
+        1: "Python",
+        2: "Scala",
+        length: 3,
+      };
+
+      // 扩展运算符：任何有 Iterator 接口的对象，都可以  用扩展运算符 '转为' 真正的数组
+      // 用于一个表达式期望 多个参数 / 多个变量 / 多个元素、的 “位置扩展”, 其实就是一个便捷的 “变量”
+      // 如果将扩展运算符用于数组赋值，只能放在参数的最后一位，否则会报错, 作用是 便捷的参数合并
+      const [first, ...rest] = [1, 2, 3, 4, 5];
+      console.log(first); // 1
+      console.log(rest); // [2, 3, 4, 5]
+
+      function Fn() {
+        console.log([...arguments]);
+      }
+      const a = Fn("a", "b", 1, 2, 3); // ['a', 'b', 1, 2, 3]
+
+      // 剩余参数（rest参数）语法允许我们将一个 '不定数量的参数' 表示为一个数组
+      function add(x, y) {
+        return x + y;
+      }
+      const numbers = [1, 2];
+      add(...numbers);
+
+      const arr = [1, 2, 3];
+      const arr1 = [5, 6, 4, 5];
+      const arr2 = arr.concat(...arr1);
+      console.log(arr2);
+
+      //
+
+      // 获取数组最大值，最小值
+      var numbers = [5, 458, 120, -215];
+      var maxInNumbers = Math.max.apply(null, numbers), //458
+        maxInNumbers = Math.max.call(null, 5, 458, 120, -215); //458
+
+      var number = [1, 2, 3, 4];
+      let a = Math.max(...number);
+      console.log(a);
+
+      function log() {
+        console.log.apply(console, arguments);
+      }
+      log(1); //1
+      log(1, 2); //1 2
+
+      // apply 将一个数组添加到现有的数组， concat 也可，但不是附加到现有数组，而是创建一个新数组
+      // 即 在函数的参数是数组时，，， 使用apply 可以将参数 去数组化 再传递进去，
+      var array = [1, 2, 3, 4];
+      var elements = ["a", "b", "c"];
+      // 这里 array.push(elements) 参数是数组时，的不到我们想要的结果。
+
+      array.push.apply(array, elements);
+      console.log(array);
+
+      // 取出随机数组
+      const arr = [1, 2, 3, 4, 5, 6];
+      const index = Math.floor(Math.random * arr.length);
+      console.log(arr[index]);
+
+      // 数组去重
+      // filter
+      const arr = [1, 2, 2, 3, 3];
+      arr.filter((item, i, arr) => {
+        return arr.indexOf(item) === i; // 只返回和当前索引值匹配的元素
+      });
+
+      // forEach
+      function Fn() {
+        const arr1 = [];
+        arr.forEach((item) => {
+          if (arr1.indexOf(item) === -1) {
+            arr1.push(item);
+          }
+        });
+        return arr1;
+      }
+      console.log(Fn());
+
+      // from
+      var deduped = Array.from(new Set([1, 1, "a", "a"]));
+      console.log(deduped); // [ 1, 'a' ]
+
+      // 当数组的元素是对象时的去重方式？？
+      function Fn() {
+        const tmp = new Map();
+        return arr.filter((item) => {
+          return !tmp.has(item) && tmp.set(item, 1);
+        });
+      }
+
+      //  不知道怎么用,先留着吧 ???????????
+      // 由于空位的处理规则非常不统一，所以建议避免出现空位
+
+      // 类型化数组 --- 被设计用来处理 数值类型数据（8中数值类型）
+      // 所有类型化数组都基于 数组缓冲区。 它是用来存储数据的
+      // 类型化数组能够明显提升按位运算的性能，因为它不像 JS 的常规数值类型那样需要频繁进行格式转换
+
+      let buffer = new ArrayBuffer(10); // 分配了 10 个字节
+      console.log(buffer.byteLength); // 10 获取缓存区的字节数
+      let buffer1 = buffer.slice(4, 6); // 获取数组缓存区的部分内容，返回一个新的 数组缓存区
+      // 数组缓存区的 容量是不可以修改的（即字节数不可修改），但内部的数据可修改
+
+      // 数组缓存区 代表了一块内存区域， 使用 视图 DataView 来操作 数组缓存区，读写某种 数值类型的数据
+
+      let buffer2 = new ArrayBuffer(10),
+        view = new DataView(buffer2, 5, 2);
+      // 可以传参，操作部分字节，创建多个不同的视图  new DataView(buffer,5,2)
+      // 参数 5： 字节偏移量  参数2：包含的字节数；  这里指的是 只操作 索引值为 5与6 的字节。
+      console.log(view.buffer === buffer2); // true
+      console.log(view.byteOffset); // 5
+      console.log(view.byteLength); // 2
+
+      // !!! 以上是通过 视图DataView 读取 数组缓存区 的数据来 创建视图，以下通过 视图的方法 getInt*()  getUint*()  setInt*()  setUint*() 来读写 数组缓存区 的数据，从而创建 类型化数据
+
+      // setInt*() setUint*() 参数： 开始读取字节偏移量，布尔值   getInt*()  getUint*() 参数： 开始写入字节偏移量，需要写入的数据值，布尔值
+      // DataView 也提供了下列 读写方法 以便处理浮点数: setFloat*()  getFloat*()
+      // 视图允许使用  任意 数值数据类型 进行读写。 读可以是 getInt8  写可以是 setInt32
+      let buffer = new ArrayBuffer(2),
+        view = new DataView(buffer);
+      view.setInt8(0, 5);
+      view.setInt8(1, -1);
+      console.log(view.getInt8(0)); // 5
+      console.log(view.getInt8(1)); // -1
+
+      // 总结就是： 1. 建一个数组缓存区  2.创建一个视图（操作数组缓存区） 3. 通过 视图 的 方法 来 读写 数组缓存区 的数据
+      // 由此可见：类型化数组 即为 视图
+
+      let ints = new Int16Array([25, 50]);
+      console.log(ints.length); // 2
+      console.log(ints[0]); // 25
+      console.log(ints[1]); // 50
+      ints[0] = 1;
+      ints[1] = 2;
+      console.log(ints[0]); // 1
+      console.log(ints[1]); // 2
+      // 所有类型化数组都基于 数组缓冲区。 类型化数组也拥有大量与常规数组等效的方法
+      // 数组缓存区的 容量是不可以修改的（即字节数不可修改），但内部的数据可修改。 所以 类型化数组不可 改变自身大小。 进而，哪些增删改数组的方法，类型化数组是没有的。
+
+      // 类型化数组与常规数组的区别：类型化数组并不是从 Array 对象派生的。 使用 Array.isArray() 去检测会返回 false ，
+
+      // 类型化数组还有两个常规数组所不具备的方法： set() 方法与 subarray() 方法
+      // set() 方法从 另一个数组 中 复制元素 到 当前的类型化数组
+      // subarray() 方法则是将 当前类型化数组 的一部分 提取 为 新的 类型化数组
+
+      // 位、字节、字、KB、MB
+      // 位：“位(bit)”是电子计算机中最小的数据单位。每一位的状态只能是 0 或 1。
+      // 字节：8 个 二进制位 构成 1 个“字节(Byte)”，它是存储空间的基本计量单位。1个字节可以储存1个英文字母或者半个汉字，换句话说：1个汉字占据2个字节的存储空间。
+      // 字：“字”由若干个字节构成，字的位数叫做字长，不同档次的机器有不同的字长。例如一台8位机，它的1个字就等于1个字节，字长为8位。如果是一台16位机，那么，它的1个字就由2个字节构成，字长为16位。字是计算机进行数据处理和运算的单位。
+      // KB：K表示1024，也就是2的10次方。1KB表示1K个Byte，也就是1024个字节。
+      // MB：1MB = 220 Bytes = 1048576Bytes
+      // 1 byte (B) = 8 bits (b) 字节 = 8个二进制位
+      function box() {
+        console.log("ss");
+      }
+      console.log("ss");
+
+      // 来自峰哥的 js标准参考教程
+      // TypeArray     二进制数组 --- 二进制数据 --- 类型（9种）
+      // '二进制数组' 由三个对象组成：ArrayBuffer  TypedArray  DataView
+      // 二进制数组允许开发者以数组下标的形式，直接操作内存
+      // ArrayBuffer对象 代表存储 '二进制数据' 的一段内存（不能直接读写，可以指定内存区域），
+      // TypedArray对象 代表确定类型的 '二进制数据'
+      // DataView对象 代表不确定类型的 '二进制数据'
+      // 它们支持的 '数据类型' 一共有9种（DataView 对象支持除 Uint8C 以外的其他8种）。
+      // Int8  Uint8  Int16  Uint16  Int32  Uint32  Float32  Float64  Uint8C
+      // Int8 带符号的 8 位整数格式     Uint8  不带符号的 8 位整数格式
+      const buffer = new ArrayBuffer(8);
+      const dv = new DataView(buffer);
+      const v1 = dv.getUint16(1);
+
+      // arr[arr.length-1] === 数组末尾元素的 index
+    </script>
+  </body>
+</html>

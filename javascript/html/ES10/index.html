@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //  BigInt ---  继 symbol 后添加的又一种原始类型, 表示任意精度的整数
+        // 
+        // const b = 1n // 创建一个 GigInt
+        // console.log(typeof 10n) // bigint
+
+
+        // Array.flat()    Array.flatMap() --- 扁平化多维数组
+        const multi = [1, 2, 3, [4, 5, 6, [7, 8, 9]]]
+        console.log(multi) // [1, 2, 3, Array(4)]
+        const newArr = multi.flat()
+        console.log(newArr) // [1, 2, 3, 4, 5, 6, Array(3)]
+        const solveAll = multi.flat(Infinity)
+        console.log(solveAll) // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        const arr = [1, 2, 3, 4]
+        const arr1 = arr.map(x => [x * 2])
+        console.log(arr1) // [[2],[4],[6],[8]]
+        const arr2 = arr.flatMap(x => [x * 2])
+        console.log(arr2) // [2, 4, 6, 8]
+
+        // Object.fromEntries()  --- 将对象中取出的键值对数组，再次转为对象，（谷歌尚未实现）
+        const obj = {
+            apple: 10,
+            orange: 20,
+            banana: 30
+        }
+        const entries = Object.entries(obj)
+        console.log(entries)
+        const entriesToObject = Object.fromEntries(entries)
+        console.log(entriesToObject)
+
+        // String.trimStart()  String.trimEnd()
+        let str = "   1234   "
+        str.trimStart() // 清空 前面的空格
+        str.trimEnd() // 清空 后面的空格
+        str.trim() // 清空 所有空格
+        console.log(str.length)
+    </script>
+</body>
+
+</html>

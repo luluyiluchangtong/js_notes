@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 模块化方案的目的：1. 解决命名空间的冲突  2.低耦合,高复用,易维护, 每个模块之间的功能不会相互影响
+        // 模块化编程：模块就是实现特定功能的 一组方法！！！!
+        // module.html   
+        function box1() { };
+
+        function box2() { };
+        // 定义的都是全局变量，很容易发生相同的全局命名冲突。
+
+        // module.html
+        var module = {
+            a: 22,
+            b: function () {
+                return a += 1
+            }
+        }
+        console.log(module.a) // 22
+        console.log(module.b()) // 23  
+        //  避开了和全局冲突的命名，但是暴露的模块的 所有 成员和变量。且外部可以改写内部的值。 
+
+        // module.html
+        var module = (function () {
+            var a = 22;
+            var b = function () {
+                return this.a += 1
+            }
+            return { // 对外暴露接口
+                b: b
+            }
+        })()
+        console.log(module.a) // 此时外部不能访问到变量  a
+        console.log(module.b) // 可以访问 b
+        // 这是 js 模块的基本写法，但是无法解决模块间的依赖关系(即模块之间相互调用的问题)，同时 命名空间 冲突的问题也没有解决
+
+        // node 模块中使用 module.exports  或  exports  
+        // exports 是 module.exports 的简写方式，它指向的是module.exports，实际和 require 匹配的是 module.exports,,
+        // 所以注意不能在 exports上改变指向，，但是可以在 module.exports 上改变指向。。
+        // ES6  模块中使用 export
+
+        // 模块规范(模块加载方案)： 
+        // CommonJS：  它解决了： 全局命名冲突问题，管理模块间依赖 的功能。 !!!! 它用在服务器端
+        // node.js的模块系统，就是参照 CommonJS 规范实现的，它用于后台服务器，实行服务器端的 模块化
+        module.exports = math;
+        var math = require('math');
+        math.add(2, 3); // 5
+
+        // 服务器端的模块都是放在 硬盘， 读取时间很快。浏览器端的模块都是放在服务器，从服务器读取模块时取决于网速的快慢。
+        // 在浏览器端使用 CommonJS 读取服务器端的模块可能会很慢 
+
+        // AMD:  它不仅解决了全局命名冲突问题，管理模块间依赖 的功能，还解决了 异步加载 js 文件。 !!!!它用于浏览器端
+        // define(id?, dependencies?, factory);  这里的异步 即等 []  加载完了之后，调用回调。    define 引用和定义模块
+        module.exports = math;
+        require(['math'], function (math) {
+            math.add(2, 3);
+        });
+
+        //  require.js 实现了 AMD规范（提前执行依赖）。  
+
+        //  CMD:  它区别于 AMD 的是 按需加载模块  define(id?, dependencies?, factory(require, exports, module){}) 
+        //  sea.js 实现了 CMD 规范（按需执行依赖）。
+
+        // ES6原生 支持 import  export
+        // script 加上  type="module"
+
+        // ES6模块加载方案：通用于服务器和浏览器，属于 静态加载
+        // 模块代码自动运行在严格模式下
+        // 由于 export import 都是在 代码编译阶段(静态解析阶段) 执行的，即在代码运行之前。 
+        // 所以他们书写的时候 位置 不可以 在除了 模块作用域(顶级作用域) 的任何位置。。
+        // 由于模块必须用与脚本不同的方式运行，所以浏览器就引入了 <script type="module"> ，以表示
+        // 资源文件或内联代码需要作为模块来执行。
+
+
+        // 模块的功能主要由两个命令组成：
+        // import  为输入其他模块提供的功能
+        // export  模块的对外接口
+
+        // export：
+        // export --- 用于 从定义好的 "模块中" 导出 函数，对象,类或变量。
+        // 一个模块相当于一个独立的文件，模块内部的所有 变量 外部无法获取，若需要，则必须如下输出：
+        //  export const firstName= 'lu' 或  const firstName= 'lu' export { firstName }   
+        //  export 出去的尽量是一个常量。。因为常量的值是不可改变的
+
+        //  默认导出：(一个模块只能有一个默认的导出)
+        //  var firstName= 'lu'   export default firstName  
+
+        //  命名导出：
+        //   var firstName= 'lu'  export {defaultName}；  export  var firstName= 'lu'
+
+        //  命名空间导出:  (注意非默认的导出总是有一对花括号。默认导出也可以放进括号里)
+        //  export {Name1 as firstName, Name2 as lastName}  
+
+        //  默认导出和非默认导出同时存在时 默认在前，非默认在后：
+
+        // import：
+        //  import --- 用于 从定义好的 "模块中" 导入 函数，对象,类或变量。
+        //  导入的内容不能再次定义同名，不能改值，不能导入前使用。 规则就像使用了 const, 但是如果导入的是引用对象，则可改内部的值，也同const一样。
+        //  默认导入：(可以使用 任何名称 导入默认导出)
+        //  import firstName from '../**.js' 
+        //  如果 import 目录名 from '../'  则该目录下的 作为导出模块 的文件命名必须是 index.js
+
+        //  命名导入：
+        //  import {firstName, lastName} from './***.js'。 import后面的变量必须与被导入模块 '../***.js' 对外接口的名称相同
+
+        //  命名空间导入： 
+        //  import...as... from...  
+
+        //  默认导入和非默认导入同时存在时 默认在前，非默认在后：
+
+        //  form 后的路径可以使相对路径，也可以是绝对路径; 可以省去后缀; 如果只是输出模块名称，则 需要 相应的 配置文件 告诉js引擎怎么取到该模块
+        //  模块整体加载： import * as all from './***.js'  将所有的输出值加载在 all 对象上面。。
+        //  这里注意： all.firstName='wang'  是不允许的；同时 import 后也不能有 表达式 等在运行时才产生结果的写法
+        import {
+            longNameA,
+            longNameB,
+            longNameC,
+            longNameD,
+            longNameE,
+        } from 'path'; // 引入多个模块时 import 的写法，多次的 import导入绑定，./***.js 只会执行一次
+
+        //  export { foo, bar } from 'my_module';
+        //  等同于
+        //  import { foo, bar } from 'my_module';
+        //  export { foo, bar };
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="played()">按钮</button>
+    <audio autoplay=true volume="0" controls="controls" src="../images/wife.mp3">
+        <!-- 也可以使用 <source/> 标签， -->
+    </audio>
+    <!-- 
+    autoplay: 默认false，自动播放为 true
+    loop：循环播放
+    controls：显示音频界面
+    muted: 默认 false， 是否静音
+    preload：预加载方式  none - 音频不被缓存； metadata - 获取元数据  auto/空字符串 - 预加载音频
+ -->
+
+    <script>
+        var audio = document.querySelector('audio');
+        window.addEventListener("keydown", function fn() { // 按键触发播放
+            audio.currentTime = 0
+            audio.play()
+        })
+
+        function played() { // 播放所需时间
+            console.log('Start:' + audio.played.start(0) + 'End:' + audio.played.end(0))
+            if (audio.ended) {
+                alert('结束了！')
+            }
+        }
+        audio.addEventListener("pause", function () { // 其它的事件 请在需要时查找 MDN 或 W3schools
+            alert("暂停了！")
+        })
+        audio.currentTime = 20
+        audio.volume = 1 // 设置音频播放的音量 
+        // web Audio API
+    </script>
+</body>
+
+</html>

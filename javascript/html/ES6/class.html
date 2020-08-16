@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <span class='sp' v-for="" style="color:#030303"></span>
+    <script>
+        // 类 是 对象的类型，具有 相同的 属性和方法的一组对象的集合
+        // 类的 实例化 的结果就是对象，而对对象的 抽象 就是类
+
+
+        // 传统是通过 构造函数生成 实例对象
+        // Es6 通过 class类生成   实例对象, 执行严格模式
+        // 新的class写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已
+        // 自定义类型 和 类的区别是使用类的目的，它 简化了 很多功能的代码。
+        // 类与函数有相似之处，即它们都有两种形式：声明与表达式。
+        // 类声明：
+        function Point(x, y) { // 构造器 
+            this.x = x;
+            this.y = y;
+        }
+
+        Point.prototype.toString = // Point.prototype  是原型对象
+            function () {
+                return '(' + this.x + ', ' + this.y + ')';
+            };
+
+        var p = new Point(1, 2);
+        console.log(Point.prototype.constructor === Point)
+        console.log(p.__proto__ === Point.prototype)
+        console.log(p.constructor === Point.prototype.constructor)
+        // ES5的写法
+
+        // 1. 类的声明
+        class Point { // let Point=class{}   类的表达式 和 类的声明 功能是一样的，只是代码风格不一样。
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            toString() {
+                return '(' + this.x + ', ' + this.y + ')';
+            } // 其实类的 所有方法 都定义在 prototype 属性上面。
+        }
+        var p = new Point(1, 2);
+
+        // 2. 匿名类的表达式
+        let Person = class { }
+
+
+        // 3. 命名类的表达式
+        const MyClass = class Me {
+            getClassName() {
+                return Me.name;
+            }
+        }; //  类名是 MyClass    Me 只在 class内部代码可用   // 不存在变量提升
+
+
+
+        // 类允许在其原型上定义访问器属性
+        // 类实际上是个“特殊的函数”
+        // 类声明：没有声明提升， 采用严格模式
+
+        // 例子1：
+        class Box { // (基类) 超类
+            constructor(height, width) { // 构造函数
+                this.height = height;
+                this.width = width;
+            }
+            get b() { // 访问器属性的 getter 方法
+                return this.a()
+            }
+            a() {
+                return this.height + this.width;
+            }
+        }
+
+        class ChildBox extends Box { // (派生类) 子类
+            constructor(height, width, name) {
+                super(height, width) // 如果子类中存在构造函数，则需要在使用“this”之前首先调用 super()
+                this.name = name
+            }
+            a() {
+                return this.height * this.width;
+            }
+            b() {  // 使用 super 引用原型, 简单来说， super 是指向当前对象的原型的一个指针
+                console.log(super.a()) // 子类中通过 super 调用 父类的方法   24
+                console.log(this.name)
+            }
+        }
+        const child = new ChildBox(20, 4, 10)
+
+        console.log(child.a()) // 80
+        child.b() // 10
+
+
+        //    例子2：
+        class Animal { // (基类) 超类
+            static isAnimal(a) {
+                // static  关键字用来定义一个类的静态方法，注意：静态方法不能用实例调用。通过类调用！
+                return a instanceof Animal;
+            }
+        }
+        let a = new Animal('Jack');
+        Animal.isAnimal(a); // true
+        a.isAnimal(a); // TypeError: a.isAnimal is not a function
+
+
+        class Animal {
+            constructor(name) {
+                this.name = name;
+            }
+            sayHi() {
+                return `My name is ${this.name}`;
+            }
+        }
+
+        let a = new Animal('Jack');
+        console.log(a.sayHi()); // My name is Jack
+
+        class Cat extends Animal { // (派生类) 子类
+            constructor(name) {
+                super(name); // 调用父类的 constructor(name)
+                console.log(this.name);
+            }
+            sayHi() {
+                return 'Meow, ' + super.sayHi(); // 调用父类的 sayHi()
+                // return (this.name.split("").reverse().join(""));
+            }
+        }
+
+        let c = new Cat('Tom'); // Tom
+        console.log(c.sayHi()); // Meow, My name is Tom
+
+
+    </script>
+</body>
+
+</html>

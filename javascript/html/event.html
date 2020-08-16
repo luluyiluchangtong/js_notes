@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style type="text/css">
+
+</style>
+
+<body>
+    <ul style="padding:40px;">
+        <li> sfaf111<span>span</span></li>
+        <li>sfaf33</li>
+        <li>sfaf22</li>
+        <a href="">ssssssssssss</a>
+    </ul>
+
+    <script>
+        var a = 1
+        var b = {};
+        var c = function () {
+            d = 5;
+        }
+        function abc(z, x, y) {
+            z.a = 5;     // {a} = z.a =1
+            x.b = 6;     // {b} = x.{b}=6   =>  x.{b}=6
+            y.c = 5      // {c} = y.f(){ d=5 }
+        }
+        abc(a, b, c)
+        console.log(a)
+        console.log(b)
+        console.log(c)
+        console.log(a + b + c)
+    </script>
+</body>
+
+</html>

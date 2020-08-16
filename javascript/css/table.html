@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="pv2">测试8：表格的所有属性</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <table border="1" rules="cols/rows">
+            <tr>
+                <th>111</th>
+                <th>111</th>
+                <th>111</th>
+            </tr>
+            <tr>
+                <td rowspan="2">222</td>
+                <td>222</td>
+                <td>222</td>
+            </tr>
+            <tr>
+                <td colspan="2">2212</td>
+                <td>222</td>
+                <td>222</td>
+            </tr>
+        </table>
+    </div>
+    <style>
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 600px;
+            box-shadow: none
+        }
+    </style>
+</body>
+
+</html>

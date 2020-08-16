@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form1" action="/users/login" method="post" enctype="multipart/form-data">
+        <!-- 提交文件需要该字段： enctype="multipart/form-data" -->
+        <p>用户名：<input name="userName" type="text" id="txtUserName" tabindex="1" size="15" value="" /></p>
+        <p>密　码：<input name="password" type="password" id="TextBox2" tabindex="2" size="16" value="" /></p>
+        <p>文件：<input type="file" name="name" /></p>
+        <p><input type="submit" value="登录">&nbsp<input type="reset" value="重置"></p>
+    </form>
+    <script>
+        // 表单的组成： 1. 表单标签 form， 2. 表单域 表单标签里的所有内容（输入框，按钮。。。） 
+        // 1.所有表单特性, 脚本化表单：
+
+        //   表单数据的提交方式: 使用 ajax 提交;   使用 FormData 提交 
+
+        // 在构建站点或应用程序时，设计表单是非常重要的一步！！
+        // 表单脚本：
+        // form 标签的属性：  
+        // accept-charset="UTF-8"  	表单提交时使用的 字符编码 列表，多个字符编码使用空格分隔。 默认是和包含该 form元素 的文档相同的编码。
+        // action="URL"  规定当提交表单时，向何处发送表单数据。
+        // autocomplete="on/off"  规定启用自动完成功能。浏览器会基于用户 之前 键入的值 自动完成值。
+        // enctype=""  发送前对字符进行编码，只有 method="post" 时才使用 enctype 属性, 当使用有 文件上传控件 的表单时，multipart/form-data 值是必需的。
+        // method="post/get"  发送表单数据的 HTTP方法
+        // name=""  随便取个名字啦~~ 一般不适用 name属性获取表单 即不用 document.forms["form2"], 但可用表单的集合 即 document.forms[1]
+        // novalidate  提交表单时 不进行验证  (多个submit 按钮时，formnovalidate属性禁止多余的 submit 按钮实现提交。)
+        // target="_blank/_self/_parent/_top"  即在何处显示提交表单后接收到的响应
+        /* 最佳使用方式如下，也可以嵌套。label元素用来定义 小部件的 标签，
+         <label for="pass">密码</label>
+         <input type="password" id="pass" name="pass_name">
+
+         有多个标签时，请都把标签放在 label 元素中。
+        <label for="username">Name: <abbr title="required">*</abbr></label>
+        <input id="username" type="text" name="username">
+        */
+
+        /* 、
+        数据列表 --- datalist
+        <label for="aa">aa</label>
+        <input type="text" id="aa" list="list">
+        <datalist id="list">
+            <option>4f4sf</option>
+            <option>1fsf</option>
+            <option>2fsf</option>
+            <option>3fsf</option>
+        </datalist>
+        */
+        // input[type="radio"] 设置所有的 name属性共享相同的值，则被视为同一组按钮，只有一个可以同时被选。
+        // input[type="month/week/datetime/time"]  min="" max="" 。。没办法，浏览器支持很一般
+        // 所有日期和时间控制都可以使用 min 和 max 属性来约束。 
+        // input[type="color"] 浏览器支持也很差
+        // <input type="file" name="file" id="file" accept="image/*" multiple>
+        // <input type="hidden" id="timestamp" name="timestamp" value="1286705410"> 隐藏数据显示，发送数据。
+        // <progress max="100" value="75">75/100</progress>
+        // <meter min="0" max="100" value="75" low="33" high="66" optimum="50">75</meter> 表示一个标量测量值
+        // optimum 為最优值， 这里设置 50 为最优值
+        // <output></output> 计算后的结果输出标签，这是一个新增的语义标签。
+        // textarea 默认与 文本底线 对齐，有空隙。 所以需要 vertical-align: top;
+
+        // 获取表单及元素： 
+        // let Form=document.geElementById("form1");
+        // let Form=document.forms[0];
+        // let Field=document.forms[0].elements[0]
+        // let Field=document.forms[0].elements["input1"]
+        // document.forms['formName']; 获取 name 值为 formName 的表单
+        // document.formName.elementName.value  ; 获取表单input元素的值 
+
+
+
+        // 共有的表单字段(field)属性： 
+        // type  value  name (只有设置了 name 属性的表单元素才能在提交表单时传递它们的值)
+        // disabled  form(只读)  autofocus  required 
+        // disabled 禁止提交
+        // arr[0].removeAttribute("disabled") 移除 disabled 属性
+        // arr[1].setAttribute("disabled", true) 添加 disabled 属性
+        // 表单很长，一般拆分到多个页面，只能是在一个页面时，请用 fieldset 元素来提高可用性。
+        // fieldset 元素将表单里的部件 分组； 用legend 作为标签。（legend是作为可访性存在的，所以可定义宽高为零隐藏。）它用在表单很长但只能都放在一个页面时。
+        // 也使用其他的 html 元素 div  section 等。。将里面的部件分组
+        // 共有的表单字段(field)方法： focus()  blur()
+        // 共有的表单字段(field)事件： focus  blur  
+
+        // 文本输入域组件： 
+        // 文本框方法 select() 对应的是 select 事件; setSelectionRange();
+        // change事件 (用在select textarea 等value值改变的地方, 且 "失去焦点后" 再触发事件， 而select不需要。)
+        // html5 的 input 事件是在 表单字段的 value 值 "发生改变时" 即触发，另外不支持 select 字段。
+
+        // 除了表单字段共有属性，文本输入域还有如下属性：
+        // readonly  placeholder  size  minLength  maxLength  min  max  step(type=number) autocomplete 
+        // multiple(用在 email file select选择多个值)
+        // pattern (正则属性)
+
+
+        // 获取焦点，从而 全选文本 / 选择部分文本
+        btn.onfocus = function (e) {
+            let target = e.target
+            target.select() // 全选
+            let range = btn.setSelectionRange(0, 5); // 部分选择
+        }
+
+        // 取得选择的文本
+        function getSelectText(ulO) {
+            let text = ulO.value
+            return text.substring(text.selectionStart, text.selectionEnd)
+        }
+        console.log(getSelectText(ulO))
+
+        // 自动切换焦点：电话号码的输入，分区   86 0571 13185087075
+        // 表单验证：
+        // required属性，规定是必填字段， 除此之外还有 email url 等都需要符合相应的格式
+        // <input type="number" min="3" max="10" step="2">
+
+        // 选择框  select
+        // select 的属性:
+        // multiple --- 布尔值 
+
+        // HTMLSelectElement 对象的属性:
+        // options --- 选项集合     返回 HTMLOptionsCollection
+        // selectedIndex --- 选中项的索引  
+        // size --- 选项长度
+        // remove(index) --- 移除选项  
+        // add("option text","option value") --- 插入选项
+        var newOption = new Option("text", "value") // 只传 text 也没问题
+        sleO.add(newOption, undefined) // 只能是插入最后位置，undefined 必须要写上。 需要插入其他位置，请使用 DOM 方法
+        sleO.remove(1) // 移除选项：移除所有选项时请先遍历，再依次移除。
+
+        // optgroup 元素 将option 分组。
+        // option 的属性：
+        // value --- 选项的值(若没有 value属性，则提交时将option的 text值作为 值 上传)  
+        // text --- 选项的文本  
+        // index --- 当前选项  
+        // selected --- 布尔值
+        // 表单序列化
+        // ---------------------------------------------------------------------------------------------------------
+
+        // 2.验证表单
+        // 表单数据校验
+        // 服务器端校验发生在将数据写入数据库之前
+        // 在真实的项目开发过程中，开发者一般都倾向于使用客户端校验与服务器端校验的组合校验方式以更好的保证数据的正确性与安全性。
+        // input:valid --- 合法有效时的 样式   
+        // input:invalid --- 非法无效时的 样式
+        // input:required --- 
+        // pattern 属性， pattern="banana||orange"  一般使用 正则验证
+        // HTML5为所有表单元素添加了一个 JS属性：input.validity(有效性) ,返回一个 validityState对象，该对象下定义的属性返回 true/false
+
+        // HTML5为所有表单元素添加了两个 JS方法：
+        // 设置自定义错误消息的方法：input.setCustomValidity('错误提示消息'); 这个相当于将input.validity.customError:true
+        // 取消自定义错误消息的方法：input.setCustomValidity(""); 这个相当于将input.validity.customError:false
+        // checkValidity()  如果元素的值不存在验证问题，返回 true，否则返回 false
+        // 
+        // ---------------------------------------------------------------------------------------------------------
+
+        // 3.发送表单数据
+        // HTML 表单是由 一个或多个小部件组成的（文本字段，选择框，复选框。。），且一般都有相应的标签 label。
+        // 每个表单部件都有给一个 name属性 用来发送数据
+        // 严格禁止表单嵌套！
+        // form的部件一般放在 form 里。 如果放在外面，将和任何表单无任何关联，可设置 form属性（就是form标签的 id值。）关联表单。
+        // form.reset()
+
+        // 三种发送表单数据的方式：
+        // 1. 将 表单数据 发送到隐藏的 iframe   避免使用这项技术. 有第三方服务的安全风险
+        // 2. 手动构建XMLHttpRequest 提交数据  太麻烦！！
+        // 3. 使用 XMLHttpRequest 和 the FormData object（表单对象）提交数据   ok！！
+
+
+        //  表单发送二进制数据
+
+
+
+        // 提交表单： 需要通过 submit按钮 提交， 或编程方式提交 form.submit()。 
+        // 提交表单的几种方式：
+        // 1. 自动提交表单 和 按钮提交
+        // <form method="post" id="myform" action="a.php">
+        // <input type="button" value="提交表单">   或者 type="submit" 按钮可直接提交 form
+        // </form>
+
+        //  function validate(){
+        //  document.getElementByIdx_x('myform').submit();
+        //                  }
+        // const btn = document.querySelector('input[type="button"]');
+        // btn.addEventlitener('click', validate)
+
+
+        // 2. ajax 异步提交表单数据
+        // jq  serialize() 方法序列化参数
+        $(function () {
+            $("#ajaxBtn").click(function () {
+                var params1 = $("#myform").serialize(); // 序列化 name  value  
+                var params2 = $("#myform").serializeArray();
+                console.log(params1); //name=zhangsan&sex=1&age=20  
+                console.log(params2); //[Object, Object, Object]  
+                $.ajax({
+                    type: "POST",
+                    url: "RegisterAction.action",
+                    data: params1,
+                    success: function (msg) {
+                        alert("success: " + msg); // 返回序列化的键值对
+                    }
+                });
+            })
+        })
+
+        // js 原生 FormData 序列化参数提交表单
+        // 用一些键值对来模拟一系列表单控件：即把form中所有表单元素的name与value组装成一个queryString
+        // 向FormData对象中手动添加数据; 
+        var formData = new FormData();
+        formData.append("username", "Groucho");
+        formData.append("accountnum", 123456); // 数字 123456 会被立即转换成字符串 "123456"
+
+        var request = new XMLHttpRequest();
+        request.open("POST", URL);
+        request.send(formData);//发送数据
+
+
+        // 或将form 元素作为一个参数绑定到FormData对象，
+        // 获取页面已有的一个form表单
+        var formdata = document.getElementById("form");
+        // 用表单来初始化
+        var formData = new FormData(formdata);
+        // 我们可以根据name来访问表单中的字段
+        var name = formData.get("name"); // 获取名字
+        var psw = formData.get("psw"); // 获取密码
+        // 当然也可以在此基础上，添加其他数据
+        formData.append("token", "kshdfiwi3rh");
+
+        $.ajax({
+            url: url,//发送数据的接口地址
+            type: "POST",
+            data: formData,//发送的数据
+        });
+
+        // formdata 和 serialize 序列化提交数据的去区别
+        // serialize 是 jq 的方法，不能上传文件流，只适用于除type=“file”以外的form表单。 而formData 就可以实现上传多个文件流
+        // ---------------------------------------------------------------------------------------------------------
+
+
+        // 表单样式的美化：
+        // IOS 客户端 需要 -webkit-appearance: none;
+        // 伪类 :default 该选择器可以在 button, checkbox, radio, 以及 option 上使用
+        // 即初始加载 默认选中（或推荐选中）的那个元素的样式，
+        // input[type="radio"]:default+label:after {
+        //     content: "(推荐)";
+        // }
+        // 伪类 :in-range  :out-of-range  用在 有取值范围的表单元素中 例如： input[type="number"]
+        // 伪类 :optional  用在可设置 required 属性但未设置时 的表单元素样式
+        // 伪类 :read-only 用在只读的表单元素上
+        // -webkit-appearance:none  去掉表单默认样式，美化表单。但是浏览器支持一般，其次 select 似乎有点难。
+    </script>
+
+</body>
+
+</html>

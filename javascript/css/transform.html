@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="pv2"> 测试9：transform的所有属性 --- 应用于 元素的 2D 或 3D 转换</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <div id="div2" class="divBasic"></div>
+    </div>
+    <style>
+        #div2 {
+            transition: all .5s ease-in 1s;
+        }
+
+        #div2:hover {
+            width: 200px;
+            height: 200px;
+            transform-origin: top left;
+            /* 指定变形的 中心点 */
+            backface-visibility: hidden;
+            /* 元素旋转过程中，其背面是否可见 */
+            transform: translate(200px, 50px) rotate(30deg) scale(2, 3) skew(30deg, 50deg);
+            /* translate3d
+           rotate3D ：rotate3d(x,y,z,a)  x,y,z 是一个0到１之间的数值，主要用来描述元素围绕X轴旋转的 "矢量值"
+           scale3D ：默认值为１，当值大于１时，元素放大，反之小于１大于0.01时，元素缩小
+           3D矩阵：貌似有点复杂，在OpenGL里。。。
+            */
+        }
+
+        /*transition: transition-property/duration/timing-function/delay;  transition是基于 "数值" 转换的， 对display:none/block;  background:url() 是不起作用的，可以使用*/
+
+        /*timing-function :  ease慢速开始，变快，慢速结束   ease-in慢速开始   ease-out慢速结束  ease-in-out慢速开始，慢速结束 linear默认匀速行进*/
+
+        /*比animate少两个特性。。 重复次数以及是否轮流反向*/
+
+        /* 3D 场景下的 transform
+         transform-style: preserve-3d;   指定元素在 3D空间展示 
+         perspective:8000px;   设置观察者距离元素的位置, 设置在包含该属性的外层上 
+         perspective-origin: left top;    设置观察者站在舞台前方的位置, 设置在包含该属性的外层上
+         */
+    </style>
+    <h2 class="pv2"> 测试9.1：transform的所有属性 --- 应用于 元素的 2D 或 3D 转换</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <div>
+            <img class="img2 absolute w-10" style=" left:50%;" src="../images/ahwy_bating.png" alt="">
+            <img class="img1 absolute w-10" style=" left:50%;" src="../images/ahwy_erqing.png" alt="">
+        </div>
+    </div>
+    <script>
+        function addTransiTion() {
+            divBox.classList.add('trans')
+        }
+
+        function removeTransiTion(e) {
+            if (e.propertyName !== 'height') return // propertyName 是 transition 专属的 event 对象属性 
+            e.target.classList.remove('trans')
+        }
+
+        btn.addEventListener("click", addTransiTion)
+        divBox.addEventListener("transitionend", removeTransiTion)
+        // transitionend 事件， 过渡全部完成之后的，执行的函数
+    </script>
+    <style>
+        div:hover .img1 {
+            transform: rotateY(180deg);
+        }
+
+        /* 第一步  正值，顺时针； 负值，逆时针*/
+
+        .img2 {
+            transform: rotateY(-180deg);
+        }
+
+        /* 第二步 */
+
+        div:hover .img2 {
+            transform: rotateY(0deg);
+            z-index: 3;
+        }
+
+        /* 第三步 */
+
+        .img1,
+        .img2 {
+            transition: all 3s;
+            backface-visibility: hidden;
+            /* 只是为了元素旋转过程中，其背面是否可见  */
+        }
+
+        /* 第四步 */
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>o2o --- 个人中心</title>
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <script src="../js/jquery-3.1.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+    <!-- <div>
+        <ul>
+            <li class="abc">
+                <span>span</span>
+            </li>
+            <li class="bc">
+                <span>span</span>
+            </li>
+        </ul>
+    </div> -->
+    <p class="abc" id='ee'>abc1</p>
+    <p class="abc">abc1</p>
+    <p class="abcd">abc</p>
+    <p class="abc efg">abc</p>
+    <p class="bcq">abc</p>
+
+    <div class="div1">div1</div>
+    <input type="button" class='btn1'>
+    <div class="div2">div2</div>
+
+    <script>
+        // 选择器
+        // 1. 基础选择器
+        $('*') // 很慢很慢~~~
+        $('p');
+        $('.abc');
+        $('#ee');
+
+        // 2. 层级选择器
+        $('div>span');
+        $('div span')
+        $('p+p'); // 拥有共同父元素的下一个同级元素
+        $('p~p'); // 同级兄弟元素
+
+        // 3. 属性选择器：
+        $('p[id]').css({
+            'color': 'blue'
+        }) // 给定 属性名 的属性 
+        $('[class="abc"]').css({
+            'color': 'darkred'
+        }) // 给定 属性值 的属性 
+        $('[class^="a"]').css({
+            'color': 'red'
+        }) // 以 *** 字符开头的属性 
+        $('[class$="d"]').css({
+            'color': 'purple'
+        }) // 以 *** 字符开头的属性 
+        $('[class*="q"]').css({
+            'color': 'green'
+        }) // 包含 ***字符串的属性
+        $('[class~="efg"]').css({
+            'color': 'yellow'
+        }) // 包含 空格隔开的其中一个属性
+        $('[id][class]').css({
+            'fontWeight': 'bold'
+        }) //  多个属性选择器
+
+        // 4. 基础筛选选择器
+        $('.btn1').click(function () {
+            $(':animated').css({
+                'background': 'red'
+            })
+        });
+
+        function anima() {
+            $('.div2').slideToggle('slow', anima)
+        }
+        anima()
+
+        $('div:odd');
+        $('div:even');
+        $('div:first');
+        $('div').first() // 不接受任何参数
+        $('div:last');
+        $('div').last() // 不接受任何参数
+        $('div').eq('2') // 从 0 开始
+        $('div').slice(index) // :gt
+        $('div').slice(0, index) // :lt
+        $('div:not(".div1")')
+        $('input:focus')
+        $('div').get('index') // 获取集合中的 DOM 元素
+        $('div').index('$("div")') // 返回元素的索引值
+        $('div').toArray() // 将元素集合转换成数组。
+
+        // 元素筛选
+        $('div').prevUntil();
+        $('div').prevAll();
+        $('div').prev();
+        $('div').siblings();
+        $('div').next();
+        $('div').nextAll();
+        $('div').nextUntil(); // 两个兄弟元素之间的元素
+
+        $('ul>li:nth-child(2)').closest('select/element/Object')
+        // select(context)  从元素自身开始向上找到离自己最近的父级元素
+        $('div').parent();
+        $('div').parents();
+        $('div').parentsUntil();
+        $('div').ofssetParent(); // 相对定位 最近的父级元素
+
+        $('div').children() // 某个元素的所有子元素，参数提供筛选
+        $('div').find('selector/element/Object') // 某个元素的所有后代元素
+        $('div:first-child')
+        // :first-child  :last-child  :nth-child()  :nth-last-child()
+        // :first-of-type  :last-of-type  :nth-of-type()  :nth-last-of-type()
+
+        // 内容筛选
+        $('div:contain("指定的文本")')
+        $('div').has("span") // :has
+        $('div:empty') // 没有子元素
+        $('div:parent') // 有子元素或文本
+        $('div').contnets() // 没有任何参数，包含 文本和子元素，注释。 不同于 .children()
+        $('.container').contents().filter(function () { // 去除文本中的 br 元素
+                return this.nodeType == 3;
+            })
+            .wrap('<p></p>')
+            .end() // 没有任何参数  在链式操作上，终止当前操作，并回到链式操作的最初状态。
+            .filter('br')
+            .remove();
+
+        // 表单筛选
+        $('input[type="password"]') // :password  类似这种的都这样写效率更高
+
+        // 可见性筛选
+        $('div:hidden');
+        $('div:visible');
+
+        // 遍历
+        // 1. filter()
+        $('div').filter('selector / element / Object / function')
+        $('ul>li').filter(function (index) {
+            return index === 2
+        }).css({
+            'color': 'red'
+        })
+        $('ul>li').filter($('.li1')).css({
+            'color': 'red'
+        })
+        // 2. map()
+        var $aa = $('ul>li').map(function (index, element) {
+            return $(this).val() // 这里的 this 就是 $("ul>li") 集合中的每个 li
+        }).get()
+        // 通过 get() 方法转换成普通的数组
+        console.log($aa)
+
+        if ($('div').is('selector / element / Object / function')) {
+            //.....
+        }
+        // 3. add()
+        $('div').add('element/selector/html/Object')
+        $('ul>li:nth-child(3)').nextAll().addback().css({})
+        // nextAll() 即第三个元素后的所有元素
+        // addback() 将前面选取的所有元素合并一起。
+
+        // 4. each()
+        each(function (index, element) {})
+
+
+        // DOM 操作
+        $('div').addClass('className/function')
+        $('div').removeClass('className/function')
+        $('div').hasClass('className')
+        $('div').toggoleClass('className/function + switch')
+        $('div').clone(true / false) // 深/浅拷贝
+
+        // 为元素里里外外的提供插入，移除，替换的功能
+        $('div').wrap(); // 每个匹配元素的外面
+        $('div').wrapAll(); // 所有匹配元素的外面
+        $('div').unwrap(); // 匹配元素集合的父级元素
+        $('div').wrapinner();
+        $('div').append();
+        $('div').appendTo();
+        $('div').prepend();
+        $('div').prependTo();
+        $('div').html();
+        $('div').text();
+        $('div').after();
+        $('div').insertAfter();
+        $('div').before();
+        $('div').insertBefore();
+        // 移除
+        $('div').detach() // 只移除元素
+        $('div').empty() // 移除元素，事件，数据
+        //替换
+        $('div').replaceAll()
+        $('div').replaceWith()
+        // 元素属性
+        $('div').arr() // 
+        $('div').removeAttr()
+        $('div').prop()
+        $('div').removeProp()
+        $('div').val()
+        // css属性
+        $('div').css();
+        $('div').height();
+        $('div').innerHeight();
+        $('div').outerHeight();
+        $('div').width();
+        $('div').innerWidth();
+        $('div').outerWidth();
+        $('div').height();
+        $('div').offset(); // 获取坐标  坐标相对于文档
+        $('div').position(); // 获取坐标  坐标相对于 offset parent 的文档
+        $('div').scrollLeft();
+        $('div').scrollTop();
+
+        // 数据操作
+        $('div').queue('fx') // 在匹配元素上 “已经执行” 的函数队列  'fx'是默认的
+        $('div').dequeue() // 在 queue 后面使用，即移除下一个函数队列后再执行这个函数队列
+        $('div').clearQueue() // 移除所有未执行的函数队列
+        $('div').data('key,value/object') // 设置、获取数据
+        $('div').removeData()
+        $('div').slideUp(300).delay(800).fadeIn(400); // 在下一个队列执行前延时一段时间
+        $('div').stop() // 默认 true true 清除队列并立即完成当前动画。
+        $('div').finish() // 清除队列，并且所有 排队的动画 的CSS属性 跳转到他们的最终值 
+
+
+        // 增加，删除，触发，禁用 回调函数
+        var calbacks = $.Callbacks()
+        Callbacks.add(foo)
+
+        // 延迟对象 ？？
+
+        // 动画特效
+        animate({}, 5000, ease, function () {})
+
+        // 渐变
+        fadeIn();
+        fadeOut();
+        fadeTo();
+
+        // 滑动
+        slideDown();
+        slideUp();
+        slideToggle();
+
+        // 浏览器事件  ---  都可以通过 bind('***', handle) 来处理
+        error()
+        $("img") // 当脚本发生错误的时候，自动触发浏览器的 error 事件
+            .error(function () {
+                $(this).hide();
+            })
+            .attr("src", "missing.png");
+        $(window).rise(function () {}) // 窗口尺寸变化时触发事件
+        $(window).scroll(function () {})
+
+        // 文档加载
+        $(window).load(function () {})
+        $(window).unload(function () {})
+        $(document).ready(function () {})
+
+        // 绑定事件处理器
+        $('div').on('click', function () {})
+        $('div').on('off', boxClick)
+        $('div').one('off', boxClick) // 每个元素上，每种事件最多处理一次
+        $('div').trigger('click', [筛选出来的数组参数]) // 绑定的事件类型 可以触发 所有的 click事件处理程序
+        $('div').triggerHandler() // 不会冒泡， 不会触发默认事件
+
+        // 事件对象
+        event.target;
+        event.pageX; // .....
+
+        // 表单事件
+        blur();
+        focus();
+        focusin();
+        focusout(); // 在元素或内部的任何元素 获得、失去焦点时触发事件。 即区别于 focus 它支持冒泡
+        change();
+        select();
+
+        // 键盘事件
+        keydown();
+        keypress();
+        keyup()
+
+        // 鼠标事件
+        click();
+        hover();
+        mousedown();
+        mouseup();
+        mouseenter();
+        mouseleave();
+        mouseover();
+        mouseout();
+        constexmenu();
+
+        // Ajax()
+        var jqXHR = $.ajax('ajax/ajax_info.txt', { // 请求 url
+            async: true, // 是否发送异步请求
+            method: get / post, // get / post
+            contentType: '', // 发送 JSON 请求的格式
+            data: '', // 发送的数据（字符串，数组，Object）
+            header: '', // 发送的额外的HTTP头，必须是一个object
+            dataType: '' // 接收的数据格式
+        })
+        jqXHR.done(function (data) { // 回调函数处理返回的数据和出错时的响应。
+            console.log('成功, 收到的数据: ' + JSON.stringify(data));
+        }).fail(function (xhr, status) {
+            console.log('失败: ' + xhr.status + ', 原因: ' + status);
+        }).always(function () {
+            console.log('请求完成: 无论成功或失败都会调用');
+        });
+
+        // jquery 更便捷的方法;
+        var jqXHR = $.get(url, function (data) {
+                console.log(data)
+            }).success(function () {
+                alert("second success");
+            })
+            .error(function () {
+                alert("error");
+            })
+            .complete(function () {
+                alert("complete");
+            });
+
+        var jqXHR = $.getJSON(url, {})
+        var jqXHR = $.post(url, {})
+        $('result').load('ajax/ajax_info.txt') // 服务器返回的html 代码插入到 该元素中
+    </script>
+
+
+</body>
+
+</html>

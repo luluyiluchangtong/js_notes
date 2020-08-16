@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <div id="div1">sfsafafsafa</div>
+    <style>
+      #div1 {
+        height: 100px;
+        width: 100px;
+        border: solid 10px;
+        padding: 10px;
+        margin: 20px;
+      }
+    </style>
+    <script>
+      // 屏幕尺寸
+      console.log(`屏幕高度 ${window.screen.height}`);
+      console.log(`屏幕宽度 ${window.screen.width}`);
+
+      // 浏览器尺寸
+      console.log(`浏览器外高 ${window.outerHeight}`); //  (不包括任务栏高度)
+      console.log(`浏览器外宽 ${window.outerWidth}`);
+      console.log(`浏览器内高 ${window.innerHeight}`); //  (可编辑的内容区域)
+      console.log(`浏览器内宽 ${window.innerWidth}`);
+      console.log(`浏览器距系统桌面左上角的x轴距离 ${window.screenX}`);
+      console.log(`浏览器距系统桌面左上角的y轴距离 ${window.screenY}`);
+
+      // 文档尺寸（有无滚动条）
+      console.log(`文档可见内容区域高 ${document.body.clientHeight}`);
+      console.log(`文档可见内容区域宽 ${document.body.clientWidth}`);
+
+      console.log(
+        `文档可见内容区域宽(包含 border) ${document.body.offsetHeight}`
+      );
+      console.log(
+        `文档可见内容区域宽(包含 border) ${document.body.offsetWidth}`
+      );
+
+      console.log(`文档内容高 ${document.body.scrollHeight}`);
+      console.log(`文档内容宽 ${document.body.scrollWidth}`);
+
+      // 元素尺寸/距离  getBoundingClientRect
+      const div1 = document.querySelector("#div1");
+      let div1WH = div1.getBoundingClientRect();
+      console.log(`元素的宽度 ${div1WH.width}`);
+      console.log(`元素的高度 ${div1WH.height}`);
+      console.log(`元素距离视口顶端 ${div1WH.top}`); // top  bottom
+      console.log(`元素距离视口左边 ${div1WH.left}`); // left  right
+      // 除了width 和 height 以外的属性是相对于视图窗口的左上角来计算的
+
+      console.log(`不包含border的宽度 ${div1.clientWidth}`);
+      console.log(`不包含border的高度 ${div1.clientHeight}`);
+      console.log(`包含border的宽度 ${div1.offsetWidth}`);
+      console.log(`包含border的高度 ${div1.offsetHeight}`);
+      console.log(`有滚动条时的内容高度 ${div1.scrollHeight}`);
+      console.log(`有滚动条时的内容宽度 ${div1.scrollWidth}`);
+      console.log(`元素的border ${div1.clientLeft}`);
+
+      console.log(`元素距离文档顶端 ${div1.offsetTop}`);
+      console.log(`元素距离文档左边 ${div1.offsetleft}`);
+      // 指的是 该元素 到 包含该元素的 “最顶级父元素/最近的有定位的父元素”的距离；
+
+      console.log(div1.offsetParent);
+      // offsetParent  指的是包含该元素的 “最顶级父元素”； 若最近的包含该元素的是 “有定位的父元素”，则是这个父元素。
+
+      // 屏幕 浏览器 尺寸属性
+      // 屏幕：   window.screen.height / width
+      // 浏览器： window.innerHeight  outerHeight     window.screenX / screenY(距离系统桌面的距离)
+
+      // 文档 元素 尺寸属性                       从内向外依次：内容宽高 / 带边框宽高/ 有滚动时宽高
+      // 文档：document.body.                    clientHeiht  offsetHeight  scrollHeight
+      // 元素：element.getBoundingClientRect()   clientHeiht  offsetHeight  scrollHeight
+      //                                         clientLeft/R/T/B    offsetLeft/R/T/B
+      //  通过 vscode 语法智能提示 寻找相关  API。 不必每一个都记住， 大致熟悉，记住关键字  width  left  即使用 vscode 通过关键字 找到 API
+
+      // "DOM表示的树状图中" --- 每个节点表示一个 Node对象.
+      // Node对象又分为许多的类型， document对象，element对象, attr....
+      // Node对象下有三个集合：NodeList  HTMLCollection  NamedNodeMap
+      // 这三个集合有一些共同的特点：它们都可以通过中括号表达式来访问集合中的元素，也有length属性。
+      // 它们都是动态的，会根据页面元素的变化而变化, 但它们并不是数组
+
+      // NodeList --- 所有节点集合
+      document.getElementsByName();
+      document.querySelectorAll();
+      // querySelectorAll 返回的是一个 Static Node List(静态的集合)，
+      // getElementsBy 系列的返回的是一个 Live Node List（动态的集合）。
+      // 即如果 更新发布 在获取集合之后，那么对所有页面的更新不会反应到该集合中。
+
+      // HTMLCollection --- 只能是 元素节点集合
+      document.getElementsByTagName();
+      document.getElementsByClassName();
+      document.getElementById("table").childNodes;
+      document.images;
+      document.forms;
+
+      // NameNodeMap  --- 属性节点集合
+      const btn = document.getElementsByName("btn")[0]; // HTML
+      console.log(btn.attributes); // 属性节点的 索引顺序 随浏览器不同而不同
+
+      // 返回/设置 属性值: get/set/remove/has/Attribute
+      image.getAttribute("class"); // 返回字符串 "aa bb cc"
+      image.setAttribute("class", "img1");
+      image.removeAttribute("id");
+      image.hasAttribute("src");
+
+      // data-* 全局属性， 自定义数据属性,
+      // 1.通过 getAttribute() 访问：
+      const dataProp = divBox.getAttribute("data-category");
+      console.log(dataProp);
+
+      // 2.通过 HTMLElement.dataset 属性访问
+      const dataProp1 = divBox.dataset;
+      console.log(dataProp1); // 返回 DOMStringMap  元素自定义 数据属性的集合
+      console.log(dataProp1.category);
+      // 若属性是 data-cate-gory ，则访问时为  dataProp1.cateGpry。 即属性 a-b 带有破择号的，需通过 camelCase 命名规则转换过来
+
+      // 获取或设置 HTML元素的内容
+      div1.innerHTML;
+      div1.outerHTML;
+      div1.textContent;
+
+      // 创建/插入/删除/替换/复制节点:   （获取 div1 节点， 然后在 div1 节点的前后，中间插入节点）
+      // 创建&插入节点
+      // 方式一：createElement()  insertBefore()  appendChild()   方便中间插入节点！！！
+      let p1 = document.createElement("p"); // 创建节点
+      let p1Text = document.createTextNode("创建textcontent"); // 或者 ---
+      p1.innerHTML = "这是个段落"; // 或者 ---
+      p1.textContent = "这是个段落"; //创建文本内容
+      p1.appendChild(p1Text);
+      document.body.appendChild(p1);
+      div1.insertBefore(p1, img); //  1要插入的节点， 2父节点的某个已存在的子节点
+
+      // // 方式二：insertAdjacentHTML(beforebegin/afterbegin,  text)   方便前后插入节点！！！   adjacent( 邻近的， 毗邻的)
+      // let div1 = document.getElementById('div1');
+      // div1.insertAdjacentHTML('beforebegin', '<div id="two">two</div>')
+      // div1.insertAdjacentElement('afterbegin', 'div1')
+      // div1.insertAdjacentText('beforebegin', '12131213')
+
+      // // 注意：以上两种方式 都是在父节点上调用这些方法**
+
+      // // 删除节点
+      // //  removeChild() 这里注意 是在父节点上调用该方法
+      // let div1 = document.getElementById('div1')
+      // console.log(div1)
+      // document.body.removeChild(div1); // 或者
+      // div1.parentNode.removeChild(div1)
+
+      // // 替换节点
+      // // replaceChild()  同上
+      // document.body.replaceChild(img, div1) // 1新节点  2父节点的某个已存在的子节点
+      // // DocumentFragment  其他节点的一个临时容器...待续。。
+
+      // // 复制节点 cloneNode()
+      // let Odiv = document.querySelector('div');
+      // let Odiv1 = Odiv.cloneNode(true) // true 自身节点及其属性，及子节点都被拷贝    false 只拷贝节点自身 默认是false。。 在没有手动添加到文档中时，即  appendChild(), 它不属于文档的一部分。
+      // document.body.appendChild(Odiv1)
+
+      // // 是否包含某节点  contains()
+      // Odiv1.contains(P1)
+
+      // // 节点树:(注意: 若有空格,则空格也包含在 节点树 中)  返回一个对象
+      // // parentNode  childNodes                        firstChild        lastChild          nextSibling         previousSibling
+      // div1.firstChild
+
+      // // 元素树:  返回类似  <div class="ab"  id="AA">asfsfsa</div>
+      // // parentNode  children(返回一个 HTMLCollection)  firstElemetChild  lastElementChild   nextElementSibling  previousElementSibling
+      // 其中 first~  last~ 是父元素内第一个及最后一个元素；  next~  previous~ 是某个元素前一个及后相邻的一个元素
+    </script>
+  </body>
+</html>

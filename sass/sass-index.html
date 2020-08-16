@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sass学习</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--  在 CSS 语言基础上添加了拓展功能，比如 变量、嵌套 (nesting)、混合 (mixin) 等等 -->
+<!--
+ul li{
+  color:red;
+  :last-child{
+    color:green;
+  }   这样的写法是行不通的， 编译后是 ul li{  color:red; }  ul li :last-child{ color:green; }
+      只能是后代元素选择器，同辈元素选择器是不行的。
+}-->
+<!-- scss.css文件里不能有 中文 ，否则出错。。-->
+<!-- 貌似只有 1.嵌套 2.变量 3.同个元素多个类 的情况下使用，其他的以后再研究吧。。。 -->
+
+
+<div>
+    aaa
+  </div>
+  <div class="Odiv"> div
+    <ul>ul
+        <li>li
+            <span>span</span>
+        </li>
+    </ul>
+  </div>
+  <div class="Odiv1">
+      <h1>h1</h1>
+      <h2>h1</h1>
+      <h3>h1</h1>
+  </div>
+  <div class="Odiv2">
+      <a href="">111</a>
+  </div>
+  <div class="Odiv3">
+          <a href="">111</a>
+  </div>
+
+    <p>qq</p>
+    <h3>q11q</h3>
+
+    <div class="Odiv4">
+        www11
+    </div>
+    <div class="Odiv5">
+          www
+      </div>
+
+
+      <!-- import 导入 -->
+      <div class=" bscss">
+              bscss
+              <a href="">link-color</a>
+      </div>
+      <div class=" cscss">
+              cscss
+              <a href="">link-color</a>
+      </div>
+      <div class="minxs">
+         ssss12333
+      </div>
+      <div class="minxs-value">
+       242341234123
+     </div>
+
+     <div class=" JCextend ">
+         <a href="">aa</a>
+     </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <h2 class="pv2">测试16：flex所有语法</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <style>
+            .box1 {
+                overflow: hidden;
+                display: flex;
+                /*注意，设为Flex布局以后，子元素的float、clear和vertical-align属性将失效。*/
+                flex-flow: row wrap;
+                /* flex-flow 归纳：flex-direction（row/column/column-reverse/row-reverse)
+                       和 flex-wrap(wrap/nowrap/wrap-reverse) --><!-- 水平或垂直排列 是否换行 */
+                flex-basis: 20%;
+                /* 代替宽度， flex 下高度是默认撑满的，只是用 width 似乎不能控制高度， flex-basis则可以等比例缩放宽高 */
+                justify-content: flex-start;
+                /* justify-content: flex-start/flex-end/center/space-bettween/space-around 设置子元素 水平 对齐方式
+           其中：space-between：两端对齐，项目之间的间隔都相等。
+                space-around： 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。
+         */
+                align-items: center;
+                /* align-items:flex-start/flex-end/center/baseline/stretch   
+            设置 单根轴线  垂直对齐方式 只有在父元素有 高度 时才有用, 默认是 高度撑满父容器， 所以需要显示实际高度请修改默认值
+            */
+                align-content: flex-start;
+                /* align-content:flex-start/flex-end/center/space-bettween/space-around/stretch  
+            设置 多根轴线 垂直对齐方式， 只有在父元素有 高度 时才有用
+            */
+                align-self: start;
+                /* start end cebter baseline  stretch */
+                border: solid 1px green;
+                /* flex: none 去掉 flex 伸缩，扩展的特性，就是说里面的元素可以给定宽度了*/
+                /* flex-grow:0(默认不撑开); 只根据内容撑开容器  flex-grow:1（撑开）; 还有多少可以占领就占领剩下的空间 */
+                /* flex-shrink: 1(默认收缩) flex-shrink:0(不收缩)  当元素的宽度大于容器之和的时候收缩元素。*/
+            }
+        </style>
+        <div class=" flex w-50">
+            <div class="ba w-20 flex-grow-0">fsafsafsafsafsaf</div>
+            <div class=" w-100 ba">fsafaf</div>
+        </div>
+    </div>
+
+    <script>
+        // flex 简写：  flex: flex-grow, flex-shrink, flex-basis
+    // 垂直居中的方式：
+    // 1. position:absolute; top:50%; left:50%; transform(-50%, -50%)  定宽高的情况下，也可以用 负的 margin-top/left
+    // 2. position:absolute; top:0; left:0; bottom:0; right:0; margin:auto; 定宽高的情况下, 也可这样。。 没有width/height,absolute元素自动填满了容器,此时,当我们为子div设置width/height后,空余出来的部分可以使用margin:auto垂直居中对齐
+    // 3. flex  margin:auto
+
+    // 布局的方式：
+    // 圣杯布局；双飞翼布局；
+    </script>
+</body>
+
+</html>

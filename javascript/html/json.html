@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <ul id="demo">
+        <li>
+            <a>百度</a>
+        </li>
+        <li>
+            <a>百度</a>
+        </li>
+        <li>
+            <a>百度</a>
+        </li>
+        <li>
+            <a>百度</a>
+        </li>
+    </ul>
+    <script>
+        //  1.JSON的定义和用处：
+        //  定义：JSON（javascript object notation）javascript对象表示法；不像 JavaScript 标识符可以用作属性，在 JSON 中，只有字符串才能用作属性（即属性必须带有双引号）。
+        //  是js语法的一个子集，但不是合法的js语法。
+        //  用处：用于 对象 的序列化/反序列化, 即用于数据的存储/传输。
+        //  JSON "安全值" 是除了  undefined，function，和symbol， 带有循环引用的 object(对象) 以外的其他值。只有 安全值 可以被序列化！
+        //  数组中遇到  '非安全值' ，会被替换成 null;  对象属性值遇到 '非安全值', 则会自动剔除掉; 数组对象也是合法的JSON 对象 [{"name":"luZhengYong","age":25}]
+        //  带有循环引用的object 会抛出错误
+        //  json 体积更小，传输更快，交互更方便。
+
+        // json 可以作为一个对象（反序列化） 或 字符串（序列化）存在，前者解读 json 数据， 后者用来网络传输 json 数据
+
+        //  2. Object对象 序列化 为JSON字符串: ( 数据的存储 )
+        // JSON.stringify(value[, replacer [, space]])  
+        // replacer(是函数，则每个属性经过都经过该函数处理；是数组，则数组中的属性名被处理。是null，则所有属性都被序列化)
+        // space 缩进
+        const obj = {
+            a: 11,
+            b: 22,
+            c: function () { },
+            d: undefined,
+            e: [34, 56],
+        }
+        let str = JSON.stringify(obj);
+        console.log(str)
+        // 返回 {"a":11,"b":22,"e":[34,56]}  
+        // function(){}  undefined 不符合JSON结构标准，固不处理！
+
+        // 但是如果有 toJSON() 方法： 则是 toJSON 方法后的 “返回值” 会被序列化，而不是那个对象 obj 被序列化
+        // toJSON() --- 将值变为一个 适用于 字符串化 的JSON安全的值
+        var obj = {
+            foo: 'foo',
+            toJSON: function () {
+                return 'bar';
+            }
+        };
+        JSON.stringify(obj); // '"bar"'
+        JSON.stringify({
+            x: obj
+        }); // '{"x":"bar"}'
+        // 同时在数组中则 返回为 null
+
+        //  3.向 stringify()里传递参数  replacer(数组或函数)指定序列化过程中哪些 "属性" 被处理, space(指定输出的缩进格式,可以是数字，或字符串)
+        var a = {
+            b: 42,
+            c: "42",
+            d: [1, 2, 3]
+        }
+        JSON.stringify(a, ["b", "c"], 6) // 处理属性 b c; 及格式缩进 6  返回 "{"b":42,"c":"42"}"
+        JSON.stringify(a, function (k, v) {
+            if (k != "c") {
+                return v
+            }
+        }) // "{"b":42, "d":[1,2,3]}"
+
+        //  4. JSON字符串 反序列化 为对象: （ 数据的传输 ）
+        let a = '{"aa":11, "bb":22}' // 切记，这样写，如果有换行，会报错！ 只能一行
+        let b = JSON.parse(a)
+        console.log(b) //  {aa: 11, bb: 22}
+
+        //  5. JSON 与 localStorage 结合使用 
+        const obj = {
+            a: 11,
+            b: 22,
+            c: 33
+        }
+        localStorage.setItem('local', JSON.stringify(obj));
+        let getItem = JSON.parse(localStorage.getItem('local'))
+        console.log(getItem)
+
+        // window.localStorage  window.sessionStorage 相关知识移步  ‘离线应用与客户端存储.html’
+        // 在浏览器开始实现 JSON 全局对象之后, 区分全局 JSON 对象是 JS 运行环境自带的、还是由库文件引入的
+        function supportsNativeJSON() {
+            return typeof JSON !== "undefined" &&
+                Object.prototype.toString.call(JSON) === "[object JSON]";
+        }
+        // 非原生的会返回  [Object Object]   原生的返回 [Object JSON]
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // January  February  March  April  May  June  July   August  September  October  November  December
+      // Monday  Tuesday  Wednesday  Thursday  Friday  Saturday  Sunday
+
+      // Date 对象是基于 1970年1月1日起的 "毫秒数"
+      // 创建Date 对象：需要注意的是 只能 通过调用  Date构造函数 来实例化日期对象, Date 对象没有字面量格式.
+      // 时区： UTC 为标准时间，北京时间比 UTC 时间快8个小时
+
+      // Date() 构造函数 --- 参数  当传入的参数大于合理范围时 会自动调整
+      const date = new Date();
+      // Fri Nov 16 2018 14:33:24 GMT+0800 (中国标准时间)
+
+      const date = new Date(4561163311315);
+      // Mon Jul 16 2114 13:48:31 GMT+0800 (中国标准时间)
+
+      const date = new Date("December 17, 1995 03:24:00");
+      // Sun Dec 17 1995 03:24:00 GMT+0800 (中国标准时间)
+
+      const date = new Date(2017, 4, 24, 11, 26, 35);
+      // Wed May 24 2017 11:26:35 GMT+0800 (中国标准时间)  month(0)1 ~ (11)12
+      // 0 表示 1月   11 表示 12月
+
+      // Date() 构造函数 --- 方法
+      console.log(Date.now()); // 1514344609372       date.getTime() 类似也是返回距离 1970.1.1 的毫秒数
+      console.log(Date.parse("December 17, 1995 03:24:00")); // 819141840000
+      console.log(Date.UTC(year, month, day, hour, minute, second)); //  1495625195000
+
+      // 本地 与 UTC(世界协调时间的差值)
+      var x = new Date();
+      var currentTimeZoneOffsetInHours = x.getTimezoneOffset() / 60;
+      console.log(currentTimeZoneOffsetInHours); // -8  早于 UTC 返回负值
+
+      // 1. 获取 年月日时分秒
+      var date = new Date();
+
+      console.log(date.toString());
+      // Sun Oct 20 2019 17:52:15 GMT+0800 (GMT+08:00)(中国标准时间)
+      console.log(date.toLocaleString());
+      // 2019-10-20 5:52:15 PM
+
+      console.log(date.toUTCString());
+      // Fri, 16 Nov 2018 07:31:38 GMT  (世界标准时间)
+
+      console.log(date.toISOString()); // ISO时间格式
+      // 2018-11-16T07:42:03.483Z
+      // toJSON() 和 toISOString() 相似, 只是返回的是字符串
+
+      // 2. 获取年月日
+      console.log(date.toDateString());
+      // Fri Nov 16 2018
+      console.log(date.toLocaleDateString());
+      // 2019-10-20
+
+      // 3. 获取 时分秒
+      var date = new Date();
+      console.log(date.toTimeString());
+      // 15:36:26 GMT+0800 (中国标准时间)
+      console.log(date.toLocaleTimeString());
+      // 5:54:29 PM
+
+      // 获取中国人习惯的 年, 月, 日, 时, 分, 秒
+      // 测试代码开始执行的 当前时间
+      const start = Date.now();
+      console.log(start);
+      const start1 = window.performance.now(); // performance 更可靠和精确！兼容性略差
+
+      function show() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minus = date.getMinutes();
+        const seconds = date.getSeconds();
+        var dayArr = [
+          "星期日",
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五",
+          "星期六",
+        ];
+        var myDay = dayArr[date.getDay()];
+        // getDay() 返回一个具体日期中一周的第几天，0 表示星期天
+        // 以上 Date 原型上的方法都有相应的 UTC 格式方法，getUTCFullYear()。 和相应的 set 方法：如 setFullYear()  setUTCFullYear()
+        const TheTime =
+          year +
+          "年" +
+          (month + 1) +
+          "月" +
+          day +
+          "日" +
+          hours +
+          "时" +
+          minus +
+          "分" +
+          seconds +
+          "秒" +
+          myDay;
+        return TheTime;
+      }
+      document.write(show());
+      // get方法 相应的 都有 set**（）方法
+
+      const end = Date.now();
+      const end1 = window.performance.now();
+      const sd = end - start;
+      const sd1 = end - start;
+      console.log(sd, sd1); // 经过测试
+
+      // Math() 对象 不是一个函数对象， 他所有的属性和方法都是静态的.
+      // 数字拥有方法，就是 Math()，参数是数值。 相比较 parseInt() 的参数是字符串。
+      Math.PI; // 半圆
+
+      // 1. floor()取小  ceil()取大  trunc()截掉小数  round()四舍五入
+      Math.floor(); // 即向绝对值 小的 方向取
+      console.log(Math.floor(-3.7)); // -4
+      console.log(Math.floor(3.7)); // 3
+      Math.ceil(); // 即向绝对值 大的 方向取
+      console.log(Math.ceil(-3.7)); // -3
+      console.log(Math.ceil(3.7)); // 4
+      console.log(Math.ceil(-3.7)); // -4
+      console.log(Math.ceil(3.7)); // 4
+      Math.round();
+      // 四舍五入 小数部分大于 0.5, 向绝对值 大的 方向取。小数部分小于 0.5，向绝对值 小的 方向取
+      //          小数部分等于 0.5，向正无穷方向取
+      console.log(Math.round(-9.5)); // -9
+      console.log(Math.round(9.5)); // 10
+
+      Math.trunc(); // 单纯的删掉数字的小数部分和小数点
+      Math.trunc(7.8); // 7
+
+      // 2. max()最大  min()最小  random()随机数
+      Math.random(); // 返回 0 和 1之间的伪随机数
+      Math.max();
+      Math.max(1, 2, 3, 4); // 4
+      Math.min(1, 2, 3, 4); // 1
+
+      // 3. sqrt()平方根  abs()绝对值
+      Math.sqrt(9); // 3  返回一个数的平方根    square
+      Math.abs(x); // 返回 x 的绝对值          absolute
+      Math.pow(7, 2); // 49   幂运算  ES6则新增了 幂运算符 ** 代替  let test= 2**2  返回 4
+
+      var arr = [3, 43, 23, 45, 65, 90];
+      var max = Math.max.apply(null, arr); // null 指的是全局 window.  这里 Math.max.apply(null, arr) 传递变量; 直接传递数组 Math.max( [1,2,3] )
+      var min = Math.min.apply(null, arr);
+    </script>
+  </body>
+</html>

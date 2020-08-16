@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/tachyons.css">
+  <!-- <script src="../js/jquery-3.1.js"></script> -->
+  <script src="../js/abc.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+  <!-- 
+    // SVG 可缩放矢量图形，是 xml标记语言。 SVG - 面向图形，html - 面向文本
+    // SVG可以成为任何复杂的组合图形
+    // 区分大小写；属性值必须用引号
+    // 默认 1用户单位 等于 1屏幕单位
+    // SVG是严格按照定义元素的顺序来渲染的
+    // SVG文件体积优化：SVGO脚本工具 删除SVG中一切多余的属性； 或在矢量工具中尽量减少路径上的控制点，和合并图层VectorScribe是AI的一个这方面的插件
+    // 最后是在网站中启用  gzip技术压缩 SVG
+    // 使用 use 元素重复使用元素
+   -->
+
+  <!-- 方式一: 直接插入 html -->
+  <svg version="1.1" baseProfile="full" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+    <!-- version  baseProfile属性必须要有 -->
+    <g transform="rotate(45 50 50)" stroke="yellow" stroke-width="4">
+      <rect width="100%" height="100%" fill="red" />
+      <circle stroke="blue" cx="150" cy="100" r="80" fill="green" />
+      <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+    </g>
+  </svg>
+  <!-- g 元素的样式会被子元素继承，g 元素可以嵌套 svg 元素 -->
+  <!-- 方式二：通过 object 标签 -->
+  <object type="image/svg+xml" data="abc.svg">Your browser does not support SVGs</object>
+  <!-- 方式三：img 或 背景 -->
+  <img src="./abc.svg" alt="">
+  <div class=" w4 h4" style=" background:url(./abc.svg) no-repeat center"></div>
+
+  <!-- svg 基本图形-->
+  <svg version="1.1" baseProfile="full" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 H90 V90 H10 Z" fill="yellow" />
+    <!-- path闭合路径的快捷键 Z;  H V相当于 点的 x轴 y轴的位置 -->
+    <!-- Points -->
+    <circle cx="10" cy="10" r="2" fill="red" />
+    <circle cx="90" cy="90" r="2" fill="red" />
+    <circle cx="90" cy="10" r="2" fill="red" />
+    <circle cx="10" cy="90" r="2" fill="red" />
+  </svg>
+
+  <svg width="300" height="300" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <circle cx="100" cy="100" r="60" fill-rule="nonzero" fill="red" />
+  </svg>
+  <!-- fill-rule="nonzero/evenodd"用于确定填充是在内部，还是外部 ？？  -->
+
+  <svg width="500" height="200" viewBox="0 0 50 20" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="10" width="10" height="5" style="stroke: #000000; fill:none;" />
+  </svg>
+  <!-- viewBox重新定义了svg 的坐标体系,这里一个单位的坐标单位是10像素，所以x="20" y="10"相当于没有重新定义坐标体系下的 x="200" y="100" -->
+
+  <svg version="1.1" baseProfile="full" width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+    <rect x="100" y="100" rx="20" ry="10" width="100" height="100" stroke="yellow" stroke-width="10" fill="green" />
+    <circle cx="100" cy="100" r="40" fill="blue" />
+    <ellipse cx="50" cy="50" rx="10" ry="20" fill="black" />
+
+    <defs>
+      <marker id="markerCircle" markerWidth="8" markerHeight="8" refX="5" refY="5">
+        <circle cx="5" cy="5" r="3" style="stroke: none; fill:#000000;" />
+      </marker>
+
+      <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
+        <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" />
+      </marker>
+    </defs>
+    <line x1="200" y1="153" x2="384" y2="280" stroke="orange" style="  marker-start: url(#markerCircle);
+    marker-end: url(#markerArrow);" />
+    <!-- marker 元素在path路径上应用标记； markerWidth/markerHeight 标记区域大小； refX/refY 标记区域的中心点
+    其他元素中也可以使用 marker 元素 -->
+
+    <polyline points="0,153 220,120 25,202" stroke="red" fill="transparent" />
+    <!-- <polyline points="10,50 60,50 60,100 10,100 10,50" stroke="yellow" stroke-width="4" fill="transparent" /> -->
+    <polygon points="10,50 60,50 60,100 10,100" stroke="yellow" stroke-width="4" fill="transparent" />
+  </svg>
+  <!-- polyline 和 polygon的区别：polyline不会绘制最后一个点到第一个点的线，polygon只要点给齐了，就绘制出所有的线 -->
+
+  <!-- path 5个画直线的命令
+      M 移动画笔位置  L 下一个点的位置  H 绘制平行线  V 绘制垂直线  Z 从当前点到路径的起点  A 画弧线  C Q 是画贝塞尔曲线
+      L 是绝对位置， 小写的 l 是相对位置，即相对于 前一个点的位置 来定点的位置，而不是从svg元素的坐标开始
+    -->
+  <svg version="1.1" baseProfile="full" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- 三次贝塞尔曲线 C -->
+    <path d="M32 24 C32 230, 52 230, 133 24" fill="transparent" stroke="yellow" stroke-width="4" />
+    <!-- 曲线的 起点M32 24; 控制点 32 230,  52 230; 终点 133 24;  -->
+    <path d="M0 24 C 56 0, 100 4, 127 25 S 154 47, 240 20" fill="transparent" stroke="red" stroke-width="4" />
+    <!-- S 命令跟着 S命令/C命令，则第一个控制点为前一个的对称点，无需定义，只需定义第二个控制点和终点-->
+    <path d="M0 40 S160 47, 240 20" fill="" stroke="blue" stroke-width="" />
+    <!-- S 命令没有跟着 S命令/C命令，则两个控制点为同一个点 -->
+
+    <!-- 二次贝塞尔曲线 Q -->
+    <path d="M10 80 Q 95 10 180 80" fill="transparent" stroke="green" stroke-width="2" />
+    <!-- 曲线的 起点M10 80; 控制点 95,10; 终点 180 80;  -->
+    <path d="M10 80 Q 52.5 10, 95 80 T 180 80" fill="transparent" stroke="green" stroke-width="4" />
+    <!-- T 命令会根据前一个控制点 95 80 推断出新的控制点，所以只需 写出 定义的终点 180 80 就可以 -->
+  </svg>
+
+  <!-- A 命令绘制弧形 -->
+  <svg width="320px" height="320px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 315
+             L 110 215
+             A 30 50 0 0 1 174 150    
+             L 174 150
+             A 30 50 -45 0 1 215.1 109.9
+             L 315 10" stroke="black" stroke-width="2" stroke-dasharray="5,10,10" stroke-linecap="round" stroke-linejoin="miter"
+      fill="green" stroke-width="2" fill-opacity="0.5" />
+  </svg>
+  <!-- A rx ry x-axis-rotation large-arc-flag sweep-flag x y -->
+  <!-- x-axis-rotation 坐标轴旋转角度 large-arc-flag 小角弧度 0（<180）; 大角弧度 1（>180） -->
+  <!-- sweep-flag  从起点到终点逆时针画弧 0; 从起点到终点顺时针画弧 1  -->
+  <!-- 顺时针时的小角/大角弧度，逆时针时的小角/大角弧度 -->
+  <!-- stroke-linecap="butt/square/round" -->
+  <!-- stroke-linejoin="miter斜接/round圆的/bevel斜角" -->
+  <!-- stroke-linejoin="miter"时 可设置 stroke-miterlimit 的值来拉伸或缩短尖角的长度 -->
+  <!-- stroke-dasharray="5,10,10"  (填色，空白，填色&&空白，填色，空白)以此循环 -->
+
+  <!-- 使用css -->
+  <!-- 图形css属性  文本css属性  渐变css属性 -->
+  <svg width="320px" height="320px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <rect x="100" y="100" id="incss" />
+  </svg>
+  <style>
+    #incss {
+      fill: red;
+      stroke: blue;
+      width: 100px;
+      height: 100px;
+    }
+    /* SVG规范将属性区分成properties和其他attributes，前者是可以用CSS设置的，后者不能 */
+    /* attribute(特性)节点都是在HTML代码中可见的，而property（属性）只是一个普通的名值对属性 --- 脚本化文档里有介绍 */
+  </style>
+
+  <!-- 线性渐变 -->
+  <!-- gradientUnits="userSpaceOnUse/objectBoundingBox" -->
+  <!-- objectBoundingBox 边界框尺寸的百分比作为坐标系统 -->
+  <!-- userSpaceOnUse 填充对象的坐标系统 -->
+  <!-- x1 y1 起点   y2  x2 终点   -->
+  <svg width="320px" height="320px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+      <linearGradient id="Gradient1" gradientTransform="rotate(45)">
+        <stop class="stop1" offset="0%" />
+        <stop class="stop2" offset="50%" />
+        <stop class="stop3" offset="100%" />
+      </linearGradient>
+      <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="red" />
+        <stop offset="50%" stop-color="black" stop-opacity="0" />
+        <stop offset="100%" stop-color="blue" />
+      </linearGradient>
+      <!-- gradientTransform 旋转渐变-->
+      <!-- x1负的45°  x2正的45°  y1正的90°  y2负的90° -->
+      <style type="text/css">
+        #rect1 {
+          fill: url(#Gradient1);
+        }
+
+        .stop1 {
+          stop-color: red;
+        }
+
+        .stop2 {
+          stop-color: black;
+          stop-opacity: 0;
+        }
+
+        .stop3 {
+          stop-color: blue;
+        }
+      </style>
+    </defs>
+    <rect x="100" y="100" width="100" height="100" id="rect1" />
+    <rect x="200" y="200" width="100" height="100" fill="url(#Gradient2)" />
+  </svg>
+
+  <!-- 径向渐变 -->
+  <svg width="120" height="240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="RadialGradient1" fx="0.25" fy="0.25" spreadMethod="pad">
+        <stop offset="0%" stop-color="red" />
+        <stop offset="100%" stop-color="blue" />
+      </radialGradient>
+      <radialGradient id="RadialGradient2" cx="0.25" cy="0.25" r="0.25">
+        <stop offset="0%" stop-color="red" />
+        <stop offset="100%" stop-color="blue" />
+      </radialGradient>
+    </defs>
+
+    <rect x="10" y="10" rx="15" ry="15" width="100" height="100" fill="url(#RadialGradient1)" />
+    <rect x="10" y="120" rx="15" ry="15" width="100" height="100" fill="url(#RadialGradient2)" />
+  </svg>
+  <!-- fx fy 焦点中心点的位置 -->
+  <!-- 当渐变结束时以怎样的方式结束：spreadMethod="pad/reflect（反向从100%到0%）/repeat（重复从0%到100%）" -->
+
+  <!-- 图案 pattern -->
+  <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <linearGradient id="Gradient3">
+        <stop offset="5%" stop-color="white" />
+        <stop offset="95%" stop-color="blue" />
+      </linearGradient>
+      <linearGradient id="Gradient4" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="5%" stop-color="red" />
+        <stop offset="95%" stop-color="orange" />
+      </linearGradient>
+
+      <pattern id="Pattern" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+        <!-- 图案的“区域”从 svg的 0 0 开始， 大小 50*50-->
+        <rect x="0" y="0" width="50" height="50" fill="skyblue" stroke="black" />
+        <rect x="0" y="0" width="25" height="25" fill="url(#Gradient4)" />
+        <!-- 图案从 pattern的 0 0开始， 大小 50*50 -->
+        <circle cx="25" cy="25" r="20" fill="url(#Gradient3)" fill-opacity="0.5" />
+      </pattern>
+      <!-- pattern 类似 ps里的图案 -->
+
+    </defs>
+
+    <rect fill="url(#Pattern)" stroke="black" x="0" y="0" width="300" height="300" />
+    <!-- 如果对象rect 改变了大小，pattern会自适应其大小，但是对象里面的内容不会自适应 -->
+    <!-- 解决办法：patternUnits="userSpaceOnUse" -->
+  </svg>
+
+  <!-- 图像中的文本 -->
+  <!-- 属性y确定了在哪里定位文本的底部（而不是顶部） -->
+  <!-- SVG 文本没有自动换行 -->
+  <!-- 文本锚点决定了文本的那个部分位于text元素x属性指定的x位置 -->
+  <!-- text-anchor="start/middle/end/inherit" 决定 "文本的那个部分" 位于 x 属性指定的 x 位置,切记不是相对于画布的位置 -->
+  <svg width="600" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <text style="font-size:40px" id="example" x="200" y="40" text-anchor="middle" fill="red" stroke="blue">
+      你好啊
+    </text>
+
+    <text x="40" y="140">
+      <tspan>你好啊</tspan>
+      <tspan x="180" dx="20">你好啊</tspan>
+      <!-- 可单独绝对定位 -->
+      <tspan dy="20">你好啊</tspan>
+      <tspan dy="20 30 40">你好啊</tspan>
+      <tspan dx="20 30 40">你好啊</tspan>
+    </text>
+    <!-- tspan 元素用来绘制多行文本 -->
+    <!-- 相对于彼此的  dx 水平定位/ dy 垂直定位 -->
+    <!-- 有多个数值时，则自身内容元素间相对定位 -->
+
+    <!-- tref 引用 defs下定义的文本 ??????-->
+    <defs>
+      <path id="my_path" d="M 20,20 C 40,40 80,40 100,20" fill="white" />
+    </defs>
+    <text>
+      <textPath xlink:href="#my_path">This text follows a curve.</textPath>
+    </text>
+    <!-- path和text一起用定义文字沿着路径走 -->
+    <!-- switch 元素可以根据用户使用的SVG查看器的语言展示不同的图形 -->
+  </svg>
+  <svg width="300" height="300" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <a xlink:href="" xlink-show="new">
+      <text x="40" y="40"></text>
+    </a>
+  </svg>
+  <!-- xlink-show="new/repleace/_blank/_top"  用 target属性也是一样的 -->
+
+  <svg width="300" height="300" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <g id="shape">
+        <rect x="50" y="50" width="50" height="50" fill="red" />
+        <circle cx="50" cy="50" r="50" />
+      </g>
+    </defs>
+    <use xlink:href="#shape" x="50" y="50" />
+  </svg>
+  <!-- defs 元素 内定义的图形不会展示在SVG图片上,需要用 use 元素引用 -->
+
+  <svg width="300" height="300" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="shape2">
+      <circle cx="25" cy="25" r="25" />
+    </symbol>
+    <use xlink:href="#shape2" x="50" y="25" />
+  </svg>
+  <!-- symbol 元素 也是复用元素的方式， 可以代替  defs和g 的组合-->
+
+
+
+  <!-- SVG字体当前只在Safari和Android浏览器中受支持 -->
+
+  <!-- 变形 -->
+  <svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <g transform="scale(2)">
+      <rect width="50" height="50" />
+    </g>
+  </svg>
+
+  <svg>
+    <svg></svg>
+  </svg>
+  <!-- svg可以内嵌svg建立一个新的坐标系统 -->
+
+  <!-- 剪切 -->
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <clipPath id="cut-off-bottom">
+        <rect x="0" y="0" width="200" height="100" />
+      </clipPath>
+    </defs>
+
+    <circle cx="100" cy="100" r="100" clip-path="url(#cut-off-bottom)" fill="red" />
+  </svg>
+
+  <!-- 遮罩 -->
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <linearGradient id="Gradient">
+        <stop offset="0" stop-color="white" stop-opacity="0" />
+        <stop offset="1" stop-color="white" stop-opacity="1" />
+      </linearGradient>
+      <mask id="Mask">
+        <rect x="0" y="0" width="200" height="200" fill="url(#Gradient)" />
+      </mask>
+    </defs>
+
+    <rect x="0" y="0" width="200" height="200" fill="yellow" />
+    <rect x="0" y="0" width="200" height="200" fill="red" mask="url(#Mask)" />
+  </svg>
+
+  <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect x="0" y="0" width="200" height="200" fill="blue" />
+    <circle cx="100" cy="100" r="60" stroke="yellow" stroke-width="10" stroke-opacity=".5" fill="red" />
+  </svg>
+  <!-- 注意这里  stroke 是沿着 路径以两边对称的方式 描绘的 -->
+
+  <!-- 嵌入光栅图像 -->
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+    <a xlink:href="https://baidu.com" target="_blank">
+      <image x="90" y="-65" width="128" height="146" transform="rotate(45)" xlink:href="https://developer.mozilla.org/media/img/mdn-logo.png"
+      />
+    </a>
+  </svg>
+  <!-- <foreignObject> 元素。它的唯一的目的是作为 其它标记的容器 和 SVG样式属性的载体 -->
+  <!-- a 标签的使用 -->
+  <!-- 滤镜效果 -->
+
+  <svg width="600" height="600" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect x="10" y="10" height="110" width="110" style="stroke:#ff0000; fill: #0000ff">
+      <animateTransform attributeName="transform" begin="0s" dur="20s" type="rotate" from="0 60 60" to="360 60 60" repeatCount="indefinite"
+      />
+    </rect>
+    <!-- animateTransform 元素可以为 形状的transform属性 设置动画-->
+    <!-- from  to 围绕点60 60的位置从 0 旋转到 360 -->
+    <!-- repeatCount="indefinite/3"  或者 repeatDur="indefinite/30s" 都可以-->
+
+    <circle cx="30" cy="30" r="25" style="stroke: none; fill: #0000ff;">
+      <animate attributeName="cx" attributeType="XML" from="30" to="470" begin="0s" dur="5s" fill="remove" repeatCount="indefinite"
+      />
+
+    </circle>
+    <!-- animate 元素用来为 形状的属性 添加动画 -->
+    <!--  fill="remove/freeze" 回复最初值/保持在结束值 -->
+
+    <circle cx="100" cy="100" r="60" fill="red">
+      <set attributeName="r" attributeType="XML" to="70" begin="5" />
+    </circle>
+    <!-- set元素可以用来设定一个属性值，并为该值赋予一个持续时间 -->
+
+    <rect x="100" y="100" width="30" height="15" style="stroke: #ff0000; fill: none;">
+      <animateMotion path="M10,50 q60,50 100,0 q60,-50 100,0" begin="0s" dur="10s" repeatCount="indefinite" rotate="auto" />
+    </rect>
+    <!-- animateMotion 元素可以使形状沿着 路径的线路 移动-->
+
+    <rect x="0" y="0" width="30" height="15" style="stroke: green; fill: none;">
+      <animate id="one" attributeName="x" attributeType="XML" from="0" to="400" begin="0s" dur="10s" fill="freeze" />
+      <animate attributeName="y" attributeType="XML" from="0" to="50" begin="one.end" dur="10s" fill="freeze" />
+    </rect>
+    <!-- 同步一个动画的开头到另一个动画的结尾 -->
+
+    <rect x="100" y="100" width="40" height="20" style="stroke: #000000; fill: none;">
+      <animateTransform attributeName="transform" attributeType="XML" type="scale" from="1" to="3" begin="0s" dur="10s" repeatCount="indefinite"
+        additive="sum" />
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="360" begin="0s" dur="10s" fill="freeze"
+        repeatCount="indefinite" additive="sum" />
+      <!-- animateTransform元素变动了目标元素上的一个变形属性 transform -->
+      <!-- 默认是后一个取消前一个动画   additive="sum"使得动画之间有相互转换-->
+  </svg>
+  <!-- begin 在几秒后 -->
+  <!-- svg 动画 -->
+
+  <!-- svg滤镜  filter -->
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <filter id="blurFilter2" y="-10" height="40" x="-10" width="150">
+        <feOffset in="SourceAlpha" dx="3" dy="3" result="offset2" />
+        <!-- 偏移效果;  一个SVG滤镜的输出用作另一个滤镜的输入，则需要向滤镜元素添加一个result属性 -->
+        <!-- dx, dy x/y轴上的位移 -->
+        <feGaussianBlur in="offset2" stdDeviation="3" result="blur2" />
+        <!-- 高斯模糊效果;  另一个SVG滤镜可以通过将 result值 放入其 in属性 中来使用此滤镜的输出 -->
+        <!-- stdDeviation 模糊程度 -->
+        <!--  in 在什么上面使用滤镜 -->
+        <!-- 滤镜的标签都是 fe...  -->
+        <feMerge>
+          <feMergeNode in="blur2" />
+          <!-- 滤镜效果 -->
+          <feMergeNode in="SourceGraphic" />
+          <!-- 原始图形 -->
+        </feMerge>
+        <!-- 以上通过 femerge组合滤镜 -->
+        <feBlend in="SourceGraphic" in2="blur2" x="-10" width="160" />
+        <!-- 还可以通过 feBlend 混合滤镜 -->
+      </filter>
+      <ellipse cx="55" cy="60" rx="25" ry="15" style="stroke: none; fill: #0000ff; filter: url(#blurFilter2);" />
+
+    </defs>
+    <!-- 拓展知识 -->
+    <defs>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+    </defs>
+    <!-- 在形状上使用滤镜 -->
+    <defs>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10" />
+    </defs>
+    <!-- 在形状的 alpha通道上使用滤镜 -->
+  </svg>
+
+  <!-- SVG遮罩  mask -->
+  <svg width="" height="" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <mask id="mask1" x="0" y="0" width="100" height="100">
+        <rect x="0" y="0" width="100" height="50" style="stroke:none; fill: #ffffff" />
+        <!-- fill: #ffffff" 越接近黑色，其透明度越高 -->
+      </mask>
+    </defs>
+    <rect x="1" y="1" width="100" height="100" style="stroke: none; fill: #0000ff; mask: url(#mask1)" />
+  </svg>
+
+  <!-- 剪裁路径 clipPath  -->
+  <svg width="" height="" viewBox="" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <clipPath id="clipPath">
+        <rect x="15" y="15" width="40" height="40" />
+      </clipPath>
+    </defs>
+
+    <circle cx="25" cy="25" r="20" style="fill: #0000ff; clip-path: url(#clipPath); " />
+  </svg>
+  <!-- 只有剪裁路径中的圆的部分才可见，其余的被裁剪 -->
+  <!-- 可以在分组元素上使用 g -->
+  <!-- 文字可以做为剪裁路径 -->
+
+
+
+</body>
+
+</html>

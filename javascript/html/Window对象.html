@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <script>
+      // window 浏览器窗口的相关信息
+      // navigator  浏览器相关的信息
+      // document 文档的相关信息
+
+      // 1. window对象的方法：
+
+      // 以下都是  window 对象下的方法，可以直接使用，不必带 window
+      // alert()   confirm()   prompt()  用户体验角度上看，尽量最少的使用弹出框信息。
+      // prompt() 提示用户输入的对话框。
+
+      // open() 创建一个新的 "浏览器窗口对象", 窗口的创建和相关资源的加载异步地进行。
+      let newWin = window.open(
+        "http://www.baidu.com",
+        "baidu",
+        "width=100%,height=100%",
+        true
+      );
+      newWin.close(); // closed属性     if(newWin.closed){//...}
+      // true 新的 url 替换掉 当前条目，  false 在历史中创建一个条目
+      var w = window.open();
+      w.open().opener === window; // true
+
+      //  window.scrollTo()   window.scroll() 功能用法一样。。          这里是  绝对定位
+      //  window.scrollBy() 即在原有的滚动距离的基础上增加 这么多距离。。 这里是  偏移量
+      //  设置 文档 滚动条 垂直/水平滚动的距离：(即 内容顶部 距 容器顶部 之间的距离)
+      //  有两种方式： scrollBy() 也一样
+      window.scrollTo(100, 100);
+      window.scrollTo({ top: 100, left: 100, behavior: "smooth" });
+
+      //  获取 文档 滚动条 垂直/水平滚动的距离：(即 内容顶部 距 容器顶部 之间的距离)
+      window.onscroll = function () {
+        window.pageXOffset; // （只读）只能获取，它是 scrollY的别名，兼容跨浏览器。 (兼容IE的是 scrolltop)
+        // 滚动发生事件   切记，，是通过  onscroll  触发事件，不能默认鼠标滚动就产生事件！
+      };
+
+      Element.onscroll = function () {
+        console.log(Element.scrollTop); // 设置/获取元素 滚动条 元素垂直/水平滚动的距离：(即 内容顶部 距 容器顶部 之间的距离)
+        console.log(Element.scrollwidth); // （只读）有滚动条的情况下，滚动条内内容的整个高度。没有滚动条时 它和clientHeight相同
+      };
+
+      // 2. window对象的有关属性:
+      // 2.1 location  history  console
+      window.location; // 返回和 当前文档 url 有关的 location对象
+      window.location = "http://www.baidu.com"; // 设置当前文档的  url
+      window.location.reload(true); // true 从服务器中重载  false 从浏览器缓存中重载
+      window.location === document.location; // 但是一般都是用 window.location
+
+      // window.location 和 document.location 的区别: 他们呢是一样的。。
+      // document 是 window 的一个子集
+
+      // document.documentURI  (只读) 返回文档地址字符串
+      // location 对象的属性：
+      console.log(window.location.port); // "88"   端口
+      console.log(window.location.protocol); // "https:"
+      console.log(window.location.host / hostname); // "developer.mozilla.org"   主域名
+      console.log(window.location.origin); // "https://developer.mozilla.org"
+      console.log(window.location.pathname); // "/zh-CN/docs/Web/API/Location"
+      console.log(window.location.search); // "?q=123:"
+      // location的8个属性都是可读写的，但是只有href与hash的写才有意义。
+      // 例如改变location.href会重新定位到一个URL，
+      console.log(window.location.href); // "https://developer.mozilla.org/zh-CN/docs/Web/API/Location"
+      // 而修改location.hash会跳到当前页面中的anchor(<a id="name">或者<div id="id">等)名字的标记(如果有)，
+      // 而且页面不会被重新加载
+
+      // location 对象的方法：
+      location.assign(url);
+      // 有浏览历史记录    window.location = "http://www.mozilla.org";  一般直接定义新的地址
+      location.replace(url);
+      // 没有浏览历史记录
+      location.reload(true / false);
+      // true从服务器端重载  false从浏览器缓存中重载  默认是false
+      // location.toString() --- 只读
+
+      window.history; // 返回和 当前文档历史记录 有关的 history对象
+      // history对象的三个方法: back()  go(1)  forward()
+      window.history.back(-1);
+
+      // 2.2 浏览器信息
+      // window对象的 navigator属性 返回一个  navigator对象。用来 “查询” 运行当前 脚本 的 应用程序（浏览器）的相关信息
+      console.log(window.navigator.language); // zh-CN   返回一个字符串,表明当前浏览器的语言种类
+      console.log(window.navigator.onLine); // true  返回一个布尔值,表明当前浏览器是否正常联网.
+      console.log(window.navigator.platform); // 系统平台类型  win32
+      console.log(window.navigator.userAgent); // 当前浏览器使用的内核
+
+      // 3. window 对象有关的事件
+      // 页面加载时只执行onload
+      // 页面关闭时先执行onbeforeunload，最后onunload
+      // 页面刷新时先执行onbeforeunload，然后onunload，最后onload。
+
+      // beforeunload  当浏览器将要跳转到新页面时触发这个事件，
+      // 通用确认信息代替事件返回的字符串, 即 return 后的‘字符串 ’被浏览器通用的字符串代替了。
+      // 然后window对象的 alert  confirm  prompt 等弹窗事件在函数里是忽略不执行的。
+      window.addEventListener("beforeunload", function (event) {
+        var message = "确认要离开？";
+        event.returnValue = message; // 写returnValue属性只是为了兼容旧的浏览器
+        return message;
+      });
+      // unload 在窗口关闭时触发  --- 谷歌浏览器不触发该事件，IE可以
+      window.addEventListener("unload", function (event) {
+        console.log("I am the 3rd one.");
+      });
+      // load --- 加载     error --- 加载失败
+      // scroll --- 滚动时  resize --- 窗口大小变化时
+
+      // 简而言之，这告诉浏览器应该使用多少个屏幕的实际像素来绘制一个单独的CSS像素。
+      Window.devicePixelRatio = 2;
+      // window.onbeforeprint   window.onafterprint
+      // window.oncontextmenu=function(){ return false}  禁止右键单击默认弹出框!
+      // window.onerror = function(message, source, lineno, colno, error) {... }
+      // element.onerror = function(event) { ... }
+      // 全局任何表单改变触发事件： window.addEventListener('input',function(){})
+      // 总之：凡是可以冒泡的事件委托实现。
+      // 除了比如 focus、blur 之类的事件本身没有事件冒泡机制，所以无法委托；
+      // window.onwheel=function(){}
+
+      // Visibility  API  判断用户是否正在与页面交互
+      // Geolocation  API  访问用户当前位置信息
+      // File API  访问用户计算机中的文件
+
+      // Web Timing API Web 计时器
+      // window.performance 对象是 Web计时器的核心
+      // performance.navigation 对象（包含于导航有关的属性）；  performance.timing 对象（包含于时间戳有关的属性）
+    </script>
+  </body>
+</html>

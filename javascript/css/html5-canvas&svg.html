@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../js/self.js"></script>
+    <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <!--[if lt IE 9]   使html5标签兼容IE><![endif]-->
+    <script src="http://apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/animate.css/3.1.0/animate.min.css">
+    <!-- css动画 -->
+</head>
+
+<body>
+
+    <!--你可以在HTML页面中使用多个 canvas 元素.
+canvas 元素本身是没有绘图能力的。所有的绘制工作必须在 JavaScript 内部完成-->
+    <canvas id="canvasBox1" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox1");
+        var context = canvas.getContext("2d");
+        context.moveTo(50, 0);
+        context.lineTo(200, 200);
+        context.stroke();
+    </script>
+    <!-- 画线 -->
+    <canvas id="canvasBox" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox");
+        var context = canvas.getContext("2d");
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, 200, 200);
+    </script>
+    <!-- 矩形 -->
+    <!-- 画方形 -->
+    <canvas id="canvasBox2" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox2");
+        var context = canvas.getContext("2d");
+        context.beginPath();
+        context.arc(95, 50, 40, 0, 2 * Math.PI); /* 中心点 95，50  半径 40  起始角度 0  结束角度 2*Math.PI */
+        context.stroke();
+    </script>
+    <!-- 圆或弧形 -->
+    <!-- 画圆弧 -->
+    <canvas id="canvasBox3" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox3");
+        var context = canvas.getContext("2d");
+        context.font = "30px 微软雅黑";
+        context.strokeText("Hello World", 10, 50); <!-- 文字开始的位置 结束的位置 -->
+    </script>
+    <!-- 画字 -->
+    <canvas id="canvasBox4" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox4");
+        var context = canvas.getContext("2d");
+        var grd = context.createLinearGradient(0, 0, 200, 0); /* 渐变开始 结束点的 x y坐标*/
+        grd.addColorStop(0, "red");
+        grd.addColorStop(1, "white");
+        context.fillStyle = grd; /* 线性渐变 */
+        context.fillRect(10, 10, 150, 80); /* 左上角的位置 10 10， 长和宽 150 80*/
+    </script>
+    <!-- 画线性渐变 -->
+    <canvas id="canvasBox5" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox5");
+        var context = canvas.getContext("2d");
+        var grd = context.createRadialGradient(75, 50, 5, 90, 60, 100); /* 渐变开始点的圆心坐标，半径  渐变结束时的圆心坐标，半径*/
+        grd.addColorStop(0, "red");
+        grd.addColorStop(1, "white");
+        context.fillStyle = grd; /* 径向渐变 */
+        context.fillRect(10, 60, 150, 80); /* 左上角的位置 10 10， 长和宽 150 80*/
+    </script>
+    <!-- 画径向渐变 -->
+    <img id="scream" src="../../images/aa/0.png" alt="">
+    <canvas id="canvasBox6" width="400" height="400">
+        我的第一个canvas
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvasBox6");
+        var context = canvas.getContext("2d");
+        var img = document.getElementById("scream");
+        context.drawImage(img, 10, 10);
+    </script>
+    <!-- 把一幅图像放置到画布上 -->
+
+    <!-- 线  矩形  圆  文字  线性渐变 径向渐变  图像 -->
+    <div>
+
+
+        <h2 style="font-size: 60px; text-align:center;word-spacing: 20px; margin-top: 100px;">svg</h2>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <rect x="50" y="0" rx="20" ry="20" width="150" height="150" style="fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;
+  stroke-opacity:0.9" />
+        </svg>
+        <!-- 圆 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)" />
+        </svg>
+        <!-- 方形 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <ellipse cx="300" cy="80" rx="100" ry="50" style="fill:yellow;stroke:purple;stroke-width:2" />
+        </svg>
+        <!-- 椭圆 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+        </svg>
+        <!-- 直线 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <polygon points="220,10 300,210 170,250 123,234" style="fill:lime;stroke:purple;stroke-width:1" />
+        </svg>
+        <!-- 多边形 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,160" style="stroke:red;" />
+        </svg>sad
+        <!-- <polyline> 元素是用于创建任何只有直线的形状 -->
+
+
+        <!--  SVG 路径 - <path> ？？？？？？？？？？？？？？？？？ -->
+
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love SVG</text>
+        </svg>
+        <!-- 30是角度 20，40是下x,y轴的激动距离-->
+        <!-- svg 文字 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <!-- 所有互联网的SVG滤镜定义在<defs>元素中 -->
+                <filter id="f1" x="0" y="0">
+                    <!-- <filter>标签使用必需的id属性来定义向图形应用哪个滤镜？-->
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+                    <!-- 高斯模糊 -->
+                </filter>
+            </defs>
+            <rect width="90" height="90" stroke="green" stroke-width="3" fill="yellow" filter="url(#f1)" />
+        </svg>
+        <!-- svg 滤镜 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="f1" x="0" y="0" width="200%" height="200%">
+                    <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
+                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                </filter>
+            </defs>
+            <rect width="90" height="90" stroke="green" stroke-width="3" fill="yellow" filter="url(#f1)" />
+        </svg>
+        <!-- svg 阴影 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <ellipse cx="200" cy="70" rx="85" ry="55" fill="url(#grad1)" />
+        </svg>
+        <!-- svg 线性渐变 -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <ellipse cx="200" cy="70" rx="85" ry="55" fill="url(#grad1)" />
+            <text fill="#ffffff" font-size="45" font-family="Verdana" x="150" y="86">
+                SVG</text>
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <!-- CX，CY和r属性定义的最外层圆和Fx和Fy定义的最内层圆 -->
+                    <stop offset="0%" style="stop-color:rgb(255,255,255);
+      stop-opacity:0" />
+                    <stop offset="100%" style="stop-color:rgb(0,0,255);stop-opacity:1" />
+                </radialGradient>
+            </defs>
+            <ellipse cx="200" cy="70" rx="85" ry="55" fill="url(#grad1)" />
+        </svg>
+        <!-- svg 放射性渐变-->
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 直接在HTML嵌入SVG代码 -->
+    <a href="../../svg/1.svg">ddsfgh</a>
+    <!-- 用<a>标签链接到一个SVG文件 -->
+</body>
+
+</html>

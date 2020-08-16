@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <script src="../js/jquery-2.1.4.js"></script>
+  </head>
+
+  <body>
+    <div>
+      <span>语言类型图</span>
+      <img src="../images/leixing.png" alt="" />
+    </div>
+  </body>
+  <script>
+    var c = foo(2);
+    // 这里首先对 foo 进行 RHS 查询，找到它是一个函数，然后对 c 进行 LHS 查询把 foo 赋值给 c
+
+    // 例子2：
+    var arr = [0, 1, 2];
+
+    function swap(array, indexI, indexJ) {
+      temp = array[indexI]; // 0        // 同下
+      array[indexI] = array[indexJ]; // 找到变量  array[indexI] 然后赋值，而不是  0=1
+      array[indexJ] = temp; // 0         // 同上
+    }
+    swap(arr, 0, 1);
+    console.log(arr, window.temp); // [1, 0, 2], 0
+
+    // 1. js 词法规则：
+    // 强类型：偏向于不容忍隐式类型转换。譬如说haskell的int就不能变成double
+    // 弱类型：偏向于容忍隐式类型转换。譬如说C语言的int可以变成double
+    // 静态类型：编译的时候就知道每一个变量的类型，因为类型错误而不能做的事情是语法错误。
+    // 动态类型：编译的时候不知道每一个变量的类型，因为类型错误而不能做的事情是运行时错误。譬如说你不能对一个数字a写a[10]当数组用。
+    // js是一种 弱类型 动态类型的语言.. 这意味着你在声明变量时可以不必指定数据类型，而数据类型会 在代码执行时 会根据需要自动转换
+    // 在JavaScript中只有值拥有类型；变量只是这些值的简单容器。
+    // javascript中  undefined是值的一种，undeclare则表示变量没有声明过。 然而js确将他们混为一谈。
+
+    // 请将 自动补 分号的依赖降到最低，在所有需要分号的地方加上 --- "分号"
+    // 在return,throw,break,continue,++或--的参数之前决不能换行
+    // 函数结尾不需要使用分号。。
+
+    // 常量 标识符 字面量  关键字
+    // 标识符：是指JavaScript中定义的符号，例如，变量名、常量名, 函数名、数组名……  不能是关键字。。
+    // 在计算机编程语言中，标识符 是用户编程时使用的名字，用于给变量、常量、函数、语句块等命名
+    // 一个 JavaScript 标识符必须以字母、下划线（_）或者美元符号（$）开头
+
+    // 变量：可以重新赋值。  声明变量，初始化变量，引用变量，变量提升  变量可以用来保存字面量，而且变量的值是可以任意改变的
+    // 常量（const）： 常量的值不能通过重新赋值来改变
+    // 字面量： 12  13.34  'number'  'li'  true/false  {a:34}  [1,2,3]  直接在程序中出现的常数值。
+
+    // 关键字：
+    // function;  var;  this;
+    // 前增量  var i=1  j= ++i  //console.log(j) 2 后增量 var i=1  j= i++  //console.log(j) 1
+    // 递增 递减操作符  在操作数 右侧时，，操作数递增/递减  但是返回的是递增/递减前的数值
+
+    // Number() 将传递给它的任何东西转化成数字   toString()  将传递给它的任何东西转化成字符串
+    //  console.log(1.toString());    // 此时 1. 被当成一个数字 因此此处 语法错误
+    console.log((5).toString()); // 5
+
+    // null==undefined   true     null===undefined   false
+    // 基本类型： let num = Number(1.45)     let bool = Boolean(true)
+    // 实例化一个对象： let num = new Number()   let str = new Number()  let bool = new Number()
+
+    // 判断数据类型：
+    // 字面量： “this is string“  1.14  true
+    // 布尔值指代 真/假  开/关  是/否
+    // 宽松相等性  ==   宽松不相等性 !=    严格相等性 ===   严格不相等性 !==  如果对 数值类型 没有特别要求的话 使用 松散相等性
+
+    // 2. 运算符:
+    // 赋值操作符: = (赋值)  +=（加法赋值）  *=（乘法赋值）  %=（求余赋值）  /=（除法赋值）
+    // 比较操作符: > < >= <= === == !== !=
+    // 位操作符  :  &  |  ^  ~  <<  >>  >>>    不懂？？？
+    // 逻辑操作符: 逻辑与 AND（&&） 逻辑或 OR（||） 逻辑非 NOT (!)  逻辑异或 XOR（任意一项为真，则为true；两项都相同，则为false）
+    // 三元操作符:  :?
+    // 一元操作符: ( + - * / a++ a-- a+ a-  delete  typeof)，
+    // 关系操作符：instanceof   in
+    "11" + 3; // '113'
+    "11" - 3; // 8
+    // 逗号操作符: ,
+    // 通常我们讲  运算符  '返回了' 一个值，而不是 '计算出了' 一个值。 将 简单表达式 组合成 复杂表达式 的最常用的方法就是  运算符 。
+
+    var a = [1, 2];
+    var b = [3, 4];
+    1;
+    a + b; // "1,23,4"
+    delete O.x;
+    O instanceof Object;
+
+    // 前置型：先自增再执行表达式，  ++a 相当于 a+=1，， 由于前置 后置参会的结果时不一样的， 故建议使用  a+=1 方式代替
+    var a = 1;
+    var b = ++a;
+    console.log(a); //2
+    console.log(b); //2
+
+    // 后置型： 先执行表达式再自增
+    var a = 1;
+    var b = a++;
+    console.log(a); //2
+    console.log(b); //1
+
+    // x++ 递增前返回数值; ++x 递增后返回数值（ x=x+1 ）;    x-- 递减前返回数值;   --X 递减后返回数值( x=x-1 );
+    // 使用 复合赋值操作符  x+=1   x-=1  代替一元递增/递减操作符
+    var a = 42;
+    var b = a++; // a; 43    b;43
+    a = b += 2; // 首先执行  b+=2 再将结果赋值给 a
+
+    a ? b : c ? d : e; // 执行顺序是: a ? b :(c ? d : e)
+    (a && b) || c ? (c || b ? a : c && b) : a;
+    // 根据运算符的 “优先级” 和 “结合性(多个操作符表达式如何隐含地分组)”，执行顺序是: (a&&b||c)?((c||b)?a:(c&&b)):a
+    // 运算符优先级：
+    // =   ?:  ||  &&  |  &  "!==  ===  !=  ="; ">  <  >=  <=  instanceof"; "+ -"; " * / %"; **  " + - ! ~  ++... --... typeof delete await"; "...++ ...--"; new  "函数调用 new() 成员访问" 圆括号
+
+    //  字符串和数字之间的隐式转换: 如果其中一个是字符串，或可以通过转换而得到字符串，则执行字符串拼接。
+    var a = [1, 2, 3];
+    var b = [4, 5, 6];
+    a + b; // "1,2,34,5,6"  隐式调用了  join()
+    "1.1" +
+    "1.1"["1"] + // "1.11.1"
+      {}; // +{} 被当作一个值（空对象 ） 这里返回 "[object Object]"
+    {
+    }
+    +[]; // +[] 被处理为 "" --- 这里返回 0   {}被当作空的代码块，不执行任何操作
+    // var a=42;
+    var b = a ? true : false; // 这里 a 首先需要强制类型转换为布尔值 避免这样使用,
+    var b = !!a ? true : false; // 这里使用Boolean(a) 和 !!a, if语句里也尽量这样显示转换，代码更易读
+
+    const val = false;
+    console.log("Value is " + val ? "define" : "undefine"); // define
+
+    var a = "42";
+    var b = true;
+    var c = "1,2,3";
+    var d = [1, 2, 3];
+    c == d; // true     [1,2,3] 转换为   "1,2,3"
+    a == b; //false
+    0 = ""; // true  "" 转为  false  false转为 0
+    false == 0; // true
+    false == ""; // true
+    false == []; // true      [] == false
+    "" == 0; // true
+    0 == []; // true      [] 会被强制类型转换为  ""
+
+    0 == {}; // false       {} 会被强制类型转换为  "[object Object]"
+    "" == [null]; // [null] 转为""   true
+    2 == [2]; // [2] 转为 2   true
+    // 注意这里："42" 是转换为 42，不是 true， true转换为 1  只要cd不是数字，都有ToNumber(x)的操作，然后进行比较
+    // 如果两边值中有 true/false, 不使用  ==; 两边值中有 [], "", 0, 尽量不使用 ==
+    // 这样可以避免  隐式强制类型转换中的  坑。 使用 显式 强制类型转换！ 再比较
+    var a = 42;
+    var b = [42];
+    a == b; // true
+    a === b; // false
+    // 比较只支持 数字 和 字符串的比较，所以是其他的类型，会进行相应的转换。
+    // 对象和非对象之间的比较: 这里对象会调用 ToPromitive 操作，Promitive（原始的，远古的）
+    // 即 若对象有 tostring() 方法，调用该方法，并返回字符串。再比较结果；
+    //    若没有 tostring()方法，则调用 valueOf() ,将返回的原始值转为字符串。 再比较结果
+    // 返回 “42”  “42” == 42  42 == 42
+
+    var a = "abc";
+    var b = Object(a);
+    a == b; // true
+    a === b; // false
+
+    var a = 2;
+    var b = a;
+    b++;
+    a; // 2
+    b; // 3
+
+    let a = 42;
+    let b = a + "2"; // 隐式(强制类型转换)
+    console.log(typeof b);
+    let c = String(a); // 显式(强制类型转换)
+    console.log(typeof c);
+    // 判断 某个变量是否存在  if(typeof a !=undefined) }{ alert(ok )}
+
+    var a = [2];
+    var b = [1];
+
+    var c = a - b; // 1
+    var c = a + b; // 21
+    console.log(c);
+    console.log("a" + "b" + "c" + +"a" + "a"); // abcNaNa    +'a' => NaN
+    // '两个字符串' 相加，无论字符串内容是什么，都是进行连接运算。若想进行数字运算需使用 parseInt()
+    // 减 乘 除 若转换后是数字则进行数字运算，否则结果为 NaN
+
+    console.log(1 + "2" + "2"); // '122'
+    console.log(1 + +"2" + "2"); // '32'
+    console.log(1 + -"1" + "2"); // '02'
+    console.log(+"1" + "1" + "2"); // '112'
+    console.log("A" - "B" + "2"); // 'NaN2'
+    console.log("A" - "B" + 2); //  NaN
+
+    // 比较运算符  偏爱 转换成  数字得出结果;N
+
+    "3" > "11"; // true     这里比较的是 从字符串各自的第一个元素开始比较大小
+    "11" < 3; // false   偏爱 转换成 数字
+
+    // 赋值运算符  =
+    // 我们首先计算= 右手边 的值（源值）然后将它放进我们在 左手边 指定的变量中（目标变量）。
+    x = 5;
+    y = 10;
+    z = 25;
+    x = y; // x is 10
+    x = y = z; // x, y and z are all 25
+    var a = (b = 3); // +
+
+    // 逻辑运算符：  &&   ||   !
+    var a = 42;
+    var b = "abc";
+    var c = null;
+    var d = [1, 2, 3];
+    console.log(a || b); // 42         此时如果  a 是真 则无需去执行判断 b，两个都为真，则返回前者。
+    console.log(a && b); // "abc"      此时如果  a 是假 则无需去执行判断 b, 两个都为真，则返回后者。
+    console.log(c || b); // "abc"
+    console.log(c && b); // null
+    console.log((a && b) || d); // "abc"
+    console.log(a || (b && d)); // 42
+    let a;
+    a = a || "default value";
+    console.log(a); //  当变量 a 没有赋值时，默认使用 默认值。防止程序出错而中断
+
+    // ||  && 同时存在； 先执行&& 再执行 ||
+    // "操作数选择器" --- 似乎更合适：返回他们其中的一个 操作数 的值(操作数的值 有可能是 true  false)。而不是 true  false
+    //  in 运算符  检测对象的属性的存在    数组的元素的存在
+    let num = [1, 2, 3];
+    3 in num; // true
+    var string = {
+      x: 1,
+      y: 2,
+    };
+    "x" in string; //true
+
+    // 宽松相等和严格相等：
+    //   正确的解释： ' == 允许在比较中进行强制类型转换，而 === 不允许'
+
+    // instanceof 运算符  左侧是对象  右侧是对象的类, 返回布尔值，在多个全局作用域下检测数组，会出错。不靠谱
+    var date = new Date();
+    date instanceof Array; // false
+    date instanceof Date; // true
+
+    let arr = [];
+    arr = null; // null 使用在对象上
+    console.log(typeof arr); //  返回的是 Object
+    console.log(arr instanceof Array); // 已经无法判断出对象的类型
+    typeof 11; // number
+    typeof "ss"; // string
+    typeof Array; // Function      new Array()    Array  是构造函数，所以返回 Function
+    var str = "123abc";
+    console.log(typeof str++); // number
+    console.log(typeof a); // 未声明 a  返回 undefined
+    console.log(typeof "abc"++); // number
+    console.log(typeof +"abc"); // number
+    console.log(typeof NaN); // number
+    console.log(typeof Infinity); // number
+
+    // typeof 运算符  是一元运算符  用来查看值的类型，返回字符串 ！一般用来检测基本类型值
+
+    // 检测是 null  还是  Object
+    if (value && typeof value === "object") {
+      // 判断出 是 null  还是 object, 返回 true 则是 object 或 数组
+      // null的值为假，如果 value是 null，则为假
+    }
+
+    // 更全面靠谱的类型检测: Object.prototype.toString()  除此还有  typeof   instanceof
+    // 在任何值上调用 Object 原生的 toString 方法时，都会返回一个类似于［object NativeConstructorName］格式的字符串
+    function isObject(value) {
+      return Object.prototype.toString.call(value) == "[object Array]"; // [object String] / [object Number] ....
+    }
+    const arr = new Array();
+    console.log(isObject(arr)); // true    相当于 arr.toString()
+
+    function isObject(value) {
+      return Object.prototype.toString.call(value) == "[object Object]";
+    }
+    const obj = {
+      a: 22,
+    };
+    console.log(isObject(obj)); // true
+    //  除此还可以传递 String   Number  Boolean  null  undefined
+
+    //delete  运算符  能删除对象的属性 和 数组的元素, 只有在右侧是 属性访问表达式才正确
+    // 不能删除 var 声明的变量 和 函数参数
+    var a = 1;
+    console.log(delete a); // fals
+    b = 3;
+    console.log(delete b); // true
+    // 隐式全局变量 b 并不算是真正的变量，但他们是全局对象的属性成员。
+    // 属性是可以通过delete运算符删除的，而变量不可以被删除
+
+    // 这里注意 删除数组元素时，length属性并不会变小
+    var trees = ["redwood", "bay", "cedar", "oak", "maple"];
+    trees[3] = undefined; // delete trees[3]
+    if (3 in trees) {
+      console.log("a");
+    }
+
+    // 返回值： 对于所有情况都是true，除非属性是一个自己的“不可配置属性”，在这种情况下，非严格模式返回 false
+
+    // 逗号运算符是  二元运算符  首先计算左侧的操作数， 然后计算右侧的操作数， 最后返回右侧的操作数
+
+    // 取模(%)运算符
+    (i = 4), (j = 5), (m = 6); // 返回 6   for 循环内的 逗号 不是 逗号操作符 因为它不是 一个表达式
+
+    // 取模运算符： %
+    (12 % 5) - // 2
+      (1 % 2); // -1
+    NaN % 2; // NaN
+    1 % 2; // 1
+    (2 % 3) - // 2
+      (4 % 2); // -0
+    5.5 % 2; // 1.5
+    // 原则： 能除得进除,除不进取前，有负数加上
+
+    //  断一个字符串中出现次数最多的字符，统计这个次数
+    var str = "asdfssaaasasasasaa";
+    var json = {};
+    for (var i = 0; i < str.length; i++) {
+      if (!json[str.charAt(i)]) {
+        json[str.charAt(i)] = 1;
+      } else {
+        json[str.charAt(i)]++;
+      }
+    }
+    var iMax = 0;
+    var iIndex = "";
+    for (var i in json) {
+      if (json[i] > iMax) {
+        iMax = json[i];
+        iIndex = i;
+      }
+    }
+    console.log("出现次数最多的是:" + iIndex + "出现" + iMax + "次");
+  </script>
+</html>

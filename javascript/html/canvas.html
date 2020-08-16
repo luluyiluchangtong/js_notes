@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/tachyons.css" />
+    <link rel="stylesheet" href="../css/semantic.css" />
+    <script src="../js/jquery-3.1.js"></script>
+    <script src="../js/semantic.min.js"></script>
+  </head>
+
+  <body>
+    <canvas width="150" height="150" id="canvas">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas1">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas2">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas3">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas4">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas5">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="150" height="150" id="canvas6">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas7">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas8">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas9">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas10">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas11">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas12">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas13">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas14">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="600" height="600" id="canvas15">
+      your sourse cant surport canvas</canvas
+    >
+    <canvas width="800" height="800" id="clock">你的浏览器不支持canvas</canvas>
+  </body>
+  <script>
+    // canvas 是一个可以使用 js 在其中绘制 图形界面的 html元素
+    // canvas 只有 width  height两个属性，初始值为300 150
+    // 如果css控制的尺寸和初始画布 “比例”不一致时，则会出现扭曲，
+    // 不要用 canvas 做变量名
+    let canvas = document.getElementById("canvas");
+    if (canvas.getContext) {
+      let ctx = canvas.getContext("2d"); // 创建绘制的上下文
+
+      ctx.fillStyle = "rgb(200,0,0)"; // red / rgba / #445615 都行
+      ctx.fillRect(10, 10, 55, 50); // 坐标位置和宽高
+
+      ctx.fillStyle = "rgba(0, 0, 200, 0.5)"; // fillStyle 一定是在形状描绘之前
+      ctx.fillRect(30, 30, 55, 50);
+
+      ctx.clearRect(20, 20, 50, 50); // 镂空的区域, 没有使用 fillstyle, 默认是黑色
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(30, 30, 20, 20); // 带描边的区域, 没有使用 fillstyle, 默认是黑色
+    }
+    // 不同于SVG，HTML中的元素canvas只支持一种原生的图形绘制(fillRect)，其他的图形都是通过路径绘制
+
+    // canvas 绘制路径
+    let canvas1 = document.getElementById("canvas1");
+    if (canvas1.getContext) {
+      let ctx1 = canvas1.getContext("2d");
+      ctx1.beginPath();
+      ctx1.moveTo(75, 50);
+      ctx1.lineTo(100, 75);
+      ctx1.lineTo(100, 25);
+      ctx1.fill(); // fill() 可以自动闭合路径
+      // ctx1.stroke()   // stroke() ，需要先调用closePath() 或 绘制结束点
+    }
+
+    // 移动笔触绘制弧形
+    let canvas2 = document.getElementById("canvas2");
+    if (canvas2.getContext) {
+      let ctx2 = canvas2.getContext("2d");
+      ctx2.beginPath();
+      ctx2.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制  此时笔触是落在园路径右侧中心点上
+      ctx2.moveTo(110, 75);
+      ctx2.arc(75, 75, 35, 0, Math.PI, false); // 口(顺时针)
+      ctx2.moveTo(65, 65);
+      ctx2.arc(60, 65, 5, 0, Math.PI * 2, true); // 左眼
+      ctx2.moveTo(95, 65);
+      ctx2.arc(90, 65, 5, 0, Math.PI * 2, true); // 右眼
+      ctx2.stroke();
+      // arc(中心点，半径，起始角度，终止角度，true顺时针  false逆时针)
+      // arc() 函数中的角度单位是 "弧度"，不是度数,
+      // Math.PI 等于 180度    Math.PI*2 就是 360° 所以想获得多少度 都可以由这个计算得来
+    }
+    var canvas22 = document.getElementById("clock");
+    var cxt = canvas22.getContext("2d");
+    cxt.lineWidth = "2";
+    cxt.strokeStyle = "#454545";
+    cxt.beginPath();
+    cxt.arc(118, 120, 118, 0, Math.PI * 2, false);
+
+    cxt.moveTo(496, 120);
+    cxt.arc(378, 120, 118, 0, Math.PI * 2, false);
+
+    cxt.moveTo(760, 120);
+    cxt.arc(642, 120, 118, 0, Math.PI * 2, false);
+
+    cxt.moveTo(374, 238);
+    cxt.arc(256, 228, 118, 0, Math.PI * 2, false);
+
+    cxt.moveTo(629, 228);
+    cxt.arc(511, 228, 118, 0, Math.PI * 2, false);
+
+    cxt.stroke();
+
+    // 二次贝尔赛曲线  quadraticCurveTo()
+    function draw3() {
+      var canvas3 = document.getElementById("canvas3");
+      if (canvas3.getContext) {
+        var ctx3 = canvas3.getContext("2d");
+        ctx3.beginPath();
+        ctx3.moveTo(75, 25);
+        ctx3.quadraticCurveTo(25, 25, 25, 62.5);
+        ctx3.quadraticCurveTo(25, 100, 50, 100);
+        ctx3.quadraticCurveTo(50, 120, 30, 125);
+        ctx3.quadraticCurveTo(60, 120, 65, 100);
+        ctx3.quadraticCurveTo(125, 100, 125, 62.5);
+        ctx3.quadraticCurveTo(125, 25, 75, 25);
+        ctx3.stroke();
+      }
+    }
+    draw3();
+
+    // 三次贝塞尔曲线  bezierCurveTo()
+    function draw15() {
+      var canvas15 = document.getElementById("canvas15");
+      if (canvas15.getContext) {
+        var ctx15 = canvas15.getContext("2d");
+
+        //三次贝塞尔曲线
+        ctx15.beginPath();
+        ctx15.moveTo(75, 40);
+        ctx15.bezierCurveTo(75, 37, 70, 25, 50, 25);
+        ctx15.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+        ctx15.bezierCurveTo(20, 80, 40, 102, 75, 120);
+        ctx15.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+        ctx15.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+        ctx15.bezierCurveTo(85, 25, 75, 37, 75, 40);
+        ctx15.fill();
+      }
+    }
+    draw15();
+
+    // Path2D 对象  用来 缓存或记录 绘画命令，(这样你将能快速地回顾路径, 简化代码，提高性能)
+    function draw1() {
+      var canvas4 = document.getElementById("canvas4");
+      if (canvas4.getContext) {
+        var ctx4 = canvas4.getContext("2d");
+
+        var rectangle = new Path2D();
+        rectangle.rect(10, 10, 50, 50);
+
+        var circle = new Path2D();
+        circle.moveTo(125, 35);
+        circle.arc(100, 35, 25, 0, 2 * Math.PI);
+
+        ctx4.stroke(rectangle);
+        ctx4.fill(circle);
+      }
+    }
+    draw1();
+    // Path2D API有另一个强大的特点，就是使用SVG path data来初始化canvas上的路径
+    var p = new Path2D("M10 10 h 80 v 80 h -80 Z");
+
+    // 通过 ctx.globalAlpha='0.3'  或  rgba() 设置透明度
+
+    function draw6() {
+      var ctx6 = document.getElementById("canvas6").getContext("2d");
+      ctx6.beginPath();
+      ctx6.moveTo(8, 10);
+      ctx6.lineTo(8, 50);
+      ctx6.lineTo(50, 20);
+      ctx6.lineWidth = 8;
+      ctx6.lineCap = "round";
+      ctx6.lineJoin = "miter";
+      // ctx6.miterLimit = 1;
+      ctx6.stroke();
+    } // lineWidth 是奇数的时候，线条两端点的位置的 x 必须是再加0.5，是偶数的时候不需要加。
+    draw6();
+    // lineCap: butt/round/square
+    // lineJoin: miter(斜接)/round/bevel(斜角)
+    // canvas 画线
+
+    function draw8() {
+      let ctx8 = document.getElementById("canvas8").getContext("2d");
+      ctx8.font = "30px 微软雅黑";
+      ctx8.textBaseline = "middle";
+      ctx8.textAlign = "center"; // 决定 "文本的那个部分" 位于 x 属性指定的 x 位置,切记不是相对于画布的位置
+      ctx8.strokeText("少不经事", 100, 60);
+      let textWidth = ctx8.measureText("少不经事"); // measureText()  测量字体宽度
+      console.log(textWidth);
+    }
+    draw8();
+
+    // 绘制图像
+    function draw9() {
+      var ctx9 = document.getElementById("canvas9").getContext("2d");
+      var img = new Image();
+      img.onload = function () {
+        ctx9.drawImage(img, 0, 0);
+        ctx9.beginPath();
+        ctx9.moveTo(30, 96);
+        ctx9.lineTo(70, 66);
+        ctx9.lineTo(103, 76);
+        ctx9.lineTo(170, 15);
+        ctx9.stroke();
+      };
+      img.src = "../images/Canvas_backdrop.png";
+    }
+    draw9();
+
+    // canvas 中的图像  --- drawImage(img,x,y,width,height) 缩放， 利用 canvas 压缩图片
+    function draw10() {
+      let ctx10 = document.getElementById("canvas10").getContext("2d");
+      var img = new Image();
+      img.onload = function () {
+        ctx10.drawImage(img, 10, 10, 150, 150);
+        // ctx10.drawImage(img, 10, 10, 50, 50, 40, 40, 100, 100) 切片开始切的位置，大小，切片显示的位置，大小
+      };
+      img.src = "../images/0.png";
+    }
+    draw10();
+
+    // canvas 状态的保存和恢复 --- save()   restore()
+    // Canvas状态存储在栈中，每当save()方法被调用后，当前的状态就被推送到栈中保存
+    // 每一次调用 restore 方法，上一个保存的状态就从栈中弹出，所有设定都恢复
+    // 如果不是之前用 save 保存了状态，那么我们就需要手动改变设置来回到前一个状态
+    function draw11() {
+      var ctx11 = document.getElementById("canvas11").getContext("2d");
+      ctx11.translate(200, 200); // 移动 canvas的原点 到不同的位置
+      ctx11.rotate(45);
+      ctx11.scale(2, 2);
+      ctx11.fillRect(0, 0, 150, 150); // 使用默认设置绘制一个矩形
+      ctx11.save(); // 保存默认状态
+
+      ctx11.fillStyle = "#09F"; // 在原有配置基础上对颜色做改变
+      ctx11.fillRect(15, 15, 120, 120); // 使用新的设置绘制一个矩形
+      ctx11.save(); // 保存当前状态
+
+      ctx11.fillStyle = "#FFF"; // 再次改变颜色配置
+      ctx11.globalAlpha = 0.5;
+      ctx11.fillRect(30, 30, 90, 90); // 使用新的配置绘制一个矩形
+
+      ctx11.restore(); // 重新加载之前的颜色状态
+      ctx11.fillRect(45, 45, 60, 60); // 使用上一次的配置绘制一个矩形
+
+      ctx11.restore(); // 加载默认颜色配置
+      ctx11.fillRect(60, 60, 30, 30); // 使用加载的配置绘制一个矩形
+    }
+    draw11();
+
+    // 裁切图形 和 混合图形
+    // .globalCompositeOperation  属性设置要在绘制 新形状 时应用的合成操作的类型
+    function draw12() {
+      var canvas12 = document.getElementById("canvas12");
+      var ctx12 = canvas12.getContext("2d");
+      ctx12.beginPath();
+
+      ctx12.arc(60, 60, 60, 0, Math.PI * 2, true);
+      ctx12.clip();
+      // 裁切的形状在上面
+
+      ctx12.globalCompositeOperation = "color";
+      // 图形混合模式 (十二种类型)， 类似于ps的图层混合操作
+
+      ctx12.fillStyle = "blue";
+      ctx12.fillRect(10, 10, 100, 100);
+      ctx12.fillStyle = "red";
+      ctx12.fillRect(50, 50, 100, 100);
+      // 被裁切的形状在下面
+    }
+    draw12();
+
+    // 重绘动画
+    var sun = new Image();
+    var moon = new Image();
+    var earth = new Image();
+
+    function init() {
+      sun.src = "https://mdn.mozillademos.org/files/1456/Canvas_sun.png";
+      moon.src = "https://mdn.mozillademos.org/files/1443/Canvas_moon.png";
+      earth.src = "https://mdn.mozillademos.org/files/1429/Canvas_earth.png";
+      window.requestAnimationFrame(draw13);
+      // 在 重绘 之前，请求浏览器执行一个特定的函数来 更新动画
+    }
+    // requestAnimationFrame 解决了浏览器不知道js动画什么时候开始，，最佳循环时间间隔的问题，
+
+    function draw13() {
+      var ctx13 = document.getElementById("canvas13").getContext("2d");
+
+      ctx13.globalCompositeOperation = "destination-over";
+      ctx13.clearRect(0, 0, 300, 300);
+      // 清除  canvas 的状态
+
+      ctx13.fillStyle = "rgba(0,0,0,0.4)";
+      ctx13.strokeStyle = "rgba(0,153,255,0.4)";
+      ctx13.save();
+      ctx13.translate(150, 150);
+
+      // Earth
+      var time = new Date();
+      ctx13.rotate(
+        ((2 * Math.PI) / 60) * time.getSeconds() +
+          ((2 * Math.PI) / 60000) * time.getMilliseconds()
+      );
+      ctx13.translate(105, 0);
+      ctx13.fillRect(0, -12, 50, 24); // Shadow
+      ctx13.drawImage(earth, -12, -12);
+
+      // Moon
+      ctx13.save();
+      ctx13.rotate(
+        ((2 * Math.PI) / 6) * time.getSeconds() +
+          ((2 * Math.PI) / 6000) * time.getMilliseconds()
+      );
+      ctx13.translate(0, 28.5);
+      ctx13.drawImage(moon, -3.5, -3.5);
+      ctx13.restore();
+
+      ctx13.restore();
+
+      ctx13.beginPath();
+      ctx13.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx13.stroke();
+
+      ctx13.drawImage(sun, 0, 0, 300, 300);
+
+      window.requestAnimationFrame(draw13);
+      // 在 重绘 之前，请求浏览器执行一个特定的函数来 更新动画
+    }
+
+    init();
+
+    // 像素操作 --- 通过 ImageData对象操纵 canvas像素数据
+    // 创建一个 ImageData 对象  ctx.creatImageData(width,height)
+    // 得到 canvas 像素数据     ctx.getImageData(x,y,width,height)
+    // 在 canvas 写入像素数据   ctx.putImageData(myImageData,dx,dy)
+
+    // canvas的优化建议
+
+    function draw14() {
+      let ctx14 = document.getElementById("canvas14");
+      var dataURL = ctx14.toDataURL("../images/0.png", 1); // 0 或 1 表示图片的品质质量
+      console.log(dataURL);
+    }
+    draw14();
+    // HTMLCanvasElement.toDataURL() 方法 返回一个 包含图片展示的 data URI
+
+    // webGL（Web图形库）--- 在浏览器中呈现交互式 3D/2D图形。在canvas中使用 WebGL。  API是基于 OpenGL ES 2.0 涉及到 计算机图形学的很多知识。
+
+    // 其他技术
+    // MathMl（mathematical Markup Language）是一种 xml标记语言，用来描述数学公式，符号
+  </script>
+</html>

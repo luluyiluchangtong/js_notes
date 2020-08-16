@@ -1,0 +1,92 @@
+@charset "UTF-8";
+.div1 {
+  width: 100px;
+  height: 100px;
+  background: yellow;
+  color: red;
+  border: solid 1px blue;
+}
+
+.div2 {
+  color: red;
+}
+
+.div2 span {
+  color: green;
+}
+
+.div2 span:hover {
+  color: blue;
+}
+
+.div3 h1 {
+  color: red;
+}
+
+.div3 h2 {
+  color: green;
+}
+
+.div3 h3 {
+  color: yellow;
+}
+
+.div4 span,
+.div5 span {
+  color: yellowgreen;
+}
+
+.div6 {
+  border-top: solid 1px #ccc;
+  border-bottom: solid 2px red;
+}
+
+.div7 {
+  border: solid 1px red;
+  border-left: 0;
+  border-right: 0;
+}
+
+.div8 {
+  font-size: 40px;
+  font-weight: normal;
+}
+
+.div9 {
+  width: 40px;
+  height: 250px;
+  font: 30px/1 微软雅黑;
+  margin: 30px;
+}
+
+.div9:before {
+  content: "I ate 15 pies!";
+}
+
+.div10 {
+  width: 1000px;
+  border: solid 1px red;
+}
+
+@media screen and (max-width: 1200px) {
+  .div10 {
+    width: 500px;
+  }
+}
+
+.div12 {
+  font-size: 40px;
+}
+
+.div11, .div12 {
+  width: 200px;
+  height: 200px;
+  background: red;
+}
+
+.div13 {
+  color: blue;
+  font-family: 微软雅黑;
+  font-size: 20px;
+  border: solid 1px red;
+}

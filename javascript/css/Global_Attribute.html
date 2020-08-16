@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button
+      class="Btn"
+      id="theBtn"
+      style="border: solid 1px;"
+      title="html全局属性"
+      accesskey="a"
+      contenteditable="false"
+      contextmenu="s"
+      data-animal="bird"
+      dir="rtl"
+      draggable="true"
+      lang="jp"
+      onclick="Fn(this)"
+    >
+      html全局属性
+    </button>
+    <!--accesskey 快捷键访问元素： chrome 下为 alt+快捷键访问元素 -->
+    <!-- data-*  存储自定义数据 -->
+    <!-- contextmenu  浏览器尚未实现 -->
+    <!-- contenteditable 元素内的文本是否可编辑 -->
+    <!-- dir  设置文本方向 -->
+    <!-- draggable 设置元素石佛可拖动，需配合js -->
+    <!-- hidden 不是设置 false/true 直接 hidden 为隐藏 -->
+    <!-- lang 设置 语言 -->
+    <script>
+      var Fn = function (target) {
+        var thisA = target.getAttribute("data-animal");
+        alert(thisA);
+      };
+    </script>
+  </body>
+</html>

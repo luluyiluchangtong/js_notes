@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 变量仅仅是一个存储数值的 容器。 不代表数值本身
+      // 变量存在但是没有数值，将返回 undefined;  变量不存在，则会报错。 两者是有区别的。
+      // 垃圾回收机制：JS的垃圾回收机制是为了以防 内存泄漏，内存泄漏 的含义就是当已经不需要某块内存时这块内存还存在着，
+      //              垃圾回收机制会 按照固定的时间间隔周期性 寻找到不再使用的变量，并释放掉它们所指向的内存
+
+      // JS有两种变量，全局变量和在函数中产生的局部变量。
+      // 局部变量的生命周期在函数执行过后就结束了，此时便可将它引用的内存释放（即垃圾回收），但全局变量生命周期会持续到浏览器关闭页面。
+
+      // 标记清除：大部分浏览器以此方式进行垃圾回收，当变量进入执行环境（函数中声明变量）的时候，垃圾回收器将其标记为“进入环境”，
+      //          当变量离开环境的时候（函数执行结束）将其标记为“离开环境”，在离开环境之后还有的变量则是需要被删除的变量
+      //  即 垃圾收集器给内存中的所有变量都加上标记，然后去掉环境中的变量以及被环境中的变量引用的变量的 标记。在此之后再被加上的 标记 的变量即为需要回收的变量
+
+      // 全局变量可以被程序的任何部分在任何时间修改，降低了程序的可靠性， 同时如果和子程序中的变量名相同，则导致冲突。
+      // 任何 js 代码在执行前都要进行编译！
+      // 一个js 程序无非就是一个分号分割的语句的集合。。
+      // js的“文法”  --- 来描述语法（操作符，关键字，等等）如何组合在一起形成结构良好，合法的程序
+      // 语句 --- 就相当于英语中的句子，表达式 --- 就是短语，操作符 --- 就是连词/标点。
+      var a, b, c;
+      a = b = c = 42; // 文法解析顺序： var c=42  var b=42  var a=42
+      var a = (b = c = 42); // 文法解析顺序： c=42  b=42  var a=42
+
+      // 1.表达式（expression）：
+      // 每一个合法的表达式都能计算成某个值，但从概念上讲，有两种类型的表达式：有副作用的（比如赋值）和单纯计算求值的
+      // 一个表达式在求值过程中，对使用的 '变量' 不但引用，对它们的值还加以改变，这样的表达式称为 有副作用的 表达式，或者称这个表达式是有副作用的．
+      // 1、5*X；2、X+Y；3、X++；4、Y-=18*2    3 4是有副作用的表达式  1 2则没有
+
+      // 表达式 --- 一个表达式是一个引用，指向 变量 或 值。以逗号链接两个表达式，返回右边表达式的结果
+      // 如果在表达式后面加上一个“；”分隔符，这就被称为“表达式语句(counter++;)”。
+      // 它表明“只有表达式，而没有其他 语法元素 的语句”
+      num = 2;
+      o.aa;
+      9 + 3;
+      [1, 2, 3];
+      // 列表结尾可以添加一个逗号，这时并不会创建一个新的值为  undefined 的元素，但是会改变length值
+      // 尾逗号的添加是 为了在新增数组元素的时候，不修改上一行，只增添新行，会更清晰！
+      // 对象末尾添加尾逗号也是合法的。
+      box(); // 函数表达式
+      new Object() // 对象创建表达式
+      ``;
+
+      // 2.语句（statement）:
+      // 语句 --- 是一种行为， 一般有 关键字 引领, for  if  function  var; 以分号结束.. ;
+      // 控制台 会返回最近一次 语句的完成值。
+
+      // 2.1 语句的类型
+      // 空语句   ;   就是一个分号， 不包含任何语句
+      // 声明语句: var语句: var i, j;   var i=90, j=89;
+      // js 可以不声明，但不推荐这么用。。
+      // function语句:  function box(){}
+      // label语句（标签语句）： foo: {a: box()}  label标签标识一个循环语句，然后使用 break 或者 continue 来指出程序是否该停止循环还是继续循环
+      // break 语句：用来终止循环
+
+      // continue 语句用来继续执行它标记的循环语句（跳过代码块的剩余部分并进入下一循环）。
+      var i = 0;
+      while (i < 40) {
+        if (i < 30);
+        continue; // 此时跳出代码块剩余部分，并进入下一循环
+        document.write("########" + "</br>");
+        i++;
+      }
+
+      // 条件语句：if{} else{}  switch(){}  任何不是 false, undefined, null, 0, NaN 的值，或一个空字符串（''）在作为条件语句进行测试时实际返回true
+      // if语句：几种情况---  注意：！！！ 只有有 “动态操作” if(这里为true 或 false的时候， 才会来回切换执行。这个语句 和 toggle 是有区别的。){}
+      if (expression) {
+        statement;
+      }
+      if ("10" == 10) console.log("1");
+      // 圆括号后必须跟随一条语句，也可以是语句块
+      if (expression) {
+        statement1;
+      } else {
+        statement2;
+      }
+      // 可以使用 三元运算符 代替 if else语句
+      expression ? statement1 : statement2;
+      // 这里 expression 存在强制转换，
+      !!expression ? statement1 : statement2;
+      // 所以一般是这样写，避免上面这种隐式的强制转换。
+
+      // 嵌套条件语句：
+      if (condition) {
+        if (condition) {
+          //  doSomething
+        }
+      }
+
+      // 使用 花括号 清晰明了 ！！
+      if (x) {
+      } else if (x) {
+      } else if (x) {
+      } else {
+      }
+      // else if(x){}  只不过是将多条 if/else语句连在一起时的写法，实际上它文法是如下解析的:
+      if (a) {
+      } else {
+        if (x) {
+        } else {
+        }
+      }
+      //  else if  实际上是这样的， 它并不属于  js 语法的范畴  else 后的 {} 是可以省略的。
+      //  if else 不是  toggle() 方法的实现，切记！！
+
+      // switch 语句：
+      // switch(expression){ case value1:}  求一个表达式的值，尝试将表达式的值去匹配一个 case 标签
+      let x = 4;
+      switch (x) {
+        case 2:
+          console.log("a");
+          break;
+        case 3:
+          console.log("b");
+          break;
+        default:
+          console.log("1");
+      } // break 语句 保证在 匹配的语句 被执行后程序可以跳出 switch 并且继续执行 switch 后面的语句
+
+      const a = [0, 1, 2, 3, 4];
+      for (var i = 0; i < a.length; i++) {
+        if (a[i] === 2) {
+          break; // stop the loop
+        }
+        console.log(a[i]);
+      } // 普通循环下可以使用 break 语句跳出循环的
+
+      [0, 1, 2, 3, 4].forEach(function (val, i) {
+        if (val === 2) {
+          // 怎么停止呢?
+          return true;
+        }
+        console.log(val); // your code
+      }); // forEach 等循环函数下是不能使用的。 使用 return true
+
+      // 循环语句 ：
+      // for(initialize; text; increment){}
+      // for/in  在表达式和运算符里有详尽介绍
+      // 嵌套循环
+      for (i = 0; i < 3; i++) {
+        //The first for statement is labeled "loop1"
+        for (j = 0; j < 3; j++) {
+          //The second for statement is labeled "loop2"
+          console.log("i = " + i + ", j = " + j);
+        } // 嵌套循环，简单解释就是 有几组，每组下面有几个。这里是三组，每组3个 共9个结果
+      } // 索引值：
+      (i = 0), (j = 0); // 0 0
+      (i = 0), (j = 1); // 1 1
+      (i = 0), (j = 2); // 2 2
+      (i = 1), (j = 0); // 0 0
+      (i = 1), (j = 1); // 1 1
+      (i = 1), (j = 2); // 2 2
+      (i = 2), (j = 0); // 0 0
+      (i = 2), (j = 1); // 1 1
+      (i = 2), (j = 2); // 2 2
+      //  总结：
+      //  对于循环的嵌套  只要记住一点：  明确 索引值  和  结果值 的关系就  ok 了，
+      //  然后被嵌套的循环只要有条件就会 一直独自循环，直到没有条件，它的值初始化。再次进入循环
+      //  当两个循环都没有条件循环了，，停止循环。
+
+      // 跳转语句：
+      // continue语句 --- 跳出本次循环，然后再次测试是否重新进入循环
+      // break语句 --- 跳出整个循环
+      // continue语句 和 break语句都只能用在循环中；并且可以引用 标签语句,也是唯一可以使用 语句标签 的语句
+      aa: for (var i = 0; i < 10; i++) {
+        if (i > 3) {
+          console.log(i);
+          continue aa; // break aa;
+        }
+        console.log("aaa");
+      }
+
+      for (var i = 0; i < 5; ++i) {
+        // 改为 let 结果是 0 1 2 3 4
+        setTimeout(function () {
+          console.log(i); // 输出 '5' 五次 相当于跳出了 for 代码块
+        }, 100);
+      } // var  变量i 跳出了代码块     let 变量i 一直在代码块内
+      // 与其他大多数语句不同（比如console.log(amount);），一个块儿语句与不需要分号（;）来终结它
+
+      // do{ statement }while( condition )语句  --- 至少执行一次
+      // while( condition ){ statement }
+      // 区别于 if，  while语句当条件为 true 时 会重复执行语句，除非条件变为 false 时。则停止执行语句
+
+      // while 语句应用：
+      var indices = [];
+      var array = ["a", "b", "a", "c", "a", "d"];
+      var element = "a";
+      var idx = array.lastIndexOf(element);
+
+      while (idx != -1) {
+        indices.push(idx);
+        idx = idx > 0 ? array.lastIndexOf(element, idx - 1) : -1;
+      }
+
+      console.log(indices);
+      // [4, 2, 0];
+
+      var indices = [];
+      var array = ["a", "b", "a", "c", "a", "d"];
+      var element = "a";
+      var idx = array.indexOf(element);
+      while (idx != -1) {
+        indices.push(idx);
+        idx = array.indexOf(element, idx + 1);
+      }
+      console.log(indices);
+      // [0, 2, 4]
+
+      //超出合法范围时 抛出  RangeError
+      //读取不存在的变量时 抛出 ReferenceError
+      //语法错误 抛出 SyntaxError
+      //一个值类型错误 抛出 TypeError
+
+      // 作用域 --- 是 引擎在当前作用域和子作用域中，根据名称查找变量的一套规则，它是变量的集合。。
+      // 作用域查找 会在找到第一个匹配的标识符时停止 !!! 从内向外查找!!! 直到全局作用域时，停止。
+      // 词法作用域（定义时的作用域）：因为 JavaScript 采用的是词法作用域，函数的作用域 在函数 定义 的时候就决定了。
+      // 动态作用域（执行时的作用域）：而与词法作用域相对的是动态作用域，函数的作用域 是在函数 调用 的时候才决定的。
+
+      for (var i = 0; i < 4; i++) {
+        console.log(i); //  0 1 2 3
+      }
+      console.log(i); // 4
+
+      for (let i = 0; i < 4; i++) {
+        console.log(i); //  0 1 2 3
+      }
+      // console.log(i)   // ReferenceError: i is not defined
+
+      for (var i = 0; i < 4; i++) {
+        setTimeout(function () {
+          console.log(i); //  4 4 4 4
+        }, 300);
+      }
+
+      for (var i = 0; i < 4; i++) {
+        (function (i) {
+          setTimeout(function () {
+            console.log(i); //  0 1 2 3
+          }, 300);
+        })(i);
+      }
+
+      function foo(a) {
+        var b = a;
+        return a + b;
+      }
+
+      var c = foo(2);
+
+      function dosomthing(a) {
+        function dosomthingElse(a) {
+          return a - 1;
+        }
+        var b;
+        b = a + dosomthing(a * 2);
+        console.log(b * 3);
+      }
+      dosomthing(2);
+
+      // 例子1 --- 日历：
+
+      // 例子2 --- ：
+      let sle = document.querySelector("select"); // 1
+      function box1(color, background) {
+        // 4
+        let html = document.querySelector("html");
+        html.style.color = color;
+        html.style.background = background;
+      }
+
+      function box() {
+        // 3
+        let choice = sle.value; // 这里注意不是 option 的value
+        switch (choice) {
+          case "sd":
+            box1("black", "green");
+            break;
+          case "sd1":
+            box1("yellow", "red");
+            break;
+          case "sd2":
+            box1("blue", "black");
+            break;
+        }
+      }
+      sle.addEventListener("change", box); // 2
+
+      try {
+        abc(); // 需要测试的代码
+      } catch (err) {
+        console.log(err);
+        //  try 代码块中的语句一旦抛出异常，则执行 catch 中的语句，没有抛出异常，则catch 中的代码块会被跳过
+      } finally {
+        console.log("a"); // 无论代码是否错，都会执行的代码
+      } // catch  finally 都是可选的，但必须有一个和 try 搭配
+      // catch 该特性是非标准的，请尽量不要在生产环境中使用它！
+
+      // 你可以用finally块来令你的脚本在异常发生时优雅地退出， 例如 打开一个文件，在打开文件抛出异常时之前，及时关闭文件。
+      // 如果finally块返回一个值，该值会是整个try-catch-finally流程的返回值
+
+      // throw 语句允许我们创建自定义错误
+      function box(x) {
+        if (x > 2) {
+          return 22;
+        }
+        throw new Error("aaaa");
+      }
+
+      console.log(box(3));
+
+      // 多个表达式 如果跨越多行，必要时请使用圆括号。
+      // 如果一个表达式很长，折行时 运算符放在前面
+      if (
+        (foo === 123 || bar === "abc") &&
+        doesItLookGoodWhenItBecomesThatLong() &&
+        isThisReallyHappening()
+      ) {
+        thing1();
+      }
+
+      let(foo, bar);
+      if (
+        (foo === 123 || bar === "abc") &&
+        doesItLookGoodWhenItBecomesThatLong() &&
+        isThisReallyHappening()
+      ) {
+        thing1();
+      }
+
+      // 在‘代码块’间 以及 在‘代码块’后请留出 一行空行； ‘代码块’内不要有空行
+      const arr = [
+        function foo() {},
+        // 空行
+        function bar() {},
+      ];
+      // 空行
+      return arr;
+
+      // 循环语句： for  while(){}  do{}while();
+      // 分支语句： if ;  函数声明：function ;  等结束时无需加分号，其他的语句都需要加分号。否则：自动插入分号，个别情况下会导致错误。。
+      // 自动插入分号，并不是解析时真正的插入分号，只是意味着解析时语法上的一个终止
+      // 1. 后缀运算符 ++ 或 -- 和它的操作数应该出现在同一行
+      // 2. continue, break, return, throw toke 语句的 表达式 开始位置应该和这些标识符同一行
+      // 3. 一个分号 ; 是空语句
+      // 不会自动分号插入：
+      // 1. var a = b + 3  (c + d) 隔行/ 空格都不会在前置括号前面自动插入分号。
+    </script>
+  </body>
+</html>

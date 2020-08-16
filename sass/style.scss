@@ -1,0 +1,21 @@
+// 混合器： 需要使用大段的重用样式
+// 判断一组属性是否应该组合成一个混合器，一条经验法则就是你能否为这个混合器想出一个好的名字(非常重要，要语义化！！)
+// 混合器可以包含同时 属性 和 css规则
+@mixin border-round {
+  -moz-border-radius: 14px;
+  -webkit-border-radius: 14px;
+}
+
+.minxs {
+  @include border-round
+}
+
+@mixin no-bullets {
+  list-style: none; // 混合器包含的属性
+  li {
+    // 混合器包含的规则
+    list-style-image: none;
+    list-style-type: none;
+    margin-left: 0px;
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Title</title>
+    <script src="../js/jquery-2.1.4.js"></script>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/tachyons.css" />
+  </head>
+
+  <body>
+    <script>
+      // var，function声明全局变量，仍然是全局对象的属性，let，const，class命令声明的全局，不属于对象属性
+      // var a=34  window.a ==> 34    let a=45  window.a ==> undifined
+
+      // let const 相同点：
+      // 1. 都是块级作用域（块级作用域是在一个函数内部 或 一个代码块内部({即花括号内部})声明的变量的集合）
+      // 2. 先声明，后使用,在一个代码块内不可重复声明已有的变量
+      // 3. 在定义时，不属于全局的属性
+
+      // let const 不同点：
+      // const 需同时声明和赋值，并且不可更改值。
+      // 若值是对象，则可以更改值。 因为 const 阻止的是对于 '变量绑定' 的修改，而不阻止对 '成员值' 的修改。
+      const obj = { a: 45 };
+      obj.a = 90;
+      console.log(obj.a); // 90
+      const arr = [1, 2, 3];
+      arr.push(70);
+      console.log(arr[arr.length - 1]); // 70
+
+      // let   允许先声明 然后赋值，可以更改值。
+
+      for (var a = 0; a < 5; a++) {
+        console.log(a);
+      }
+      console.log(a); // 0 1 2 3 4 5    // 改为 let 则输出  0 1 2 3 4
+
+      // 怎么使用它们:
+      // 使用 const 、并且只在知道变量值 需要 被更改的情况下才使用 let 。其理论依据是大部分
+      // 变量在初始化之后都 不应当 被修改，因为预期外的改动是 bug 的源头之一。这种理念有着足
+      // 够强大的吸引力，在你采用 ES6 之后是值得在代码中照此进行探索实践的
+      const obj = {
+        a: 11,
+      };
+      obj.a = 34; // 对成员值的修改。
+      console.log(obj);
+      obj = {
+        a: 45,
+      }; // 若这样改，就是对变量绑定的修改，会报错。
+      // 在代码块内部未声明前访问let，const变量 或 代码块外部访问时会有 暂时性死区，会报错；
+
+      var arr = []; // 切记 这里不是第二次执行的开始，，for 循环才是~！
+      for (var i = 0; i < 10; i++) {
+        arr[i] = function () {
+          console.log(i); // 这里打印出的值 都是指向同一个全局变量 i
+        };
+      }
+      arr[6](); // 10
+      // 跳出了代码块读取 i:  var  变量i ，成了全局的变量(变量提升)； let 变量 i 读不到
+      // 一直在代码块内读取 i:  var  变量i  let 变量i 都返回一样的结果，都是 for代码块内 的局部变量
+
+      for (var i = 0; i < 10; i++) {
+        setTimeout(function () {
+          console.log(i); // 10 10....10  考察的是 闭包， 和异步..  当遇到异步时，循环早已执行完毕，并将结果指向最终的变量结果。
+        }, 0);
+      }
+
+      for (var i = 0; i < 8; i++) {
+        function box() {
+          console.log(i);
+        }
+        box();
+      }
+      // console.log(i);
+
+      // 这里的变量始终指向的都是一个全局变量 i
+      // 作用域名：只有函数作用域，全局作用域。。 子作用域覆盖父作用域。。
+      // 存在声明提升。（注意是 声明 ）
+      // ES5 只存在 var 和 function 声明命令！
+
+      let arr = [];
+      for (let i = 0; i < 10; i++) {
+        arr[i] = function () {
+          console.log(i);
+        };
+      }
+      arr[6](); // 6
+      // 每次 for循环 里面的 子作用域 都会生成一个单独的变量，只在代码块内有效
+      // 变量一定要在声明之后调用
+      // 不允许在 相同的作用于内 声明同一变量
+
+      const a = 11;
+      a = 22; // 一旦声明，常量的值就不能改变，即 必须 '同时' 声明和赋值。
+      console.log(a); // 此时会报错，因为再次赋值了
+      // const 其实就是一个指针 指向一个内存地址：
+      // const 只能保证这个指针是固定的，至于它指向的数据结构是不是可变的，就完全不能控制了，如下
+      function box() {
+        const a = {};
+        a.b = 33;
+        console.log(a.b);
+      }
+      box(); // 这里如果是对象的话，只能保证指向的是这个对象，内部的改变无法控制
+      // let命令、const命令、class命令声明的全局变量，不属于顶层对象的属性。
+
+      const Oul = document.querySelector(".ba");
+      var num = "";
+      for (var i = 0; i < 3; i++) {
+        console.log(i);
+        let Oli = `<li>${i}</li>`;
+        num += Oli;
+        Oul.innerHTML = num;
+      }
+
+      console.log(a); // 报错  定义的同时必须赋值
+
+      let a;
+      console.log(a); // undefined
+
+      const a = 34;
+      a = 67;
+      console.log(a); // 报错  不能重新赋值
+
+      let a = 34;
+      a = 67;
+      console.log(a); // 67
+    </script>
+  </body>
+</html>

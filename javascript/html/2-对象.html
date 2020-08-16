@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <script>
+      //  new 和 Object.create() 的区别？？？
+
+      // 在编程中，对象是现实生活中的模型的一种代码结构。您可以有一个简单的对象，代表一个停车场，并包含有关其宽度和长度的信息，
+      // 或者您可以有一个代表一个人的对象，并包含有关他们的名字，身高，体重，他们说什么语言，如何说 你好，他们，等等
+
+      // 对象的定义:
+      // ECMAScript 是在宿主环境( 浏览器， 服务器。。。)中计算，处理对象的面向对象编程语言。宿主环境提供ES访问的属性和方法。
+      // 对象由一系列无序键值对组成的功能集合（对象：键/值对   数组：数值下标/值对）任何对象，不是原生对象，就是宿主对象。
+      // 原生对象: Object, Array, Number, String, Boolean, Null, undefined, TypedArray, Map and Set, Function,Date, regExp,Error
+      // 宿主对象: 浏览器中的 window 对象  nodeJS中的 Global 对象  DOM对象  自定义对象
+
+      // JavaScript 中的根对象是 Object.prototype 对象
+      // 我们在 JavaScript 遇到的每个对象，实际上都是从 Object.prototype 对象克隆而来的， Object.prototype 对象就是它们的原型
+
+      // 面向对象的 三大基本特征：封装、继承、多态；
+      //           五大基本原则：
+      // 1、单一职责原则（SRP）
+      // 2、开放封闭原则（OCP）
+      // 3、里氏替换原则（LSP）
+      // 4、依赖倒置原则（DIP）
+      // 5、接口隔离原则（ISP）
+
+      // 现原型编程范型至少包括以下基本规则:
+      // 所有的数据都是对象。
+      // 要得到一个对象，不是通过实例化类，而是找到一个对象作为原型并克隆它
+      // 对象会记住它的原型
+      // 如果对象无法响应某个请求，它会把这个请求委托给它自己的原型(对象把请求委托给它的构造器的原型)。
+
+      // 对象包括原型上的属性和方法 和 实力上的属性和方法
+      // 操作 对象 是通过 '引用' 而非 '值' 对象内部的属性名/数组的数值下标）就像指针，指向 值 "真正" 的存储位置,而不是表面那样存储在对象的内部
+      // javascript 对象 都是 关联数组（通过字符串索引） 它的写法如下：（对象做了字符串到值的映射，而数组做的是数字到值的映射）
+
+      // 对象实例创建的方式： 1. 内建对象自动创建实例： String.split() 自动创建字符串实例； document.querySelector() 自动创建 document 实例；
+      //                     2. 构造函数创建对象实例    new Date()
+
+      var arr = {
+        one: "valOne",
+        two: "valTwo",
+      };
+      arr["three"] = "valThree"; // 添加属性
+      arr["one"] = "valOne"; //修改属性
+      var val = arr["one"]; // 访问属性
+      delete arr.one; // 删除属性
+
+      // 对象属性的访问:
+      // 1.以点的方式访问: 那么一般都是写 “属性名”. 一般称为 属性访问
+      // 2.以中括号的方式访问:  1.即当属性是 动态属性, 即属性以 (变量/表达式) 方式表示时, 自动把（变量/表达式）转成字符串,再去对象中查找
+      //                       其中需要把属性名用 “双引号” 括起来的情况是（包括保留字或不合法的标识符时，String, var等关键字做属性名时等情况）
+      //                        2.直接访问属性时,需要使用 双引号
+      //                        3.ES6 将属性名使用中括号表示..
+      var p = {
+        name: "李四",
+        age: 20,
+      };
+      var attName = "name"; // 动态属性   将属性名赋值给变量
+      console.log(p[attName]); // 李四   这里 attName表示的是一个变量名。
+      console.log(p.name); // 李四
+
+      let a = 20;
+      const obj = {
+        [a]: 34,
+        b: 56,
+      };
+      console.log(obj[a]); // 34
+
+      // ab-cc 标识符中使用 - 链接是不合法的，ab_cc 则是合法的，若使用 ab-cc 做属性名，需要使用双引号 "",合法化属性名
+      // 属性值可以是除了 undefined值之外的任何值。
+      // 局部变量 会在代码执行完毕时，离开执行环境，自动解除引用。全局变量 或全局对象的属性 需要通过手动解除引用  var a=90  a=mull
+      // 更恰当的方法是通过 闭包 来使用变量。
+
+      // 对象是按引用访问的，而不是访问实际的对象。
+      // 一个变量向另一个变量复制 基本类型 的值时，复制值的副本，两个变量保存的值互不影响，保存在 栈 内存中
+      // 基本类型 --- 栈内存
+
+      // 一个变量向另一个变量复制 引用类型 的值时，复制值的副本，此时副本的变量也相当于指针，指向 堆 内存中的同一个对象
+      // 引用类型 --- 堆内存
+
+      // 属性的简写 和 方法的简写
+      // 当对象的属性名和变量的属性名相同时，属性可 简写,属性名为变量名, 属性值为变量的值
+      let foo = "11";
+      const bar = {
+        // Vue 中的 new Vue({store, router}) 将 状态和路由 全局引入 vue 对象
+        foo,
+      };
+      console.log(bar.foo); // 11
+
+      function box(x, y) {
+        return {
+          x,
+          y,
+        };
+      }
+      console.log(box(1, 2)); // Object {x: 1, y: 2}
+
+      const a = 22;
+      const bb = 33;
+      const abc = {
+        aa,
+        bb,
+        dd: 34,
+        ss: 45,
+      };
+      // 将对象的属性的所有简写放在最开始，一目了然！
+
+      // ES6的简写
+      const ball = {
+        box() {
+          return "hello";
+        },
+      };
+      // 等同于 ES5的
+      const ball = {
+        box: function () {
+          // 标签语句
+          return "hello";
+        },
+      };
+
+      //  对象的比较 是 引用 的比较  而不是 值 的比较。。。
+      var num = function () {};
+      var box = num;
+      var box1 = num;
+      console.log(box === box1);
+
+      // 定义对象的方式：
+      // 1. 对象直接量:
+      var person = {
+        age: 24,
+        name: {
+          first: "Bob",
+          last: "smith",
+        }, // person 对象的 子命名空间 name
+        box: function () {
+          console.log("对象的方法");
+        },
+      }; // person.name.Bob   person['first']['Bob']
+
+      // 2.构造函数：
+      function Fn(name, age) {
+        this.name = name;
+        this.age = age;
+        this.person = function () {};
+      }
+      // Fn.prototype.person=function(){}
+      let newPerson = new Fn("li", 52);
+      // let newPerson1 = new Fn('lu', 52)
+      // newPerson.name    'li'
+      // newPerson.age      52
+      // 当我们调用构造函数时， 得重新定义一遍函数 person， 即newPerson newPerson1 中都定义了 person() 函数
+      // 为避免此类情况， 可以在 原型 prototype 下定义函数。 即使用最广泛的 构造函数模式 和 原型模式的组合来创建对象
+      // 如果构造器 显式地   返回了一个 object 类型的对象，那么此次运算结果最终会返回这个对象,而不是我们之前期待的 this
+      // 如果构造器 不显式地 返回任何数据，或者是返回一个非对象类型的数据，就不会造成上述问题
+
+      // 3.Object构造函数:   Object 的 子类型 包括(Function; Array; Date; RegExp)
+      // 方式一：
+      let person = new Object();
+      person.name = "zhang";
+      person.say = function () {
+        console.log("");
+      };
+
+      // 方式二：
+      let person = new Object({
+        name: "liu",
+        say: function () {},
+      });
+
+      // 4.Object.create()    比使用构造函数创建对象更方便
+      // 允许您基于 “现有对象” 创建 “新的对象” 实例 参数一：对象的原型  参数二：属性的描述
+      var p = {
+        x: 1,
+      }; // 每个对象都是一个原型
+      var o = Object.create(p); // 通过原型 p 创建 对象 o,  对象 o 的原型是 p。
+      console.log(o); // {}
+      console.log(o.x); // 1    // 返回 原型对象 上添加新属性后的对象
+      console.log(p.isPrototypeOf(o)); // true
+
+      const obj = {
+        a: 11,
+      };
+      const obj1 = Object.create(obj);
+      console.log(obj1.a); // 11
+      obj1.a = 33;
+      console.log(obj1.a); // 33
+      delete obj1.a;
+      console.log(obj1.a); // 11
+      console.log(obj1.prototype === obj.prototype); // true   prototype 是对象的一个 “内部属性”
+      Object.getPrototypeOf(obj1) === obj; // true  查询对象的原型 getPrototypeOf()
+      console.log((obj1.__proto__ = obj)); // Object {a: 11}  通过对象的指针 __proto__ 访问他的原型
+      console.log(obj.isPrototypeOf(obj1)); // true  检测对象的原型 isPrototypeOf()  这是区别于 new 调用函数的关键
+      // 这里是继承了 obj的原型，在自己的原型上没找到的属性，会沿着原型链到 obj的原型上找。
+      // 原型可以继承，继承的应用可以使 A对象的原型继承 B对象的原型， 从而 A对象可以访问 B对象里的属性
+
+      console.log(Object.prototype.__proto__); // null  即原型链的终点是 null
+
+      // 通过 Object.getPrototypeOf() 获得对（原型对象）的引用。
+      function Foo() {
+        // ...
+      }
+      var a = new Foo(); // var b=new  Foo()   两个对象，每一个都被保存在不同的命名空间（a ,b）里, new 告知浏览器创建袷对象，不是调用函数的意思！！
+      Object.getPrototypeOf(a) === Foo.prototype; // true  通过 Object.getPrototype() 查看对象的原型
+      console.log(Foo.prototype.isPrototypeOf(a)); // true
+      console.log(a.__proto__ === Foo.prototype); // true
+
+      console.log(a instanceof Foo); // true
+      console.log(a instanceof Object); // true
+      console.log(a instanceof Function); // false
+
+      console.log(Object.prototype.isPrototypeOf(Foo)); // true
+      console.log(Foo instanceof Function); // true
+
+      let a = Object.getPrototypeOf(arr) === Array.prototype;
+      //  检测对象的实例 instanceOf 在typeof判断 Object 类型时，可以精确判断 对象的类型 Array， Function，等 :
+
+      // Object.setPrototypeOf()    参数： 设置参数2  为参数1  的原型对象
+      // Object.getPrototypeOf()  获取对象的原型  ES6新增了   Object.setPrototypeOf() 设置对象的原型
+      let person = {
+        getGreeting() {
+          return "Hello";
+        },
+      };
+      let dog = {
+        getGreeting() {
+          return "Woof";
+        },
+      };
+      // 原型为 person
+      let friend = Object.create(person);
+      console.log(friend.getGreeting()); // "Hello"
+      console.log(Object.getPrototypeOf(friend) === person); // true
+      // 将原型设置为 dog
+      Object.setPrototypeOf(friend, dog); // 参数1：需要被修改原型的对象  参数2：将会成为前者原型的对象
+      console.log(friend.getGreeting()); // "Woof"
+      console.log(Object.getPrototypeOf(friend) === dog); // true
+
+      // 使用 super 引用原型, 简单来说， super 是指向当前对象的原型的一个指针
+      // 若要调用原型上的同名方法，
+      let person = {
+        getGreeting() {
+          return "Hello";
+        },
+      };
+      // 原型为 person
+      let friend = {
+        get() {
+          // 若 这里是和原型同名的 getGreeting 则覆盖原型上的方法。
+          return super.getGreeting() + ", hi!"; // 注意 class 类中对 super 的使用
+        },
+      };
+      Object.setPrototypeOf(friend, person);
+      // 原型为 friend
+      let relative = Object.create(friend);
+      console.log(person.getGreeting()); // "Hello"
+      console.log(friend.get()); // "Hello, hi!"
+      console.log(relative.getGreeting()); // "Hello, hi!"
+
+      // 正式的  ‘方法’ 定义
+      // ES6 对方法做出了定义：
+      // 方法就是一个拥有 [[HomeObject]]内部属性 的函数，此内部属性指向该方法所属的对象
+      // 任何对 super 的引用都会使用 [[HomeObject]] 属性来判断要做什么
+      function box() {} // 不是方法，因为该函数没有赋给一个对象。
+
+      // 原型链：它解释了为何 一个对象 会拥有定义在 其他对象 中的属性和方法
+      // [[Prototype]]机制是一种存在于一个对象上的 "内部链接"，它指向一个其他对象
+      // js中每个对象拥有一个原型对象 (prototype), "对象本身" 以 其原型 为模板、"从原型继承方法和属性"。
+      // 所有 “继承的” 属性和方法是定义在 prototype 属性之上的
+      // 当一个属性/方法引用在第一个对象上发生，而这样的属性/方法又不存在时，这个链接就会被使用。
+      // 在这种情况下，[[Prototype]]链接告诉引擎去那个被链接的 原型对象 上寻找该属性/方法。
+      // 接下来，如果那个 原型对象 也不能满足查询，就沿着它的[[Prototype]]查询，如此继续。这种对象间一系列的链接构成了所谓的“原形链”
+
+      // Obj.prototype   Obj.__proto__  Obj.isPrototypeOf()  Object.getPrototypeOf()
+      const obj = {
+        a: 11,
+        b: 34,
+      };
+      console.log("obj", obj);
+      const Obj1 = Object.create(obj);
+      console.log("Obj1", Obj1);
+      console.log(Object.getPrototypeOf(obj)); // {}
+      console.log(obj.__proto__); // {}
+      console.log(obj.__proto__ === Object.prototype); // true  指向 原型
+      console.log(Obj1.__proto__ === obj); // true   指向 原型
+      console.log(Object.prototype.isPrototypeOf(obj)); //true
+      console.log(obj.prototype === Obj1.prototype); // true
+      console.log(obj.prototype); // undefined
+      console.log(Obj1.prototype); //undefined
+
+      // ___proto__ : 每个 实例对象 都有一个私有属性 __proto__ 指向它的构造函数的原型对象  (实例创建的 两种方式记住)
+      // prototype :  所有对象都有一个指向它的原型对象的内部链接[[prototype]], 但只有函数对象才有prototype这个属性
+      // isPrototypeOf(): 用于测试一个对象是否存在于另一个对象的原型链上,
+      //  即 someFunc.prototype.isPrototypeOf(someObj)   someObj.isPrototypeOf(someObj)
+
+      // 原型链实操解释:
+      // 1.对象直接量创建的对象使用 Object.prototype 作为 对象的原型；
+      // 例如：function box(){}  > Function.Prototype > Object.prototype
+      // var myString = 'This is my string.';   myString > String.prototype > Object.prototype
+      // var arr=[1,2,3]                        arr > Array.prototype > Object.prototype
+
+      // 重要：prototype 属性大概是 JavaScript 中最容易混淆的名称之一。
+      // 你可能会认为，这个属性指向当前对象的原型对象，其实不是（还记得么？原型对象是一个内部对象，应当使用 __proto__ 访问）。
+      obj._proto_ = Object.prototype;
+
+      // 使用 class关键字:  详见 class.html
+
+      // 对象的属性:
+      // 4. 对象属性的来源：自定义属性   继承的属性(原型对象中继承来的属性);  又分为 数据属性（键值对形式），存取器属性（get/set方法）
+      // 5. 数据属性的四个特性：可写writable(属性的值是否可以被改变)  可枚举 enumerable  可配置 configurable(是否可以修改 属性特性)   value值
+      // 1.可写  writable: false/true
+      const obj = {
+        a: 11,
+        b: 22,
+      };
+      obj.c = 33; // 新增
+      console.log(obj);
+      var abc = 123;
+      console.log(obj[abc]);
+      // 定义 赋值 获取  删除  如果用的是方括号 [] 里面必须是： 一个计算结果为 字符串 的表达式。
+      // 对象做了字符串到值的映射，而数组做的是数字到值的映射。
+      delete obj.a; // 删除   delete 只能删除自有属性，若删除继承属性，只有在原型对象上删除它。全局变量，全局函数不可通过delete删除, 删除只读的属性会报错
+      console.log(obj);
+      obj.a = 1212; // 修改
+      console.log(obj);
+
+      // 2.可枚举  enumerable:false/true   数字类型 键按升序排序，其他字符类型键按添加顺序排序, 最后是 Symbol键按添加顺序排序
+      // in               如果 指定的属性 在指定的对象 或 其原型链中，则in 运算符返回true
+      // for ... in       枚举对象及原型上的所有 '可枚举' 属性（除了Symbol以外）
+      // Object.keys()    枚举对象自身的所有 '可枚举' 属性
+      // Object.getOwnPropertyNames()    对象自身所有 '可枚举' 及 '不可枚举' 属性。。
+      // Object.hasOwnProperty()   判断对象自身的所有 '可枚举' 属性
+
+      // propertyIsEnumerable()
+      // Reflect.ownKeys()
+      console.log("a" in obj); // true
+      console.log(Object.values(obj));
+
+      for (var key in obj) {
+        // console.log(key + obj[key]) // 枚举属性和属性值
+      } // for...in   实例上的和原型链上的 可枚举 属性
+      //   Object.keys(obj) ---只是实例上的  可枚举 属性
+      //   getOwnPropertyNames()   实例上 的所有可枚举和不可枚举属性
+      //   hasOwnProperty()        判断属性是否是存在于自己的 实例中
+
+      console.log(Object.keys(obj)); //       实例上的所有可枚举属性
+      Object.getOwnPropertyNames(obj); //     实例上的所有可枚举和不可枚举属性
+      var obj = {
+        a: 1,
+        0: 1,
+        c: 1,
+        2: 1,
+        b: 1,
+        1: 1,
+      };
+      obj.d = 1;
+      // for (value in obj) {
+      //     console.log(value)
+      // }
+      console.log(Object.getOwnPropertyNames(obj));
+      // 数字类型 键按升序排序，其他字符类型键按添加顺序排序, 最后是 Symbol键按添加顺序排序
+
+      function hasPrototypePrototype(object, name) {
+        return !object.hasOwnProperty(name) && name in object;
+      } // 检出 原型对象上的属性
+
+      Reflect.ownKeys(obj); // 包含对象上不可枚举的属性
+      // 它返回的值相当于  Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target)) 返回的值
+
+      Object.getOwnPropertySymbols(obj); // 返回对象所有 symbol属性的键名（symbol属性不可枚举）
+
+      // 查询对象的属性，，首先 从对象自身开始，没有继续查找对象的原型(使用 new 创建的对象)，没有继续查找对象原型的原型
+      var arr = [];
+      Array.prototype;
+      Object.prototype;
+      // 检测字符串或数组可用 includes();  str.includes(); arr.includes();
+      // 方式1： in 运算符  “查询” 自有属性 和 原型链上的属性 (属性如果设置是不可枚举的，这里也是可以查询到的是否存在的！)
+      var o = {
+        x: 1,
+      };
+      o.property.age = 23;
+      "x" in o; //true
+      "toString" in o; // true  o 继承了 toString 属性
+
+      // 方式二： 对象的 hasOwnProperty() "检测" --- 是否是 "自有属性(包括枚举和不可没枚举的)"。 是返回true; 否返回false。 继承的属性的返回  false
+      o.hasOwnProperty("x"); // true
+      o.hasOwnProperty("toString"); // false
+      o.hasOwnProperty("age"); // false
+
+      // 方式三：对象的 propertyIsEnumerable() 方法  "检测" ---  自有属性 且 是可枚举的
+      var o = inherit({
+        y: 2,
+      }); // inherit（） 继承属性的方法
+      o.propertyIsEnumerable("x");
+      o.propertyIsEnumerable("y");
+      o.prototype.propertyIsEnumerable("toString");
+
+      // 3.可配置 ---   defineProperty()
+      // 属性描述符：value  writable  enumberable  configureable  get set(属性的getter，setter函数，没有则为 undefined)
+
+      // 设置操作：只能修改 已有的和新建的，不能修改继承的属性的特性。
+      var o = {};
+      Object.defineProperty(o, "x", {
+        // 定义属性的特性  如果要设置的 属性 在prototype 链上也被找到，原型链以上的属性都被遮蔽了
+        // 如果原型链上的 该属性 已经设置了 只读 或 属性是个setter，
+        // 则通过普通的属性设置是无效的，无法遮蔽原型链以上的属性。此时需要使用defineProperty。
+        // 我们尽一切可能避免在[[Prototype]]链的不同层级上给出相同的命名（称为“遮蔽”）
+        value: 1,
+        writable: true,
+        enumberable: false,
+        configureable: true, // 设置false后，再次设置则不可改为可配置了
+      });
+
+      Object.defineProperties(o, {
+        // 修改 或 创建多个属性：（ defineProperties 可以同时定义 数据属性 和 访问器属性）
+        x: {
+          value: 1,
+          writable: true,
+          enumerable: false,
+          configurable: true,
+        },
+        y: {
+          value: 1,
+          writable: true,
+          enumerable: false,
+          configurable: true,
+        },
+      });
+      // 自定义的属性和方法; 新增的属性; 继承的属性都是可以枚举的。。内置的属性和方法（即原型上的）是不可枚举的。
+
+      // 访问器属性的 getter  setter  方法
+      // 由getter  setter 定义的属性称作  ‘访问器属性’ 查询用 getter  设置用 setter
+      // 4个特性：可配置Configurable 可枚举Enumberable  Get函数（读取属性时调用的函数）  Set函数（写入属性时调用的函数）
+      // 存储器属性只能通过 Object.defineProperty() 来定义
+      var book = {
+        _year: 2004,
+        edition: 1,
+      };
+      Object.defineProperty(book, "year", {
+        get: function () {
+          return this._year; // 下划线 表示只能通过 对象方法 访问的属性
+        },
+        set: function (newValue) {
+          if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+          }
+        },
+      });
+      book.year = 2005;
+      alert(book.edition); // 2
+      // 存储器属性accessor_prop 随意命名 可以继承，表示这个属性 既有 getter方法 又有setter方法
+      // 这是给对象直接量定义存储器属性
+      // 访问器属性：getter 和 setter 给对象定义了 伪属性，用在 访问前不会计算属性值， 直到需要时才计算属性值。
+      // getter 将对象的属性 绑定到 要调用的函数，函数返回有效值; 不传参; 不对一个属性定义多个 getter
+      // setter 将对象的属性 绑定到 要调用的函数，函数负责如何处理数据; 必须有参数; 不对一个属性设置多个 setter, 不能为一个已有真实值的变量使用 set
+      let newA = "size";
+      const obj = {
+        a: 11,
+        arr: [],
+        get [newA]() {
+          // 这里是 [计算属性名]， 方括号里 放的是表达式，计算结果可以当做属性名
+          return this.a + "ss";
+        },
+        set Arr(name) {
+          this.arr.push(name);
+        },
+      };
+      obj.Arr = "lu";
+      obj.Arr = "zhang";
+      console.log(obj.arr); //  lu zhang
+      console.log(obj.size); // a11
+
+      const obj1 = {
+        a: 12,
+        get aa() {
+          return this.a;
+        },
+        set b(newA) {
+          this.a = 100 * newA;
+        },
+      };
+
+      console.log(obj1.aa); // 12
+      obj1.b = 123;
+      console.log(obj1.a); //12300
+
+      var o = {
+        a: 0,
+      };
+      Object.defineProperty(o, "b", {
+        get: function () {
+          return this.a + 1;
+        },
+      });
+      console.log(o.b); // Runs the getter, which yields a + 1 (which is 1)
+
+      var o = {
+        a: 0,
+      };
+      Object.defineProperty(o, "b", {
+        set: function (x) {
+          this.a = x / 2;
+        },
+      });
+      o.b = 10; // Runs the setter, which assigns 10 / 2 (5) to the 'a' property
+      console.log(o.a); // 5
+
+      // 查询操作： getOwnPropertyDescriptor() 返回指定对象上一个自有属性对应的属性描述符。
+      // 通过调用 Object.getOwnPropertyDescriptor() 可获得 某个对象 自有属性的属性描述符。 实现 属性特性 的 查询操作
+      Object.getOwnPropertyDescriptor(
+        {
+          x: 1,
+        },
+        "x"
+      ); // 对象 {x:1}的属性 x 对应的属性描述符
+      // 返回 {value: 1, writable: true, enumerable: true, configurable: true, get,set(属性的访问器，设置器函数，，没有则为 undefined)}
+      //      值(可读)        可写            可枚举              可配置
+
+      // 3.可扩展性 --- preventExtensions() seal()  freeze()
+      // 对象属性的可扩展性：es5规定所有的 自定义对象 和 内置对象 都是可以扩展的（即是否可以给对象添加新的属性）
+      const obj = {
+        a: 11,
+      };
+      Object.preventExtensions(obj); //(防篡改对象), 不能添加。可删除，修改
+      Object.seal(obj); // (密封的对象)，不能添加，删除。可修改
+      Object.isSealed(); // 检测对象是否是封闭的
+      Object.freeze(obj); // (冻结的对象)，不能添加，删除，修改
+      Object.isFrozen()(
+        // 检测对象是否冻结
+
+        (function freezePrototypes() {
+          if (typeof Object.freeze !== "function") {
+            throw new Error("Missing Object.freeze");
+          }
+          Object.freeze(Object.prototype);
+          Object.freeze(Array.prototype);
+          Object.freeze(Function.prototype);
+        })()
+      );
+      // 使用Object.freeze，可以使对象不可变，你可以防止任何内置对象原型方法被重写
+
+      console.log(Object.isExtensible(obj)); // 判断对象是否可以扩展
+      // 可扩展属性 目的 是将属性 ‘锁定’，避免外界干扰  以上 将对象传入Object相应的 方法中即可
+
+      Object.assign();
+      // Object.assign()方法用于 从一个或多个"源对象" 将所有 可枚举的 "属性的值" 复制到"目标对象",属性的其他特性 writable/enumberable/configureable不会保留
+      // 似乎可以更好的代替  getAttribute()  setAttribute()方法
+      const source1 = {
+        a: 1,
+      };
+      const source2 = {
+        b: 2,
+      };
+      const target = {};
+      Object.assign(target, source1, source2);
+      Object.assign({}, target, source1, source2);
+      console.log(target);
+      // 源 和 供应者中 若存在同名属性，后者会覆盖前者。 这是ES6 移除了同名属性产生语法错误的改进
+      // 其他类型的值（除了字符串）不产生结果。字符串会以数组形式拷入目标对象
+      const obj = {
+        a: 1,
+        b: 2,
+      };
+      const obj1 = {
+        ...obj,
+        c: 45,
+      };
+      console.log(obj1);
+      //  可以使用  对象的扩展运算符代替 Object.assign()
+
+      Object.is();
+      //  Object.is()  是 比较运算符 ===  的完善，即除了类型一样，只要值相等，就是相等的
+      //  是对 === 完善， 用于比较 NaN  0  infinity
+
+      // ==  表示在 “允许强制转换”   的条件下检查 值 的等价性，
+      // === 表示在 “不允许强制转换” 的条件下检查 值 的等价性
+      var a = 2 / "foo";
+      console.log(typeof a); // number
+      Object.is("a" / 2, NaN); // true  'a'2 是数字类型且运算结果为NaN。
+
+      // 常规下比较：
+      console.log(-0 === +0); // true
+      console.log(NaN === NaN); // false
+      // 使用 Object.is 比较：
+      console.log(Object.is(-0, +0)); // false
+      console.log(Object.is(NaN, NaN)); // true
+
+      // 这里的 Object.is()  主要是判断 NaN  Infinity 因为在 typeof 下它们是number 类型。
+      let arr = ["m", "", 1, NaN, 20, 3, "20px", 56, 18, Infinity];
+      let r4 = arr.reduce((result, item, index, self) => {
+        if (
+          !Object.is(item, "") &&
+          !Object.is(item, NaN) &&
+          !Object.is(item, Infinity) &&
+          typeof item === "number"
+        ) {
+          return result + item;
+        } else {
+          return result;
+        }
+      }, 0);
+      console.log(r4);
+
+      // 对象之间的 继承
+      // js里 常用 的如下两种继承方式：原型链继承（对象间的继承）;  类式继承（构造函数间的继承）
+
+      // 原型链式继承  prototype  （原型对象的属性是共享的）
+      function Parent() {
+        this.name = "mike";
+      }
+      Parent.prototype.say = function () {
+        console.log(name);
+      };
+
+      function Child() {
+        this.age = 12;
+      }
+      Child.prototype = new Parent(); // Parent 的this对象 指向了 Child 的原型对象
+
+      var test = new Child(); // 通过 new 调用 构造函数，才可以访问 构造函数自己的或继承来的属性和方法。
+      alert(test.age);
+      alert(test.name); //得到被继承的属性
+      //继续原型链继承
+
+      function Brother() {
+        //brother构造
+        this.weight = 60;
+      }
+      Brother.prototype = new Child(); //继续原型链继承
+      var brother = new Brother();
+      alert(brother.name); //继承了Parent和Child,弹出mike
+      alert(brother.age); //弹出12
+
+      // 类式继承  call() 方法    解决了 可以定义 不同的参数 （无法继承 Parent 的原型对象）
+      function Parent(age) {
+        this.name = ["mike", "jack", "smith"];
+        this.age = age;
+      }
+
+      function Child(age) {
+        Parent.call(this, age); // Parent 通过 call 将自己的 this对象指向 Child 的this
+      }
+      var test = new Child(21);
+      alert(test.age); //21
+      alert(test.name); //mike,jack,smith
+      test.name.push("bill");
+      alert(test.name); //mike,jack,smith,bill
+
+      // 组合式继承  ---  最常用的继承模式
+      // 其背后的思路是使用 原型链 实现对原型属性和方法的继承，而通过借用 构造函数 来是实现对实例属性的继承。
+      function Parent(age) {
+        this.name = ["mike", "jack", "smith"];
+        this.age = age;
+      }
+      Parent.prototype.run = function () {
+        return this.name + " are both" + this.age;
+      };
+
+      function Child(age) {
+        // 可以在子类中定义属性值, 不必都是从父类模板继承
+        Parent.call(this, age); //对象冒充，给超类型传参       类式继承
+      }
+      Child.prototype = new Parent(); //                        原型链式继承
+      var test = new Child(21); //写new Parent(21)也行
+      alert(test.run()); //mike,jack,smith are both21
+
+      // 原型式继承
+      function obj(o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+      }
+      var box = {
+        name: "trigkit4",
+        arr: ["brother", "sister", "baba"],
+      };
+      var b1 = obj(box);
+      alert(b1.name); //trigkit4
+
+      b1.name = "mike";
+      alert(b1.name); //mike
+
+      alert(b1.arr); //brother,sister,baba
+      b1.arr.push("parents");
+      alert(b1.arr); //brother,sister,baba,parents
+
+      var b2 = obj(box);
+      alert(b2.name); //trigkit4
+      alert(b2.arr); //brother,sister,baba,parents
+
+      // 寄生式继承
+      function create(o) {
+        var f = obj(o);
+        f.run = function () {
+          return this.arr; //同样，会共享引用
+        };
+        return f;
+      }
+
+      // 寄生组合式继承 --- 这种方式解决了 组合式继承中 实例中的属性屏蔽了原型中的属性的缺点，被认为是 引用类型最理想的继承范式
+      function obj(o) {
+        function F() {}
+        F.prototype = o;
+        return new F(); // O对象 是构造函数 F 的原型，然后返回这个函数的实例
+      }
+
+      function inheritPrototype(parent, test) {
+        var f = obj(parent.prototype); //创建对象
+        f.constructor = test; //增强对象
+        test.prototype = f; // 指定对象
+      } // 代替了  Child.prototype=new Parent()
+
+      function Parent(name) {
+        this.name = name;
+        this.arr = ["brother", "sister", "parents"];
+      }
+
+      Parent.prototype.run = function () {
+        return this.name;
+      };
+
+      function Child(name, age) {
+        Parent.call(this, name);
+        this.age = age;
+      }
+
+      inheritPrototype(Parent, Child); //通过这里实现继承
+
+      var test = new Child("trigkit4", 21);
+      test.arr.push("nephew");
+      alert(test.arr); //
+      alert(test.run()); //只共享了方法
+
+      var test2 = new Child("jack", 22);
+      alert(test2.arr); //引用问题解决
+    </script>
+  </body>
+</html>

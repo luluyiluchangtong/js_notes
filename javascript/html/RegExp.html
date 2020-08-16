@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+
+  <body>
+    <script>
+      // 概念：
+      // flag(标志)： g 全局模式    i不区分大小写模式    m多行模式
+      // 因此一个  正则表达式就是 "一个模式" 和 以上 "三个标志" 的组合体。
+      // 正则表达式的 文字模板 是有很多不同类型的字符组成的, 包括：元字符(所有的元字符 必须转义)，转义字符，限定符，字符组，或结构，括号分组
+      // 正则表达式是用于 对 字符串的 校验， 搜索，替换。 正则表达式用RegExp对象表示
+
+      // 转义字符： 换行符 \n   回车符 \r   单引号 \'   双引号 \"
+
+      // 创建 RegExp对象有两种方式：
+      // 1. 正则表达式字面量语法：
+      var pattern = /\d/g;
+
+      // 2. 正则表达式构造函数语法：
+      //   2.1 参数是 字符串和修饰符
+      var pattern = new RegExp("[bc]at", "i");
+
+      //   2.2 参数是正则表达式， ES5不允许有第二个参数， ES6 允许有第二个参数（修饰符），且会忽略正则表达式中定义的修饰符
+      var pattern = new RegExp(/[bc]at/g, "i");
+
+      var text = "abc, cat, sat";
+      var ccc = pattern.exec(text);
+      console.log(ccc);
+      // [ 'cat', index: 5, input: 'abc, cat, sat', groups: undefined ]
+
+      // 正则实例的属性：
+      var pattern = new RegExp(/[bc]at/i, "g");
+      console.log(pattern.global); // true     是否有全局修饰符
+      console.log(pattern.ignoreCase); // false  是否忽略大小写
+      console.log(pattern.lastIndex); // 0    用来指定下一次匹配的起始索引
+      console.log(pattern.multiline); // false  是否有多行匹配
+      console.log(pattern.source); // 返回正则表达式的源文本
+      console.log(pattern.flags); // g   返回修饰符
+      var text = "abc, cat, sat";
+      var ccc = pattern.exec(text);
+      console.log(ccc);
+
+      var reg = /\d/g; // 只有在 g 修饰符下 lastIndex 才有用
+      reg.exec("aaa1i3ff1p2l");
+      console.log(reg.lastIndex); // aaa1i 4
+      reg.exec("aaa1i3ff1p2l");
+      console.log(reg.lastIndex); // aaa1i3f  6
+      reg.exec("aaa1i3ff1p2l");
+      console.log(reg.lastIndex); // aaa1i3ff1p 6
+
+      //   正则实例的方法： exec()  test()   toString() | 字符串正则方法： match()  search()  repleace() split()
+      // 1. exec() 该方法是专为模式中的 捕获组 设计的，
+      // 若匹配成功则返回一个 '数组' ，否则返回 'null' ，数组中的第一个条目是第一个匹配，并有 index  input 属性
+
+      const regex1 = RegExp("foo*", "g");
+      const str1 = "table football, foosball";
+      let array1;
+
+      while ((array1 = regex1.exec(str1)) !== null) {
+        console.log(array1);
+        console.log(array1.index); // 6  匹配到的字符位于 原始字符串 中的索引
+        console.log(array1.input); // table football, foosball    原始字符串
+        // console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);
+        // expected output: "Found foo. Next starts at 9."  table footb
+        // expected output: "Found foo. Next starts at 19."   table football, foos
+      }
+
+      // 2.test()   返回布尔值
+      let str = "hello world!";
+      let result = /^hello/.test(str);
+      console.log(result); // true
+
+      // 3.toString() 返回正则表达式字符串形式
+      const reg = new RegExp(/[1-2]g/);
+      console.log(reg.toString()); // /[1-2]g/
+
+      // --------------------------------------------------------------------------------------------
+
+      // 1. match()  返回一个 数组，没有匹配到则返回 null
+      str.match(pattern);
+      "a12b2334c3445".match(/\d{4}/); // [ '2334', index: 4, input: 'a12b2334c3445', groups: undefined ]
+      "a12b2334c3445".match(/\d{4}/g); // [ '2334', '3445' ]
+
+      let result = /^hello/g; // 若加了全局标志 g，则 正则表达式的 lastIndex 的值会改变。
+      // let result1 = /^hello/g.test(str);
+      console.log(result.test("hello world!")); // true   lastIndex 为5， 下次从索引 5 处开始匹配
+      console.log(result.test("hello world!")); // false
+
+      // 2. search() 返回与查找内容匹配的 "第一个子字符串(这里是 2334)" 开始的位置(索引),匹配不到，返回 -1。
+      // String可以使用正则表达式的方法:
+      str.search(pattern);
+      "a12b2334c34".search(/\d{4}/); // 4
+
+      // 3. replace 返回 使用替换字符替换相应匹配项后的 新字符串
+      str.replace(pattern);
+      "a12b2334c34".replace(/\d{4}/, "cccc"); // "a12bccccc34"  替换匹配到的子串,第二个参数可以使用函数
+
+      // 4. split 返回数组，将字符串分割成数组
+      str.split(pattern);
+      "a12b2334c34".split(/\d{4}/); // ["a12b", "c34"]
+
+      var str = "wabc, daf";
+      var aa = "nay, afsdfn anpple is on the thee".match(/t(?=h)/g);
+      console.log(aa);
+
+      // 基本元字符：
+      // . 匹配除 “\n” 之外的任意单个字符
+      // \ 其后跟的字符是特殊字符
+      // |  表示 或操作
+      // [] 字符集合
+      // ^ 某个字符开始
+      // & 某个字符结束
+      // - 字符范围  --- [-]/ 定义一个区间
+
+      var aa = "nay, an apple is on the tree".match(/.n/g); // an on
+      //  /\b/ 将非特殊字符 b 转为特殊字符   /a*\/ 将特殊字符 * 转为非特殊字符
+      //  /[an]/ 这是一个 字符集合，匹配这个字符集合中的每个字符。  /[^an]/ 对 [an]的取非
+
+      // 数量元字符： {n,m}  +  * ?
+      //  {n}  匹配出现几次的字符  {n,m}匹配至少出现 n 次， 最多出现 m 次的字符。 /a{1,3}/
+      //  /a*/ 匹配 0 次或多次 a  等价于 {0,};
+      //  /a+/ 匹配 1 次或多次 a   等价于 {1,}
+      //  /?/ 单独使用，是匹配前面子表达式零次或一次(贪婪模式)，尽可能多的匹配原则。
+      //  /?/ 跟在 {} + * ? 后，使用(非贪婪模式)，即最少的匹配。
+
+      // 位置元字符：
+      // $ 匹配字符串结束位置
+      // /\b/ 匹配一个单词的边界, 也就是指单词和空格间的位置； /er\b/ 可以匹配 'aer' 但不能匹配 'aerc'
+      // /\B/ 匹配非单词 '的边界'  /er\b/ 不能匹配 'aer' 但可以匹配 'aerc'
+      // /?=/ /t(?=h)/g  匹配后面紧跟着是  h 的 t;
+      // /?!/ /t(?!h)/g  匹配后面紧跟着不是  h 的 t
+      // /?:/ /(industr(?:y|ies))/ 匹配 industry 或 industries  最外面必须带有圆括号 ()
+
+      // 特殊元字符：
+      // /\d/ 匹配数字;
+      // /\D/ 匹配非数字;
+
+      // /\s/ 匹配空白符;
+      var result = /\S/g.test(" ");
+      console.log(result); // true
+
+      // /\S/ 匹配非空白符;
+      var result = /\S/g.test(" ");
+      console.log(result); // false
+
+      // /\w/ 匹配包括下划线的任何单词字符,等价于 [A-Z a-z 0-9_]
+      var result = /\w/g.test("ab");
+      console.log(result); // true
+
+      // /\W/ 匹配任何非单词字符,等价于 [^A-Z a-z 0-9_]
+      var result = /\w/g.test("ab"); // 若为 "ab c" 则返回 true。 "ab c" 为非单词字符
+      console.log(result); // false
+
+      // /\n/ 换行符;
+      // /\r/ 回车符
+
+      // 标志字符：
+      //  g 全局;  i 不区分大小写;   m 多行搜索
+
+      /*常用的几个正则匹配*/
+      // Email 地址：^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$
+      // URl验证: [a-zA-z]+://[^\s]* 或 ^http://([\w-]+\.)+[\w-]+(/[\w-./?%&=]*)?$
+      // 密码验证: (?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,16}$
+      // 邮编验证: [1-9]d{5}(?!d)
+      // 手机号码验证: ^1\d{10}$
+      // 汉字验证: ^[\u4e00-\u9fa5]{0,}$
+      //
+    </script>
+  </body>
+</html>

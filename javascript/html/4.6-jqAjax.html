@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../../html5&css3/js/jquery-3.1.1.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 将 ajax 封装成 库的用法： jquery aixos ....
+        // jquery的写法：（封装了逻辑）,解决了回调嵌套的问题，并封装了 ajax。
+        // https://www.easy-mock.com/mock/5ad4527b4a76b81c1846e71e/v2/user
+        let baseURL = "http://39.108.8.219:8899"
+
+        let ajax = function (config) {
+
+            config.url = baseURL + config.url
+
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: config.url,
+                    dataType: "json",
+                    data: config.data || config.params,
+                    type: config.method,
+                    success(data) {
+                        resolve(data)
+                    },
+                    error(err) {
+                        reject(err)
+                    },
+                })
+            })
+
+        }
+
+        // jq 的 ajax 是有全局配置的  
+        /*
+        $.ajaxSetup({
+            dataType: "json",
+            baseUrl: "",
+            contentType: "application/json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                switch (jqXHR.status) {
+                    case (500):
+                        layer.alert('服务器系统内部错误', {
+                            icon: 2
+                        });
+                        break;
+                    case (401):
+                        layer.alert('未登录', {
+                            icon: 2
+                        });
+                        break;
+                    case (403):
+                        layer.alert('无权限执行此操作', {
+                            icon: 2
+                        });
+                        break;
+                    case (408):
+                        layer.alert('请求超时', {
+                            icon: 2
+                        });
+                        break;
+                    default:
+                        layer.alert('未知错误,请联系管理员', {
+                            icon: 2
+                        });
+                }
+            },
+            cache: false
+        });
+        */
+    </script>
+</body>
+
+</html>

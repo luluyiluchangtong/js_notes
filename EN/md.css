@@ -1,0 +1,14 @@
+body{
+    background: #36312C;
+    color:#BCC4B7;
+    font-family: '微软雅黑'
+}
+blockquote{
+    font-size:16px;
+}
+pre{
+    background: rgb(50, 171, 187)
+}
+pre code{
+    color:#BCC4B7
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 面向对象编程是以 对象 为 单位 来构建 模块
+
+      // 构建对象的几种方式：
+      //  1.工厂模式:
+      function createObject(name, age, profession) {
+        // 这是一个实例
+        var obj = new Object();
+        obj.name = name;
+        obj.age = age;
+        obj.profession = profession;
+        obj.move = function () {
+          return (
+            this.name + " at " + this.age + " engaged in " + this.profession
+          );
+        };
+        return obj;
+      }
+      var test1 = createObject("trigkit4", 22, "programmer");
+      var test2 = createObject("mike", 25, "engineer");
+      alert(createObject.prototype.isPrototypeOf(test1)); // 这里返回 false 即不能检测出 test1 是 createObject 的实例
+      alert(test2.move());
+      //  所以使用工厂模式的问题是不能检测出对象的类型
+      //  2.构造函数模式：
+      // 它的问题是：不同的实例上的 “方法” 不是来自同一个Function 的实例。从而每个Person实例包含了一个不同的 Function实例
+      function Gf(name, bar) {
+        // 这是一个实例
+        this.name = name;
+        this.bar = bar;
+        this.sayWhat = function () {
+          // this.sayWhat=sayWhat;  这样虽然来自同一个实例，但是创建了很多全局函数，没有封装性可言。
+          alert(this.name + "said:love you forever");
+        };
+      }
+      var gf1 = new Gf("vivian", "f");
+      var gf2 = new Gf("vivian2", "f");
+      alert(Gf.prototype.isPrototypeOf(gf1));
+      alert(Gf.hasowner);
+
+      // 3. 原型对象的方式：
+      // 它的问题是：如果属性和方法都定义在上面，属性如果包含的是引用类型的值时，实例就不可能有自己独有的 属性。
+      function Person() {}
+      Person.prototype = {
+        name: "lu",
+        age: 34,
+        friends: ["lu", "zhang"], // ......
+        sayName: function () {
+          alert(this.name);
+        },
+      };
+
+      // 4. 使用  构造函数和原型的模式组合：
+      // 构造函数上定义属性，实例都能拥有自己的独有属性，原型上定义方法，则实例上的方法都来自同一引用。
+
+      function Person(name, age, job) {
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.friends = ["lu", "zhang"];
+      }
+      Person.prototype = {
+        // constructor: Person,    constructor 是自动创建的，可以不写
+        sayName: function () {
+          alert(this.name);
+        },
+      };
+
+      // 5. ES6 新增的 Object.create() 可以 更方便的构建一个对象
+      const p = {
+        a: 11,
+      };
+      const o = Object.create(p);
+      console.log(o.a);
+
+      // 6. 以上是基于原型的面向对象，  class 是基于类的面向对象。
+      class Point {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+
+        toString() {
+          return "(" + this.x + ", " + this.y + ")";
+        }
+      }
+      var p = new Point(1, 2);
+
+      // 原型链：当一个引用类型继承另一个引用类型的属性和方法时候就会产生一个原型连
+      // 以上是实现原型链的一种基本模式。另外还有所有引用类型都继承了 Object
+      // 原型可以继承，继承的应用可以使 A对象的原型继承 B对象的原型， 从而 A对象可以访问 B对象里的属性
+      // 原型链的问题？？？？
+      function SuperType() {
+        this.property = true;
+      }
+      SuperType.prptotype.getSuperValue = function () {
+        return this.property;
+      };
+
+      function SubType() {
+        this.subproperty = false;
+      }
+      SubType.prototype = new SuperType(); // 此时 SubType 的原型被重写，指向 SuperType   这里就是 原型的继承的应用
+      SubType.prptotype.getSubValue = function () {
+        // 原型对象扩展前，先完成相关的继承关系的构建
+        return this.subproperty;
+      };
+      var instance = new SubType();
+      console.log(instance.getSuperValue()); // true
+
+      function Box(width, height) {
+        this.width = width;
+        this.height = height;
+      }
+      Box.prototype.getData = function () {
+        return this.width * this.height;
+      };
+      let box1 = new Box(100, 100);
+      console.log(box1.getData());
+      // window对象的属性 width  height；切记！不是函数 box的属性
+      // window对象的方法 Box()
+      // 这里的 this  是 widow
+      // js里的 global对象的的属性 可以通过浏览器的 window对象来访问
+    </script>
+  </body>
+</html>

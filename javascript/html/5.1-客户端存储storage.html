@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>storage</title>
+  </head>
+
+  <body>
+    <script>
+      // Web Storage 是什么：
+      // Web Storage 通过两个对象来保存数据（键值对）到客户端: 分别是 sessionStorage  localStorage
+      // Web Storage  浏览器对存储空间大小有限制，以每个来源（同协议，端口，域名）为单位，各浏览器的限制是不同的
+
+      // 共同的 属性，方法，事件：
+      // 属性： length 表示存储在 Storage 对象里的数据项（data items）数量。即 setItem()有几条 length 就是多长
+
+      // 方法： getItem()  setItem()  removeItem()  clear()  key()   for(key in sessionStorage)
+      // sessionStorage 和 localStorage 保存的数据，都以“键值对”的形式存在
+      window.localStorage.setItem("a", 1); // 数据的命名  传进来的数据
+      window.sessionStorage.setItem("b", 2); // 数据的命名  传进来的数据
+
+      localStorage.setItem("a", 1);
+      const getItem = localStorage.getItem("a");
+      console.log(getItem); // 1
+      localStorage.removeItem("a");
+      console.log(localStorage.key(0));
+      localStorage.clear();
+      console.log(localStorage);
+      // {abc: "22222", b: "456", local: "{"a":11,"b":22,"c":33}", length: 3}
+      // localStorage 存储数据的格式都是以 '字符串' 的形式来存储的
+
+      //     页面间传值
+      localStorage.setItem("test", JSON.stringify(result)); // 存储对象
+      var test = JSON.parse(localStorage.getItem("test")); // 取出对象
+
+      // 事件： 对storage对象（localStorage 或 sessionStorage）的任何修改，都会触发 storage事件。
+      // 存储事件：通过 addEventListener() 注册存储事件
+      // localStorage  sessionStorage 数据的改变，在 对数据可见 的窗口对象上触发 存储事件（不包括改变数据的窗口对象上）
+      // 采用的是广播机制，即对相关的窗口都会发送消息调用事件
+      // 与事件相关的一些属性： key oldValue newValue storageArea  url
+
+      // 相同点: 1.都代表了同一个 Storage 对象（一个关联数组）索引和值都是字符串形式；
+      //        2.都遵循同源策略 即 如果协议，端口（如果指定了一个）和域名对于两个页面是相同的，则两个页面具有相同的源。 同源文档间共享数据
+
+      // 区别：1.存储多长时间  2.谁拥有数据的访问权  3.怎么删除
+      // localStorage     永久存储（保存在硬盘）       数据会在 "清除 cookie及其他网站数据" 消失，同源但不同页面之间可以 互相访问 数据。  关闭浏览器 或刷新浏览器数据都将在下次访问网站的时候依然保存在页面上。
+      // sessionStorage  临时存储（保存在浏览器窗口）  数据会在 "标签页关闭后" 消失, 同时 浏览器可以通过恢复上次会话(即浏览器崩溃重启后)，可以稍微长时间的保存数据;
+      //                  同源但是限定在标签页窗口内（即由当前页跳转到的 iframe 窗口可以访问），同源但是不同的 ‘标签页窗口’ 之间是无法共享数据的
+
+      // storage 实例：
+      const div1 = document.querySelector("div");
+      const obj = {
+        a: 11,
+        b: 22,
+        c: 33,
+      };
+      // localStorage.setItem('local', 'ss')
+      // console.log(localStorage)
+
+      localStorage.setItem("local", JSON.stringify(obj));
+      console.log(localStorage); // 将数据存储在客户端
+      let getItem = JSON.parse(localStorage.getItem("local")); // 从客户端提取数据
+      // console.log(localStorage.getItem('local'))
+      console.log(getItem);
+      div1.innerHTML = `${getItem.a}`; // 读取客户端数据， 离线状态下，依然可以读取数据，显示在页面上
+    </script>
+  </body>
+</html>

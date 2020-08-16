@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>css变量</div>
+    <style>
+        /*  设置和访问 局部变量/全局变量 */
+
+        div {
+            --main-color: red;
+            /* 设置局部变量 */
+            color: var(--main-color);
+            /* 使用局部变量 */
+            background: var(--global-bgColor)
+            /* 使用全局变量 */
+        }
+
+        :root {
+            --global-bgColor: blue;
+            /* 设置全局变量 */
+        }
+    </style>
+</body>
+
+</html>

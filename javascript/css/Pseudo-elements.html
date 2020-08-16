@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/tachyons.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2 class="pv2">测试14：所有的伪类 :hover :active :visitied :only :empty :not() :first-child :first-line :first-letter</h2>
+    <div class="bb pa2 flex justify-between flex-wrap">
+        <div id="div5">
+            <form action="">
+                <input type="email">
+                <input type="url" value="">
+                <input type="text" disabled value="disabled">
+                <input type="text" value="enabled">
+                <input type="submit" value="按钮">
+                <span>sss</span>
+                <span class=" sp1">sss</span>
+                <span>sss</span>
+            </form>
+        </div>
+    </div>
+    <style>
+        input[type="email"]:invalid {
+            background: red;
+        }
+
+        /* 没通过验证的 表单的样式 */
+
+        input[type="tel"]:valid {
+            background: green;
+        }
+
+        /* 通过验证的 表单的样式 */
+
+        input[type="text"]:disabled {
+            background: blue
+        }
+
+        /* 禁用的表单的样式 */
+
+        input[type="text"]:enabled {
+            background: yellow;
+        }
+
+        /* 未禁用表单的样式 */
+
+        #div5 span:not(.sp1) {
+            color: red;
+        }
+    </style>
+</body>
+
+</html>

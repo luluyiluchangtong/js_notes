@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <picture>
+      <source srcset="smaller.jpg" size="(max-width: 768px)" />
+      <source srcset="default.jpg" />
+      <img srcset="default.jpg" alt="My default image" />
+    </picture>
+    <picture>
+      <source
+        srcset="smaller_landscape.jpg"
+        size="(max-width: 40em) and (orientation: landscape)"
+      />
+      <source
+        srcset="smaller_portrait.jpg"
+        size="(max-width: 40em) and (orientation: portrait)"
+      />
+      <source
+        srcset="default_landscape.jpg"
+        size="(min-width: 40em) and (orientation: landscape)"
+      />
+      <source
+        srcset="default_portrait.jpg"
+        size="(min-width: 40em) and (orientation: portrait)"
+      />
+      <img srcset="default_landscape.jpg" alt="My default image" />
+    </picture>
+    <!-- 加载横向或纵向版本的图像 -->
+
+    <picture>
+      <source
+        srcset="smaller.jpg, smaller_retina.jpg 200w"
+        size="(max-width: 768px)"
+      />
+      <source srcset="default.jpg, default_retina.jpg 200w" />
+      <img
+        srcset="default.jpg, default_retina.jpg 200w"
+        alt="My default image"
+      />
+    </picture>
+
+    <img
+      src="../images/0.png"
+      alt="Clock"
+      srcset="../images/0.png 200w, ../images/1.png 400w"
+      sizes="(min-width: 600px) 200px, 50vw"
+    />
+    <!-- 在支持 srcset 的用户代理中，当使用 'w' 描述符时，src 属性会被忽略。 -->
+    <!-- 当匹配了媒体条件 (min-width: 600px) 时，图像将宽 200px，否则宽 50vw（视图宽度的50%）。 然后乘以屏幕密度 显示响应质量（**w）的图片 -->
+    <!-- 200w / 200px =1x;   400w / 50vw = 8x     size * 屏幕密度 = **w -->
+    <!-- 屏幕密度有： 1x, 2x, 3x, 4x 四种 -->
+
+    <script>
+      // 1.JS或者服务端硬编码，resize事件，判断屏幕大小加载不同的图片
+      // 2.img srcset 方法
+      // 3.picture标签 -> source
+      // 4.svg
+      // 5.第三方库polyfill
+    </script>
+  </body>
+</html>

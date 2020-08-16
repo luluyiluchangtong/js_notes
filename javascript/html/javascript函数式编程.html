@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/underscore.js/1.8.3/underscore.js"></script>
+  </head>
+
+  <body>
+    <script>
+      // 如果把一门编程语言比作兵器，它的语法、工具和技巧等是招法，那么它采用的 编程范式 也就是是 '内功心法'
+      // 函数只是两种数值之间的关系：输入和输出
+      // 可以有一个输入对应一个输出，或是不同的输入对应相同的输出。但是在有多个输出的情况下就不是合法的函数关系
+
+      // 事实上 JavaScript 是一门基于原型（prototype-based）的多范式语言
+      // 多种 javascript编程范式： 1.面向过程  2.函数式编程  3.基于原型的面向对象编程  4.元编程 --- 编写运行时操作语言构件的代码，就是元编程
+      // 使用并学习多种编程范式，是为了更好的  模块化。 而模块化开发高效，有益于维护，有利于测试。
+
+      // 面向对象语言的问题是，它们永远都要随身携带那些隐式的环境。你只需要一个香蕉，但却得到一个拿着香蕉的大猩猩...以及整个丛林
+      // 所以使用纯函数将会有以下好处：可缓存性， 可移植性／自文档化，可测试性，合理性，并行代码
+      // 函数式编程语言：Haskell、OCaml、Lisp、Erlang、Scala、F#， Clojure...
+      // 原生JavaScript其实也可以通过丰富的库让前端的函数式编程一样的舒适和优雅。 Ramda Lodash
+
+      // 函数式编程语言所缺乏的：
+      // 1.不可变数据结构：有六种基本类型，其他的为引用类型 Object ，然而Object是可变的
+      // 2.惰性求值：例子：[1, 2, 3, 4].map(x => x + 1)
+      // 如果 map 一个大数组后我们发现其实只需要前 10 个元素时，去计算所有元素就显得多余了，即不需将所有的值都求出来
+      // 3.函数组合： JavaScript 语言虽然支持高阶函数，但是并没有一个原生的利于组合函数产生新函数的方式。
+      // 而这些强大的函数组合方式却往往被类似 Underscore，Lodash 等工具库的光芒掩盖掉
+      // 4.尾递归优化：函数式编程语言中因为不可变数据结构的原因，没办法实现循环。所以都是通过递归来实现循环
+      // 5.代数类型系统：avaScript 作为一种弱类型的语言，没有静态类型系统。不过使用一些 TypeScript 等预编译的语言可以作为补充
+
+      // 函数式编程语言中因为不可变数据结构的原因，没办法实现循环。所以都是通过递归来实现循环
+
+      // 函数式编程的特点:
+      // 1. 一等公民：(作为参数 / 变量 / 函数返回值)
+      // 在编程中，能 被当作值 来使用的就称为一级公民（ first-class citizen
+      // "一等" 通常用来描述数值，当 函数 被看做是 “一等公民” 时，它就可以去 任何 "值" 可以去的地方。就像数字是js里的一等公民一样。
+      // 2. 尽可能的使用表达式,不使用语句. 因为表达式每一步都是单纯的运算,并有返回值.
+      // 3. 所有功能都是返回一个新的值，使用 "纯函数" 作为参数 来保存状态。 即以 函数 为核心单位来组织模块！
+      // 4. 主张将函数写成 "纯函数": 即函数的结果只依赖传入的参数; 只修改返回值，不修改外部变量。
+      //    纯函数（同输入同输出  无副作用）
+
+      // 概念：
+      // 函数式编程 通过使用 函数 将 过程中的功能 转换成    “抽象单元” --- 即那些将函数作为 参数 或 返回值 的函数
+      // 它的思路是将程序拆分并抽象成多个函数再组装回去。将逻辑区域分离出来。
+
+      //   如果一个函数对于相同的输入始终产生相同的结果，那么我们就说它是 引用透明 。
+
+      //   相对于 面向对象编程 （Object-oriented programming）关注的是数据而言，
+      //   函数式编程 关注的则是动作，其是一种 过程抽象 的思维，就是对当前的 动作 去进行抽象
+
+      // 优点：
+      // 1.函数式编程让你可以简化代码并缩减维护成本，因为它容易复用，又适当地解耦和更少的依赖
+      // 2. 接近自然语言，易于理解
+
+      // 总结：
+      // 函数式编程 --- 利用了 函数封装性 将 功能 做拆解（粒度不唯一），并封装为不同的函数，而再利用组合的调用达到目的
+
+      //   函数式编程具有两个最基本的运算：合成（compose）和柯里化（Currying）
+
+      //   合成
+      function compose() {
+        var args = arguments;
+        var start = args.length - 1;
+        return function () {
+          var i = start - 1;
+          var result = args[start].apply(this, arguments);
+          while (i >= 0) {
+            result = args[i].call(this, result);
+            i--;
+          }
+          return result;
+        };
+      }
+      //   通用 compose 函数的代码
+      function addHello(str) {
+        return "hello " + str;
+      }
+      function toUpperCase(str) {
+        return str.toUpperCase();
+      }
+      function reverse(str) {
+        return str.split("").reverse().join("");
+      }
+
+      var composeFn = compose(reverse, toUpperCase, addHello);
+
+      console.log(composeFn("ttsy")); // YSTT OLLEH
+
+      //   柯里化 (接受一个单一参数  返回一个有返回会结果的函数，该函数接受剩余参数)
+
+      function add(a, b) {
+        return a + b;
+      }
+
+      console.log(add(1, 2)); // 3
+
+      // addCurry 是 add 的柯里化函数
+      function addCurry(a) {
+        return function (b) {
+          return a + b;
+        };
+      }
+      console.log(addCurry(1)(2)); // 3
+
+      // createCurry（） 函数     参数只能从左到右传递
+      function createCurry(func, arrArgs) {
+        var args = arguments;
+        var funcLength = func.length;
+        var arrArgs = arrArgs || [];
+
+        return function () {
+          var _arrArgs = Array.prototype.slice.call(arguments);
+          var allArrArgs = arrArgs.concat(_arrArgs);
+
+          // 如果参数个数小于最初的func.length，则递归调用，继续收集参数
+          if (allArrArgs.length < funcLength) {
+            return args.call(this, func, allArrArgs);
+          }
+
+          // 参数收集完毕，则执行func
+          return func.apply(this, allArrArgs);
+        };
+      }
+      // createCurry 返回一个柯里化函数
+      var addCurry = createCurry(function (a, b, c) {
+        return a + b + c;
+      });
+
+      console.log(addCurry(1)(2)(3)); // 6
+      console.log(addCurry(1, 2, 3)); // 6
+      console.log(addCurry(1, 2)(3)); // 6
+      console.log(addCurry(1)(2, 3)); // 6
+
+      // 示例：(1 + 2) * 3 - 4
+      // 分析过程： add(1, 2).multiply(3).subtract(4)
+      function add(num1, num2) {
+        return num1 + num2;
+      }
+
+      function multiply(num1, num2, num3) {
+        return add(num1, num2) * num3;
+      }
+
+      function subtract(num1, num2, num3, num4) {
+        return multiply(num1, num2, num3) - num4;
+      }
+      var result = subtract(1, 2, 3, 4);
+      console.log(result);
+
+      // 常见的函数式编程模型：
+      // 1. 闭包
+      let func = function () {
+        let a = "linxin";
+        let func1 = function () {
+          a += "a";
+          console.log(a);
+        };
+        return func1; // 将函数作为结果值返回
+      };
+      let func2 = func();
+      func2(); // linxin a
+      func2(); // linxin a a
+      func2();
+
+      // 2. map （映射）等数组的处理方法
+      const arr = ["apple", "pen", "apple-pen"]; // 第一步：
+
+      function upperFirst(word) {
+        // 首字母大写 方法   第二步：
+        return word[0].toUpperCase() + word.slice(1);
+      }
+
+      function wordToUpperCase(arr) {
+        // 将 方法 作用于每个元素   第三步：
+        return arr.map(upperFirst);
+      }
+      console.log(wordToUpperCase(["apple", "pen", "apple-pen"])); // ["Apple", "Pen", "Apple-pen"]
+
+      // 3. 柯里化 --- 只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。
+      var add = function (x) {
+        return function (y) {
+          return x + y;
+        };
+      };
+      var increment = add(1);
+      var addTen = add(10);
+
+      increment(2); // 3
+      addTen(2); // 12
+
+      // 关于 函数 的 return 存在的情况下，这个函数就作为一个  值  存在了，，所以 box() 此时就是一个值
+      let a = function box(value1, value2) {
+        return value1 + value2;
+      };
+      console.log(a(1, 2));
+
+      function box(value1, value2) {
+        return value1 + value2;
+      }
+      console.log(box(1, 2));
+
+      // 高阶函数 --- 以一个函数作为参数 或 以一个函数作为返回结果
+      // 函数作为参数传递
+      const arr = [1, 22, 33, 4];
+
+      function compare(value1, value2) {
+        return value1 < value2 ? -1 : 1;
+      }
+      arr.sort(compare);
+
+      // 将函数作为 返回值 并且 函数作为 参数 的典型示例：
+      function callSomeFunction(someFunction, someArgument) {
+        return someFunction(someArgument);
+      }
+
+      function f(name) {
+        console.log(this.a);
+        alert(23 + name);
+      }
+      callSomeFunction(f, "lu");
+
+      function splat(fun) {
+        return function (array) {
+          return fun.apply(null, array);
+        };
+      }
+      var addArray = splat(function (a, b) {
+        return a + b;
+      });
+      console.log(addArray([1, 2]));
+
+      // function box(fun, array) {
+      //     return fun.apply(null, array)
+      // }
+      // var abc = box(function f(a, b) {
+      //     return a + b
+      // }, [1, 2])
+      // console.log(abc)
+
+      // 不滥用匿名函数   避免使用不必要的中间函数包裹
+      // 太傻了
+      const getServerStuff = function (callback) {
+        return ajaxCall(function (json) {
+          return callback(json);
+        });
+      };
+
+      // 这才像样
+      const getServerStuff = ajaxCall;
+
+      // 下面来推导一下...
+      // const getServerStuff
+      //   === callback => ajaxCall(json => callback(json))
+      //   === callback => ajaxCall(callback)
+      //   === ajaxCall
+
+      // 原始函数
+      httpGet("/post/2", function (json) {
+        return renderPost(json);
+      });
+
+      // 假如需要多传递一个 err 参数
+      httpGet("/post/2", function (json, err) {
+        return renderPost(json, err);
+      });
+
+      // renderPost 将会在 httpGet 中调用，
+      // 想要多少参数，想怎么改都行
+      httpGet("/post/2", renderPost);
+    </script>
+  </body>
+</html>

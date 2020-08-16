@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="import" href="./elements.html">
+</head>
+
+<body>
+    <template id="profileTemplate">
+        <div class="profile">
+            <img src="" class="profile__img">
+            <div class="profile__name"></div>
+            <div class="profile__social"></div>
+        </div>
+    </template>
+
+    <x-foo>
+        <b>I'm an x-foo-with-markup!</b>
+    </x-foo>
+
+    <div id="nameTag">张三</div>
+
+    <template id="nameTagTemplate">
+        <style>
+            .outer {
+                border: 2px solid brown;
+            }
+        </style>
+
+        <div class="outer">
+            <div class="boilerplate">
+                Hi! My name is
+            </div>
+            <div class="name">
+                Bob
+            </div>
+        </div>
+    </template>
+
+    <say-hi name="Eric"></say-hi>
+    <shadow-element>
+        <div>( I'm in the light dom )</div>
+    </shadow-element>
+
+    <script>
+        // 预定义网页元素：template
+        // template 标签 --- 用于包裹文档片段，里面的内容在页面加载时不被渲染，但可以在运行时使用JavaScript进行实例化
+        // template 存在于DOM之中，但是在页面中不可见，
+        // 使用的时候，需要用JavaScript在模板中插入内容，然后将其插入DOM
+        var template = document.querySelector('#profileTemplate');
+        // console.log(template.content)
+        template.content.querySelector('.profile__img').src = 'profile.jpg';
+        template.content.querySelector('.profile__name').textContent = 'Barack Obama';
+        template.content.querySelector('.profile__social').textContent = 'Follow me on Twitter';
+        // document.body.appendChild(template.content);
+
+        var clone = document.importNode(template.content, true);
+        // 将 外部文档 的节点插入 当前文档 前，使用 importNote, 显示 true 表示连同子节点一起克隆进来。
+        document.body.appendChild(clone);
+
+        // web Components 由 以下四种技术规范组成：
+        // Custom element(自定义元素) 
+        // Shadow DOM 
+        // HTML template
+        // HTML import
+
+        // Custom element --- 自定义网页元素
+        var XFoo = document.registerElement('x-foo', {
+            prototype: Object.create(HTMLElement.prototype, {
+                bar: {
+                    get: function () { return 5; }
+                },
+                foo: {
+                    value: function () {
+                        console.log('foo() called');
+                    }
+                }
+            })
+        });
+
+        // 自定义元素的原型有一些属性，用来指定回调函数，在特定事件发生时触发
+        // createdCallback  attachedCallback  detachedCallback  attributeChangedCallback
+        XFoo.prototype.createdCallback = function () {
+            console.log('created');
+            this.innerHTML = 'This is a my-demo element!';
+        };
+        XFoo.prototype.attachedCallback = function () {
+            console.log('attached');
+        };
+
+        // Shadow DOM
+        var shadow = document.querySelector('#nameTag').createShadowRoot();
+        var template = document.querySelector('#nameTagTemplate');
+        shadow.appendChild(template.content.cloneNode(true));
+
+
+        //  HTML import 加载外部网页， 将组件写在一个网页里，然后引入该网页
+        //  Polymer.js
+    </script>
+</body>
+
+</html>

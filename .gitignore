@@ -1,0 +1,13 @@
+# 这里所有的文件都不提交到缓存中，不幸提交了，请清除缓存中的文件  git rm --cache index.html
+#*.js  忽略所有 js 格式的文件夹
+#!a.js  除了 a.js
+# html/ 忽略 html文件夹
+# *es/  忽略末尾是 es的文件夹
+# *es*/ 忽略中间是 es的文件夹
+# 命令行  git check-ignore -v index.html 检查那个规则写错了
+# exclude 可以做同样的事情，不同的是 .gitignore 这个文件本身会提交到版本库中去
+# cdsgds
+.history/ 
+node_modules/
+
+
