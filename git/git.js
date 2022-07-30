@@ -1,7 +1,8 @@
  // 自己创建项目：fsafa111111111  是否三分 
  //  git init 生成 .git目录。包含该项目相关配置信息
  //  git status 检查本地项目的状态
- //  git add 添加文件添加到暂存区  git add index.html / dir(文件夹) /
+ //  git add 添加文件添加到暂存区  git add index.html / dir(文件夹) /   提交到暂存区时 在  vscode  编辑区的 代码管理区域是看不到任何变化的，只有 git commit 提交到仓储区 才会
+//   在 代码管理区 看到变化。
  //  git rm --cache index.html  将文件从暂存区移除
  //  git commit -m "说明文字"  --- 提交暂存区文件到仓储区
  //  git log  查看提交到本地仓库的时间
