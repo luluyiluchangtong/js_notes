@@ -43,3 +43,4 @@
  // git remote show orgin  查看主机详细信息
  // git remote rm origin  删除远程主机
  // git remote rename origin  react  重命名主机名
+ //fdsafasfsaf
