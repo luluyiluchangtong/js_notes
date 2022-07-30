@@ -12,7 +12,7 @@
  //  git delete abc 删除本地分支
  //  git git push origin :fenzhi 或者 git push origin --delete fenzhi 删除远程分支
 
- //  git branch 列出本地分支  
+ //  git branch 列出本地分支   
  //  git branch -r 列出远程分支
  //  git branch -a  查看所有分支（远程的和本地的）
 
